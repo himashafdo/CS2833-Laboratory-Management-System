@@ -4,755 +4,245 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>Lab Reservation System</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
+    <script src="/logo.js"></script>
     <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
       :root {
-        --orange: #f97316;
-        --orange2: #ea6c0a;
-        --orange3: #fb923c;
-        --text: #1a1a2e;
-        --text2: #64748b;
-        --text3: #94a3b8;
-        --border: #e2e8f0;
-        --white: #ffffff;
+        --orange: #f97316; --orange2: #ea6c0a; --orange3: #fb923c;
+        --text: #1a1a2e; --text2: #64748b; --text3: #94a3b8;
+        --border: #e2e8f0; --white: #ffffff;
         --font: "Plus Jakarta Sans", sans-serif;
       }
-      body {
-        font-family: var(--font);
-        background: #f8fafc;
-        min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      #login-page,
-      #register-page {
-        display: none;
-        width: 100%;
-        min-height: 100vh;
-      }
-      #login-page.active,
-      #register-page.active {
-        display: flex;
-        animation: fadeIn 0.3s ease;
-      }
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-        }
-        to {
-          opacity: 1;
-        }
-      }
+      body { font-family: var(--font); background: #f8fafc; min-height: 100vh; display: flex; align-items: center; justify-content: center; }
 
-      /* LOGIN */
+      #login-page, #register-page { display: none; width: 100%; min-height: 100vh; }
+      #login-page.active, #register-page.active { display: flex; animation: fadeIn 0.3s ease; }
+      @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
+
+      /* ── LOGIN ── */
       #login-page {
-        align-items: center;
-        justify-content: center;
-        background: linear-gradient(
-          135deg,
-          #fff7ed 0%,
-          #ffedd5 50%,
-          #fed7aa 100%
-        );
-        position: relative;
-        overflow: hidden;
+        align-items: center; justify-content: center;
+        background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 50%, #fed7aa 100%);
+        position: relative; overflow: hidden;
       }
       #login-page::before {
-        content: "";
-        position: absolute;
-        width: 600px;
-        height: 600px;
-        border-radius: 50%;
-        background: radial-gradient(
-          circle,
-          rgba(249, 115, 22, 0.15) 0%,
-          transparent 70%
-        );
-        top: -200px;
-        right: -200px;
+        content: ""; position: absolute; width: 600px; height: 600px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(249,115,22,0.15) 0%, transparent 70%);
+        top: -200px; right: -200px;
       }
       #login-page::after {
-        content: "";
-        position: absolute;
-        width: 400px;
-        height: 400px;
-        border-radius: 50%;
-        background: radial-gradient(
-          circle,
-          rgba(249, 115, 22, 0.1) 0%,
-          transparent 70%
-        );
-        bottom: -100px;
-        left: -100px;
+        content: ""; position: absolute; width: 400px; height: 400px; border-radius: 50%;
+        background: radial-gradient(circle, rgba(249,115,22,0.1) 0%, transparent 70%);
+        bottom: -100px; left: -100px;
       }
       .login-card {
-        position: relative;
-        z-index: 1;
-        background: var(--white);
-        border-radius: 24px;
-        padding: 48px 44px;
-        width: 100%;
-        max-width: 420px;
-        box-shadow:
-          0 20px 60px rgba(249, 115, 22, 0.15),
-          0 4px 20px rgba(0, 0, 0, 0.08);
+        position: relative; z-index: 1; background: var(--white);
+        border-radius: 24px; padding: 48px 44px; width: 100%; max-width: 420px;
+        box-shadow: 0 20px 60px rgba(249,115,22,0.15), 0 4px 20px rgba(0,0,0,0.08);
         margin: 20px;
       }
-      .login-logo {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        margin-bottom: 36px;
-        text-align: center;
-      }
-      .login-logo-icon {
-        width: 64px;
-        height: 64px;
-        background: linear-gradient(135deg, var(--orange), var(--orange3));
-        border-radius: 16px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin-bottom: 16px;
-        box-shadow: 0 8px 24px rgba(249, 115, 22, 0.3);
-      }
-      .login-logo-icon svg {
-        width: 32px;
-        height: 32px;
-      }
-      .login-title {
-        font-size: 22px;
-        font-weight: 700;
-        color: var(--text);
-        margin-bottom: 4px;
-      }
-      .login-sub {
-        font-size: 13px;
-        color: var(--text2);
-      }
-      .field {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        margin-bottom: 16px;
-      }
-      .field label {
-        font-size: 12px;
-        font-weight: 600;
-        color: var(--text);
-        letter-spacing: 0.02em;
-        text-transform: uppercase;
-      }
-      .field input,
-      .field select {
-        padding: 12px 16px;
-        border: 1.5px solid var(--border);
-        border-radius: 10px;
-        font-family: var(--font);
-        font-size: 14px;
-        color: var(--text);
-        outline: none;
-        transition:
-          border-color 0.2s,
-          box-shadow 0.2s;
-        background: #fafafa;
-        width: 100%;
-      }
-      .field input::placeholder {
-        color: var(--text3);
-      }
-      .field input:focus,
-      .field select:focus {
-        border-color: var(--orange);
-        box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.12);
-        background: var(--white);
-      }
-      .forgot {
-        text-align: right;
-        margin-top: -8px;
-        margin-bottom: 8px;
-      }
-      .forgot a {
-        font-size: 12px;
-        color: var(--orange);
-        text-decoration: none;
-        font-weight: 500;
-      }
-      .btn-primary {
-        width: 100%;
-        padding: 14px;
-        background: linear-gradient(135deg, var(--orange), var(--orange2));
-        border: none;
-        border-radius: 10px;
-        color: white;
-        font-family: var(--font);
-        font-size: 15px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-        box-shadow: 0 4px 16px rgba(249, 115, 22, 0.35);
-        margin-bottom: 20px;
-      }
-      .btn-primary:hover {
-        transform: translateY(-1px);
-        box-shadow: 0 6px 20px rgba(249, 115, 22, 0.45);
-      }
-      .btn-primary:active {
-        transform: translateY(0);
-      }
-      .btn-primary:disabled {
-        opacity: 0.6;
-        cursor: not-allowed;
-        transform: none;
-      }
-      .switch-link {
-        text-align: center;
-        font-size: 13px;
-        color: var(--text2);
-      }
-      .switch-link a {
-        color: var(--orange);
-        font-weight: 600;
-        text-decoration: none;
-        cursor: pointer;
-      }
-      .alert {
-        padding: 10px 14px;
-        border-radius: 8px;
-        font-size: 13px;
-        margin-bottom: 16px;
-        display: none;
-      }
-      .alert.show {
-        display: block;
-        animation: fadeIn 0.2s ease;
-      }
-      .alert.success {
-        background: #f0fdf4;
-        border: 1px solid #bbf7d0;
-        color: #166534;
-      }
-      .alert.error {
-        background: #fff1f2;
-        border: 1px solid #fecdd3;
-        color: #be123c;
-      }
-      .btn-primary .spinner {
-        display: none;
-        width: 18px;
-        height: 18px;
-        border: 2px solid rgba(255, 255, 255, 0.4);
-        border-top-color: white;
-        border-radius: 50%;
-        animation: spin 0.6s linear infinite;
-        margin: 0 auto;
-      }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-      .btn-primary.loading .btn-text {
-        display: none;
-      }
-      .btn-primary.loading .spinner {
-        display: block;
-      }
-      .pw-wrap {
-        position: relative;
-      }
-      .pw-wrap input {
-        padding-right: 44px;
-      }
-      .pw-toggle {
-        position: absolute;
-        right: 14px;
-        top: 50%;
-        transform: translateY(-50%);
-        background: none;
-        border: none;
-        cursor: pointer;
-        color: var(--text3);
-        display: flex;
-        align-items: center;
-      }
-      .pw-toggle:hover {
-        color: var(--orange);
-      }
+      .login-logo { display: flex; flex-direction: column; align-items: center; margin-bottom: 36px; text-align: center; gap: 12px; }
+      .login-title { font-size: 22px; font-weight: 700; color: var(--text); }
+      .login-sub { font-size: 13px; color: var(--text2); }
 
-      /* REGISTER */
-      #register-page {
-        flex-direction: row;
+      /* ── SHARED FIELD STYLES ── */
+      .field { display: flex; flex-direction: column; gap: 6px; margin-bottom: 16px; }
+      .field label { font-size: 12px; font-weight: 600; color: var(--text); letter-spacing: 0.02em; text-transform: uppercase; }
+      .field input, .field select {
+        padding: 12px 16px; border: 1.5px solid var(--border); border-radius: 10px;
+        font-family: var(--font); font-size: 14px; color: var(--text); outline: none;
+        transition: border-color 0.2s, box-shadow 0.2s; background: #fafafa; width: 100%;
       }
-      .register-left {
-        width: 38%;
-        background: linear-gradient(160deg, var(--orange) 0%, #c2410c 100%);
-        padding: 48px 40px;
-        display: flex;
-        flex-direction: column;
-        justify-content: space-between;
-        position: relative;
-        overflow: hidden;
-      }
-      .register-left::before {
-        content: "";
-        position: absolute;
-        width: 300px;
-        height: 300px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.07);
-        top: -80px;
-        right: -80px;
-      }
-      .register-left::after {
-        content: "";
-        position: absolute;
-        width: 200px;
-        height: 200px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.05);
-        bottom: 60px;
-        left: -60px;
-      }
-      .reg-left-content {
-        position: relative;
-        z-index: 1;
-      }
-      .reg-brand {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin-bottom: 48px;
-      }
-      .reg-brand-icon {
-        width: 40px;
-        height: 40px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-      }
-      .reg-brand-icon svg {
-        width: 22px;
-        height: 22px;
-      }
-      .reg-brand-name {
-        font-size: 16px;
-        font-weight: 700;
-        color: white;
-      }
-      .reg-headline {
-        font-size: 28px;
-        font-weight: 700;
-        color: white;
-        line-height: 1.25;
-        margin-bottom: 16px;
-      }
-      .reg-headline span {
-        display: block;
-        font-size: 13px;
-        font-weight: 400;
-        opacity: 0.8;
-        margin-top: 8px;
-        line-height: 1.6;
-      }
-      .reg-illustration {
-        position: relative;
-        z-index: 1;
-        margin-top: 28px;
-      }
-      .reg-illustration svg {
-        width: 100%;
-        height: auto;
-      }
-      .reg-features {
-        position: relative;
-        z-index: 1;
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-        margin-top: 28px;
-      }
-      .reg-feature {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        color: rgba(255, 255, 255, 0.9);
-        font-size: 13px;
-        font-weight: 500;
-      }
-      .reg-feature-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.6);
-        flex-shrink: 0;
-      }
-      .register-right {
-        flex: 1;
-        background: var(--white);
-        padding: 48px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow-y: auto;
-      }
-      .register-form-wrap {
-        width: 100%;
-        max-width: 440px;
-      }
-      .reg-title {
-        font-size: 26px;
-        font-weight: 700;
-        color: var(--text);
-        margin-bottom: 6px;
-      }
-      .reg-sub {
-        font-size: 13px;
-        color: var(--text2);
-        margin-bottom: 28px;
-      }
-      .row-2 {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 14px;
+      .field input::placeholder { color: var(--text3); }
+      .field input:focus, .field select:focus {
+        border-color: var(--orange); box-shadow: 0 0 0 3px rgba(249,115,22,0.12); background: var(--white);
       }
       .field select {
         appearance: none;
         background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
-        background-repeat: no-repeat;
-        background-position: right 14px center;
-        padding-right: 36px;
-        cursor: pointer;
-        background-color: #fafafa;
+        background-repeat: no-repeat; background-position: right 14px center;
+        padding-right: 36px; cursor: pointer; background-color: #fafafa;
       }
-      .field select:focus {
-        background-color: var(--white);
+      .field select:focus { background-color: var(--white); }
+
+      .pw-wrap { position: relative; }
+      .pw-wrap input { padding-right: 44px; }
+      .pw-toggle {
+        position: absolute; right: 14px; top: 50%; transform: translateY(-50%);
+        background: none; border: none; cursor: pointer; color: var(--text3); display: flex; align-items: center;
       }
+      .pw-toggle:hover { color: var(--orange); }
+
+      .forgot { text-align: right; margin-top: -8px; margin-bottom: 8px; }
+      .forgot a { font-size: 12px; color: var(--orange); text-decoration: none; font-weight: 500; }
+
+      .btn-primary {
+        width: 100%; padding: 14px;
+        background: linear-gradient(135deg, var(--orange), var(--orange2));
+        border: none; border-radius: 10px; color: white;
+        font-family: var(--font); font-size: 15px; font-weight: 600;
+        cursor: pointer; transition: all 0.2s;
+        box-shadow: 0 4px 16px rgba(249,115,22,0.35); margin-bottom: 20px;
+      }
+      .btn-primary:hover { transform: translateY(-1px); box-shadow: 0 6px 20px rgba(249,115,22,0.45); }
+      .btn-primary:active { transform: translateY(0); }
+      .btn-primary:disabled { opacity: 0.6; cursor: not-allowed; transform: none; }
+      .btn-primary .spinner {
+        display: none; width: 18px; height: 18px;
+        border: 2px solid rgba(255,255,255,0.4); border-top-color: white;
+        border-radius: 50%; animation: spin 0.6s linear infinite; margin: 0 auto;
+      }
+      @keyframes spin { to { transform: rotate(360deg); } }
+      .btn-primary.loading .btn-text { display: none; }
+      .btn-primary.loading .spinner { display: block; }
+
+      .switch-link { text-align: center; font-size: 13px; color: var(--text2); }
+      .switch-link a { color: var(--orange); font-weight: 600; text-decoration: none; cursor: pointer; }
+
+      .alert { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 16px; display: none; }
+      .alert.show { display: block; animation: fadeIn 0.2s ease; }
+      .alert.success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+      .alert.error   { background: #fff1f2; border: 1px solid #fecdd3; color: #be123c; }
+
+      /* ── REGISTER ── */
+      #register-page { flex-direction: row; }
+
+      .register-left {
+        width: 38%;
+        background: linear-gradient(160deg, var(--orange) 0%, #c2410c 100%);
+        padding: 48px 40px; display: flex; flex-direction: column;
+        justify-content: space-between; position: relative; overflow: hidden;
+      }
+      .register-left::before {
+        content: ""; position: absolute; width: 300px; height: 300px; border-radius: 50%;
+        background: rgba(255,255,255,0.07); top: -80px; right: -80px;
+      }
+      .register-left::after {
+        content: ""; position: absolute; width: 200px; height: 200px; border-radius: 50%;
+        background: rgba(255,255,255,0.05); bottom: 60px; left: -60px;
+      }
+      .reg-left-content { position: relative; z-index: 1; }
+
+      .reg-brand { display: flex; align-items: center; gap: 10px; margin-bottom: 36px; }
+
+      .reg-headline { font-size: 28px; font-weight: 700; color: white; line-height: 1.25; margin-bottom: 16px; }
+      .reg-headline span { display: block; font-size: 13px; font-weight: 400; opacity: 0.8; margin-top: 8px; line-height: 1.6; }
+
+      .reg-illustration { position: relative; z-index: 1; margin-top: 28px; }
+      .reg-illustration svg { width: 100%; height: auto; }
+
+      .reg-features { position: relative; z-index: 1; display: flex; flex-direction: column; gap: 12px; margin-top: 28px; }
+      .reg-feature { display: flex; align-items: center; gap: 10px; color: rgba(255,255,255,0.9); font-size: 13px; font-weight: 500; }
+      .reg-feature-dot { width: 6px; height: 6px; border-radius: 50%; background: rgba(255,255,255,0.6); flex-shrink: 0; }
+
+      .register-right {
+        flex: 1; background: var(--white); padding: 48px;
+        display: flex; align-items: center; justify-content: center; overflow-y: auto;
+      }
+      .register-form-wrap { width: 100%; max-width: 440px; }
+      .reg-title { font-size: 26px; font-weight: 700; color: var(--text); margin-bottom: 6px; }
+      .reg-sub   { font-size: 13px; color: var(--text2); margin-bottom: 28px; }
+      .row-2 { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
       @media (max-width: 768px) {
-        .register-left {
-          display: none;
-        }
-        .register-right {
-          padding: 32px 24px;
-        }
-        .row-2 {
-          grid-template-columns: 1fr;
-        }
+        .register-left { display: none; }
+        .register-right { padding: 32px 24px; }
+        .row-2 { grid-template-columns: 1fr; }
       }
     </style>
   </head>
   <body>
-    <!-- LOGIN -->
+
+    <!-- ══ LOGIN ══ -->
     <div id="login-page" class="active">
       <div class="login-card">
         <div class="login-logo">
-          <div class="login-logo-icon">
-            <!-- NPN Transistor symbol -->
-            <svg viewBox="0 0 32 32" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-              <!-- Base lead (left horizontal line) -->
-              <line x1="4" y1="16" x2="12" y2="16"/>
-              <!-- Vertical base bar -->
-              <line x1="12" y1="9" x2="12" y2="23"/>
-              <!-- Collector line (top-right) -->
-              <line x1="12" y1="10.5" x2="26" y2="5"/>
-              <!-- Emitter line (bottom-right) with arrow -->
-              <line x1="12" y1="21.5" x2="26" y2="27"/>
-              <!-- Emitter arrow tip -->
-              <polygon points="22,24.5 26,27 23.5,22.5" fill="white" stroke="none"/>
-              <!-- Collector top lead -->
-              <line x1="26" y1="5" x2="26" y2="2"/>
-              <!-- Emitter bottom lead -->
-              <line x1="26" y1="27" x2="26" y2="30"/>
-            </svg>
-          </div>
+          <lab-logo size="64" show-name="false"></lab-logo>
           <div class="login-title">Laboratory Reservation System</div>
           <div class="login-sub">Login to continue</div>
         </div>
+
         <div id="login-alert" class="alert"></div>
+
         <div class="field">
-          <label>Username</label
-          ><input
-            type="text"
-            id="login-user"
-            placeholder="Enter your email or username"
-          />
+          <label>Username</label>
+          <input type="text" id="login-user" placeholder="Enter your username"/>
         </div>
+
         <div class="field">
           <label>Password</label>
           <div class="pw-wrap">
-            <input
-              type="password"
-              id="login-pass"
-              placeholder="Enter your password"
-            />
-            <button
-              class="pw-toggle"
-              onclick="togglePw('login-pass', this)"
-              type="button"
-            >
-              <svg
-                width="18"
-                height="18"
-                viewBox="0 0 24 24"
-                fill="none"
-                stroke="currentColor"
-                stroke-width="2"
-              >
-                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                <circle cx="12" cy="12" r="3" />
+            <input type="password" id="login-pass" placeholder="Enter your password"/>
+            <button class="pw-toggle" onclick="togglePw('login-pass',this)" type="button">
+              <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
               </svg>
             </button>
           </div>
         </div>
+
         <div class="forgot"><a href="#">Forgot Password?</a></div>
+
         <button class="btn-primary" id="login-btn" onclick="doLogin()">
           <span class="btn-text">LOGIN</span>
           <div class="spinner"></div>
         </button>
-        <div class="switch-link">
-          Don't have an account? <a onclick="showPage('register')">Register</a>
-        </div>
+
+        <div class="switch-link">Don't have an account? <a onclick="showPage('register')">Register</a></div>
       </div>
     </div>
 
-    <!-- REGISTER -->
+    <!-- ══ REGISTER ══ -->
     <div id="register-page">
       <div class="register-left">
         <div class="reg-left-content">
+
           <div class="reg-brand">
-            <div class="reg-brand-icon">
-              <!-- NPN Transistor symbol (smaller) -->
-              <svg viewBox="0 0 32 32" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-                <line x1="4" y1="16" x2="12" y2="16"/>
-                <line x1="12" y1="9" x2="12" y2="23"/>
-                <line x1="12" y1="10.5" x2="26" y2="5"/>
-                <line x1="12" y1="21.5" x2="26" y2="27"/>
-                <polygon points="22,24.5 26,27 23.5,22.5" fill="white" stroke="none"/>
-                <line x1="26" y1="5" x2="26" y2="2"/>
-                <line x1="26" y1="27" x2="26" y2="30"/>
-              </svg>
-            </div>
-            <div class="reg-brand-name">Laboratory Reservation System</div>
+            <lab-logo size="40" dark="true"></lab-logo>
           </div>
+
           <div class="reg-headline">
-            Manage labs efficiently and securely<span
-              >Book equipment, track resources, and manage your lab sessions all
-              in one place.</span
-            >
+            Manage labs efficiently and securely
+            <span>Book equipment, track resources, and manage your lab sessions all in one place.</span>
           </div>
+
           <div class="reg-illustration">
-            <svg
-              viewBox="0 0 280 190"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <rect
-                x="20"
-                y="138"
-                width="240"
-                height="10"
-                rx="4"
-                fill="rgba(255,255,255,0.2)"
-              />
-              <rect
-                x="88"
-                y="78"
-                width="104"
-                height="64"
-                rx="6"
-                fill="rgba(255,255,255,0.22)"
-              />
-              <rect
-                x="94"
-                y="84"
-                width="92"
-                height="50"
-                rx="3"
-                fill="rgba(255,255,255,0.13)"
-              />
-              <rect
-                x="100"
-                y="91"
-                width="52"
-                height="4"
-                rx="2"
-                fill="rgba(255,255,255,0.55)"
-              />
-              <rect
-                x="100"
-                y="99"
-                width="78"
-                height="3"
-                rx="1.5"
-                fill="rgba(255,255,255,0.3)"
-              />
-              <rect
-                x="100"
-                y="106"
-                width="62"
-                height="3"
-                rx="1.5"
-                fill="rgba(255,255,255,0.3)"
-              />
-              <rect
-                x="100"
-                y="113"
-                width="72"
-                height="3"
-                rx="1.5"
-                fill="rgba(255,255,255,0.3)"
-              />
-              <rect
-                x="130"
-                y="141"
-                width="20"
-                height="8"
-                rx="2"
-                fill="rgba(255,255,255,0.18)"
-              />
-              <rect
-                x="118"
-                y="148"
-                width="44"
-                height="5"
-                rx="2"
-                fill="rgba(255,255,255,0.13)"
-              />
-              <path
-                d="M44 118 L37 138 L63 138 L56 118 Z"
-                fill="rgba(255,255,255,0.18)"
-                stroke="rgba(255,255,255,0.4)"
-                stroke-width="1.5"
-              />
-              <rect
-                x="46"
-                y="108"
-                width="18"
-                height="12"
-                rx="2"
-                fill="rgba(255,255,255,0.13)"
-                stroke="rgba(255,255,255,0.4)"
-                stroke-width="1.5"
-              />
-              <ellipse
-                cx="50"
-                cy="131"
-                rx="9"
-                ry="4"
-                fill="rgba(255,255,255,0.18)"
-              />
-              <path
-                d="M224 116 L217 138 L243 138 L236 116 Z"
-                fill="rgba(255,255,255,0.18)"
-                stroke="rgba(255,255,255,0.4)"
-                stroke-width="1.5"
-              />
-              <rect
-                x="226"
-                y="106"
-                width="18"
-                height="12"
-                rx="2"
-                fill="rgba(255,255,255,0.13)"
-                stroke="rgba(255,255,255,0.4)"
-                stroke-width="1.5"
-              />
-              <rect
-                x="93"
-                y="155"
-                width="94"
-                height="18"
-                rx="4"
-                fill="rgba(255,255,255,0.13)"
-              />
-              <rect
-                x="98"
-                y="159"
-                width="8"
-                height="5"
-                rx="1"
-                fill="rgba(255,255,255,0.3)"
-              />
-              <rect
-                x="110"
-                y="159"
-                width="8"
-                height="5"
-                rx="1"
-                fill="rgba(255,255,255,0.3)"
-              />
-              <rect
-                x="122"
-                y="159"
-                width="8"
-                height="5"
-                rx="1"
-                fill="rgba(255,255,255,0.3)"
-              />
-              <rect
-                x="134"
-                y="159"
-                width="8"
-                height="5"
-                rx="1"
-                fill="rgba(255,255,255,0.3)"
-              />
-              <rect
-                x="146"
-                y="159"
-                width="8"
-                height="5"
-                rx="1"
-                fill="rgba(255,255,255,0.3)"
-              />
-              <rect
-                x="158"
-                y="159"
-                width="8"
-                height="5"
-                rx="1"
-                fill="rgba(255,255,255,0.3)"
-              />
-              <rect
-                x="104"
-                y="166"
-                width="72"
-                height="4"
-                rx="1"
-                fill="rgba(255,255,255,0.18)"
-              />
-              <circle cx="30" cy="58" r="3" fill="rgba(255,255,255,0.18)" />
-              <circle cx="252" cy="68" r="4" fill="rgba(255,255,255,0.13)" />
-              <circle cx="262" cy="48" r="2" fill="rgba(255,255,255,0.18)" />
+            <svg viewBox="0 0 280 190" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="20" y="138" width="240" height="10" rx="4" fill="rgba(255,255,255,0.2)"/>
+              <rect x="88" y="78" width="104" height="64" rx="6" fill="rgba(255,255,255,0.22)"/>
+              <rect x="94" y="84" width="92" height="50" rx="3" fill="rgba(255,255,255,0.13)"/>
+              <rect x="100" y="91" width="52" height="4" rx="2" fill="rgba(255,255,255,0.55)"/>
+              <rect x="100" y="99" width="78" height="3" rx="1.5" fill="rgba(255,255,255,0.3)"/>
+              <rect x="100" y="106" width="62" height="3" rx="1.5" fill="rgba(255,255,255,0.3)"/>
+              <rect x="100" y="113" width="72" height="3" rx="1.5" fill="rgba(255,255,255,0.3)"/>
+              <rect x="130" y="141" width="20" height="8" rx="2" fill="rgba(255,255,255,0.18)"/>
+              <rect x="118" y="148" width="44" height="5" rx="2" fill="rgba(255,255,255,0.13)"/>
+              <path d="M44 118 L37 138 L63 138 L56 118 Z" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+              <rect x="46" y="108" width="18" height="12" rx="2" fill="rgba(255,255,255,0.13)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+              <ellipse cx="50" cy="131" rx="9" ry="4" fill="rgba(255,255,255,0.18)"/>
+              <path d="M224 116 L217 138 L243 138 L236 116 Z" fill="rgba(255,255,255,0.18)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+              <rect x="226" y="106" width="18" height="12" rx="2" fill="rgba(255,255,255,0.13)" stroke="rgba(255,255,255,0.4)" stroke-width="1.5"/>
+              <rect x="93" y="155" width="94" height="18" rx="4" fill="rgba(255,255,255,0.13)"/>
+              <rect x="98" y="159" width="8" height="5" rx="1" fill="rgba(255,255,255,0.3)"/>
+              <rect x="110" y="159" width="8" height="5" rx="1" fill="rgba(255,255,255,0.3)"/>
+              <rect x="122" y="159" width="8" height="5" rx="1" fill="rgba(255,255,255,0.3)"/>
+              <rect x="134" y="159" width="8" height="5" rx="1" fill="rgba(255,255,255,0.3)"/>
+              <rect x="146" y="159" width="8" height="5" rx="1" fill="rgba(255,255,255,0.3)"/>
+              <rect x="158" y="159" width="8" height="5" rx="1" fill="rgba(255,255,255,0.3)"/>
+              <rect x="104" y="166" width="72" height="4" rx="1" fill="rgba(255,255,255,0.18)"/>
+              <circle cx="30" cy="58" r="3" fill="rgba(255,255,255,0.18)"/>
+              <circle cx="252" cy="68" r="4" fill="rgba(255,255,255,0.13)"/>
+              <circle cx="262" cy="48" r="2" fill="rgba(255,255,255,0.18)"/>
             </svg>
           </div>
+
           <div class="reg-features">
-            <div class="reg-feature">
-              <div class="reg-feature-dot"></div>
-              Reserve equipment &amp; lab spaces
-            </div>
-            <div class="reg-feature">
-              <div class="reg-feature-dot"></div>
-              Report and track hardware issues
-            </div>
-            <div class="reg-feature">
-              <div class="reg-feature-dot"></div>
-              Monitor resource demand analytics
-            </div>
+            <div class="reg-feature"><div class="reg-feature-dot"></div>Reserve equipment &amp; lab spaces</div>
+            <div class="reg-feature"><div class="reg-feature-dot"></div>Report and track hardware issues</div>
+            <div class="reg-feature"><div class="reg-feature-dot"></div>Monitor resource demand analytics</div>
           </div>
+
         </div>
       </div>
 
@@ -761,28 +251,33 @@
           <div class="reg-title">Create Account</div>
           <div class="reg-sub">Fill in your details to get started</div>
           <div id="register-alert" class="alert"></div>
+
           <div class="field">
-            <label>Full Name</label
-            ><input type="text" id="reg-name" placeholder="Full Name" />
+            <label>Full Name</label>
+            <input type="text" id="reg-name" placeholder="Full Name"/>
           </div>
+
           <div class="row-2">
             <div class="field">
-              <label>Username</label
-              ><input type="text" id="reg-username" placeholder="username" />
+              <label>Username</label>
+              <input type="text" id="reg-username" placeholder="username"/>
             </div>
             <div class="field">
               <label id="reg-id-label">University / National ID</label>
-              <input type="text" id="reg-id" placeholder="e.g. 230186E" />
+              <input type="text" id="reg-id" placeholder="e.g. 230186E"/>
             </div>
           </div>
+
           <div class="field">
-            <label>Email</label
-            ><input type="email" id="reg-email" placeholder="your@email.com" />
+            <label>Email</label>
+            <input type="email" id="reg-email" placeholder="your@email.com"/>
           </div>
+
           <div class="field">
-            <label>Mobile Number</label
-            ><input type="tel" id="reg-phone" placeholder="+94 77 000 0000" />
+            <label>Mobile Number</label>
+            <input type="tel" id="reg-phone" placeholder="+94 77 000 0000"/>
           </div>
+
           <div class="row-2">
             <div class="field">
               <label>Select Role</label>
@@ -796,71 +291,42 @@
               <label>Department</label>
               <select id="reg-dept">
                 <option value="" disabled selected>Select Department</option>
-                <option>Electronic &amp; Telecommnuication Engineering</option>
+                <option>Electronic &amp; Telecommunication Engineering</option>
                 <option>Electrical Engineering</option>
               </select>
             </div>
           </div>
+
           <div class="field">
             <label>Password</label>
             <div class="pw-wrap">
-              <input type="password" id="reg-password" placeholder="Password" />
-              <button
-                class="pw-toggle"
-                onclick="togglePw('reg-password', this)"
-                type="button"
-              >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                  <circle cx="12" cy="12" r="3" />
+              <input type="password" id="reg-password" placeholder="Password"/>
+              <button class="pw-toggle" onclick="togglePw('reg-password',this)" type="button">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
                 </svg>
               </button>
             </div>
           </div>
+
           <div class="field">
             <label>Confirm Password</label>
             <div class="pw-wrap">
-              <input
-                type="password"
-                id="reg-confirm"
-                placeholder="Confirm Password"
-              />
-              <button
-                class="pw-toggle"
-                onclick="togglePw('reg-confirm', this)"
-                type="button"
-              >
-                <svg
-                  width="18"
-                  height="18"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z" />
-                  <circle cx="12" cy="12" r="3" />
+              <input type="password" id="reg-confirm" placeholder="Confirm Password"/>
+              <button class="pw-toggle" onclick="togglePw('reg-confirm',this)" type="button">
+                <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path d="M1 12s4-8 11-8 11 8 11 8-4 8-11 8-11-8-11-8z"/><circle cx="12" cy="12" r="3"/>
                 </svg>
               </button>
             </div>
           </div>
-          <button
-            class="btn-primary"
-            id="register-btn"
-            onclick="doRegister()"
-            style="margin-top: 8px"
-          >
+
+          <button class="btn-primary" id="register-btn" onclick="doRegister()" style="margin-top:8px">
             <span class="btn-text">Register</span>
             <div class="spinner"></div>
           </button>
-          <div class="switch-link" style="margin-top: 16px">
+
+          <div class="switch-link" style="margin-top:16px">
             Already have an account? <a onclick="showPage('login')">Login</a>
           </div>
         </div>
@@ -869,30 +335,31 @@
 
     <script>
       const API = "http://localhost:8080/api/auth";
+
       function showPage(p) {
-        document
-          .getElementById("login-page")
-          .classList.toggle("active", p === "login");
-        document
-          .getElementById("register-page")
-          .classList.toggle("active", p === "register");
+        document.getElementById("login-page").classList.toggle("active", p === "login");
+        document.getElementById("register-page").classList.toggle("active", p === "register");
       }
+
       function showAlert(id, type, msg) {
         const el = document.getElementById(id);
         el.className = `alert ${type} show`;
         el.textContent = msg;
         setTimeout(() => el.classList.remove("show"), 4000);
       }
+
       function setLoading(id, on) {
         const b = document.getElementById(id);
         b.classList.toggle("loading", on);
         b.disabled = on;
       }
+
       function togglePw(id, btn) {
         const inp = document.getElementById(id);
         inp.type = inp.type === "password" ? "text" : "password";
         btn.style.color = inp.type === "text" ? "var(--orange)" : "";
       }
+
       function handleRoleChange(role) {
         const label = document.getElementById("reg-id-label");
         const input = document.getElementById("reg-id");
@@ -902,12 +369,12 @@
         } else if (role === "STUDENT") {
           label.textContent = "University ID";
           input.placeholder = "Enter your University ID";
-        } 
-         else {
+        } else {
           label.textContent = "University / National ID";
           input.placeholder = "e.g. 210123A";
         }
       }
+
       async function doLogin() {
         const username = document.getElementById("login-user").value.trim();
         const password = document.getElementById("login-pass").value;
@@ -924,36 +391,32 @@
           if (!res.ok) throw new Error(data.error || "Login failed");
           sessionStorage.setItem("token", data.token);
           sessionStorage.setItem("username", username);
-          showAlert(
-            "login-alert",
-            "success",
-            "Login successful! Redirecting...",
-          );
-          setTimeout(() => (window.location.href = "/dashboard.html"), 1200);
+          sessionStorage.setItem("role", data.role);
+          showAlert("login-alert", "success", "Login successful! Redirecting...");
+          setTimeout(() => {
+            if (data.role === "LAB_TECHNICIAN" || data.role === "ADMIN") {
+              window.location.href = "/admin-dashboard.html";
+            } else {
+              window.location.href = "/student-dashboard.html";
+            }
+          }, 1200);
         } catch (e) {
           showAlert("login-alert", "error", e.message);
         } finally {
           setLoading("login-btn", false);
         }
       }
+
       async function doRegister() {
         const username = document.getElementById("reg-username").value.trim();
-        const email = document.getElementById("reg-email").value.trim();
+        const email    = document.getElementById("reg-email").value.trim();
         const password = document.getElementById("reg-password").value;
-        const confirm = document.getElementById("reg-confirm").value;
-        const role = document.getElementById("reg-role").value;
+        const confirm  = document.getElementById("reg-confirm").value;
+        const role     = document.getElementById("reg-role").value;
         if (!username || !email || !password || !role)
-          return showAlert(
-            "register-alert",
-            "error",
-            "Please fill in all required fields",
-          );
+          return showAlert("register-alert", "error", "Please fill in all required fields");
         if (password.length < 6)
-          return showAlert(
-            "register-alert",
-            "error",
-            "Password must be at least 6 characters",
-          );
+          return showAlert("register-alert", "error", "Password must be at least 6 characters");
         if (password !== confirm)
           return showAlert("register-alert", "error", "Passwords do not match");
         setLoading("register-btn", true);
@@ -966,11 +429,7 @@
           const data = await res.json();
           if (!res.ok) throw new Error(data.error || "Registration failed");
           sessionStorage.setItem("token", data.token);
-          showAlert(
-            "register-alert",
-            "success",
-            "Account created! Redirecting to login...",
-          );
+          showAlert("register-alert", "success", "Account created! Redirecting to login...");
           setTimeout(() => showPage("login"), 1500);
         } catch (e) {
           showAlert("register-alert", "error", e.message);
@@ -978,10 +437,10 @@
           setLoading("register-btn", false);
         }
       }
+
       document.addEventListener("keydown", (e) => {
         if (e.key !== "Enter") return;
-        if (document.getElementById("login-page").classList.contains("active"))
-          doLogin();
+        if (document.getElementById("login-page").classList.contains("active")) doLogin();
         else doRegister();
       });
     </script>

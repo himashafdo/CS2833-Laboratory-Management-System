@@ -1,4 +1,4 @@
-================================================================
+======================================================
     LAB MANAGEMENT SYSTEM — LOCAL SETUP GUIDE
  		MSD| Company A
 ================================================================
@@ -24,7 +24,7 @@ to reload — click Reload.
 
 
 ----------------------------------------------------------------
-STEP 2 — INSTALL JAVA (JDK 17)
+STEP 2 — INSTALL JAVA (JDK 17 or a newer version is fine if youve already have a new version like 21 or 25 skip this step of later error occurs it wont be because of the version you just have to point to your jdk file)
 ----------------------------------------------------------------
 
 1. Go to: https://adoptium.net/temurin/releases/

@@ -14,6 +14,11 @@ public class Equipment extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private EquipmentStatus status = EquipmentStatus.AVAILABLE;
 
+    private int quantity = 1;
+
+public int getQuantity() { return quantity; }
+public void setQuantity(int quantity) { this.quantity = quantity; }
+
     public enum EquipmentStatus { AVAILABLE, RESERVED, MAINTENANCE, UNAVAILABLE }
 
     public String getName() { return name; }

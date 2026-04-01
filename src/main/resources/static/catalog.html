@@ -1315,7 +1315,6 @@
         el.className = `alert ${type} show`;
         el.textContent = msg;
       }
-
       async function confirmBooking() {
         const date = document.getElementById("booking-date").value;
         const start = document.getElementById("booking-start").value;
@@ -1326,23 +1325,25 @@
           return showModalAlert("error", "Please fill in all fields");
         if (start >= end)
           return showModalAlert("error", "End time must be after start time");
+        if (selectedType === "equipment" && !labId)
+          return showModalAlert("error", "Please select a lab");
+
+        let quantity = 1;
         if (selectedType === "lab") {
-          const qty = parseInt(
+          quantity = parseInt(
             document.getElementById("booking-quantity").value,
           );
-          if (!qty || qty < 1 || qty > 3)
+          if (!quantity || quantity < 1 || quantity > 3)
             return showModalAlert(
               "error",
               "You can reserve between 1 and 3 workstations only",
             );
-          body.quantity = qty;
         }
-        if (selectedType === "equipment" && !labId)
-          return showModalAlert("error", "Please select a lab");
 
         const body = {
           startTime: `${date}T${start}:00`,
           endTime: `${date}T${end}:00`,
+          quantity: quantity,
         };
 
         if (selectedType === "equipment") {

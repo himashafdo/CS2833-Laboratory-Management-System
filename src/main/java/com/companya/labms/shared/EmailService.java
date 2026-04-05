@@ -19,12 +19,12 @@ public class EmailService {
         message.setSubject("Lab Reservation System - Password Reset");
         message.setText(
             "Hello,\n\n" +
-            "You requested a password reset for your Lab Reservation System account.\n\n" +
+            "You requested a password reset for your Laboratory Management System (LabMS) account.\n\n" +
             "Click the link below to reset your password:\n" +
-            "http://localhost:8080/reset-password.html?token=" + resetToken + "\n\n" +
+            "http://localhost:8080/reset-password.html?token=" + resetToken + "\n\n" +  // TODO : Update to actual frontend URL
             "This link expires in 30 minutes.\n\n" +
             "If you did not request this, ignore this email.\n\n" +
-            "Lab Reservation System"
+            "Laboratory Management System - Company A"
         );
         mailSender.send(message);
     }

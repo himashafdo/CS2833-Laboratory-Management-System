@@ -187,7 +187,7 @@ body { font-family: var(--font); background: #f8fafc; min-height: 100vh; display
 </div>
 
 <script>
-const API = 'http://localhost:8080/api/auth';
+const API = 'http://localhost:8081/api/auth';
 function showPage(p) {
   document.getElementById('login-page').classList.toggle('active', p==='login');
   document.getElementById('register-page').classList.toggle('active', p==='register');
@@ -220,7 +220,7 @@ async function doLogin() {
     sessionStorage.setItem('token', data.token);
     sessionStorage.setItem('username', username);
     showAlert('login-alert','success','Login successful! Redirecting...');
-    setTimeout(() => window.location.href = '/dashboard.html', 1200);
+    setTimeout(() => window.location.href = '/requests.html', 1200);
   } catch(e) { showAlert('login-alert','error', e.message); }
   finally { setLoading('login-btn', false); }
 }

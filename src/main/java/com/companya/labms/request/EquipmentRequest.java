@@ -12,20 +12,29 @@ public class EquipmentRequest extends BaseEntity {
     @JoinColumn(name = "user_id")
     private User user;
 
-    private String itemName;
-    private String description;
+    private String equipmentDetails;
+    private String justification;
+    private Integer quantity;
+
+    @Enumerated(EnumType.STRING)
+    private UrgencyLevel urgencyLevel;
 
     @Enumerated(EnumType.STRING)
     private RequestStatus status = RequestStatus.PENDING;
 
     public enum RequestStatus { PENDING, APPROVED, REJECTED }
+    public enum UrgencyLevel { LOW, MEDIUM, HIGH, CRITICAL }
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
-    public String getItemName() { return itemName; }
-    public void setItemName(String itemName) { this.itemName = itemName; }
-    public String getDescription() { return description; }
-    public void setDescription(String description) { this.description = description; }
+    public String getEquipmentDetails() { return equipmentDetails; }
+    public void setEquipmentDetails(String equipmentDetails) { this.equipmentDetails = equipmentDetails; }
+    public String getJustification() { return justification; }
+    public void setJustification(String justification) { this.justification = justification; }
+    public Integer getQuantity() { return quantity; }
+    public void setQuantity(Integer quantity) { this.quantity = quantity; }
+    public UrgencyLevel getUrgencyLevel() { return urgencyLevel; }
+    public void setUrgencyLevel(UrgencyLevel urgencyLevel) { this.urgencyLevel = urgencyLevel; }
     public RequestStatus getStatus() { return status; }
     public void setStatus(RequestStatus status) { this.status = status; }
 }

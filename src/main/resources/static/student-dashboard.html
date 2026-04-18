@@ -1,0 +1,1066 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Dashboard — Lab Management System</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --orange: #f97316;
+        --orange2: #ea6c0a;
+        --orange3: #fb923c;
+        --text: #1a1a2e;
+        --text2: #64748b;
+        --text3: #94a3b8;
+        --border: #e2e8f0;
+        --white: #ffffff;
+        --bg: #f8fafc;
+        --font: "Plus Jakarta Sans", sans-serif;
+      }
+      body {
+        font-family: var(--font);
+        background: var(--bg);
+        min-height: 100vh;
+        display: flex;
+      }
+
+      /* ── SIDEBAR ── */
+      /* ── SIDEBAR ── */
+      .sidebar {
+        width: 240px;
+        min-height: 100vh;
+        flex-shrink: 0;
+        background: linear-gradient(180deg, #f97316 0%, #c2410c 100%);
+        display: flex;
+        flex-direction: column;
+        padding: 24px 0;
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 100;
+      }
+      .sidebar-brand {
+        padding: 0 20px 28px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        margin-bottom: 16px;
+      }
+      .brand-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .brand-icon {
+        width: 38px;
+        height: 38px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .brand-icon svg {
+        width: 20px;
+        height: 20px;
+      }
+      .brand-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: white;
+        line-height: 1.2;
+      }
+      .nav-section {
+        padding: 0 12px;
+        flex: 1;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        margin-bottom: 4px;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+      }
+      .nav-item:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+      }
+      .nav-item.active {
+        background: rgba(255, 255, 255, 0.25);
+        color: white;
+        font-weight: 600;
+      }
+      .nav-item svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+      }
+      .sidebar-user {
+        margin: 16px 12px 0;
+        padding: 12px;
+        border-radius: 12px;
+        background: rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+        color: white;
+        flex-shrink: 0;
+      }
+      .user-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: white;
+      }
+      .user-role {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      /* ── MAIN ── */
+      .main {
+        margin-left: 240px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      /* ── TOPBAR ── */
+      .topbar {
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+        padding: 16px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+      .topbar-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .search-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 16px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--bg);
+        width: 220px;
+      }
+      .search-box input {
+        border: none;
+        outline: none;
+        font-family: var(--font);
+        font-size: 13px;
+        color: var(--text);
+        background: transparent;
+        width: 100%;
+      }
+      .search-box input::placeholder {
+        color: var(--text3);
+      }
+      .search-box svg {
+        color: var(--text3);
+        flex-shrink: 0;
+      }
+      .topbar-date {
+        padding: 8px 14px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        font-size: 13px;
+        color: var(--text2);
+        background: var(--bg);
+        white-space: nowrap;
+      }
+      .topbar-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        background: var(--white);
+        color: var(--text2);
+        position: relative;
+      }
+      .notif-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--orange);
+        border-radius: 50%;
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        border: 2px solid white;
+      }
+      .topbar-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--orange), var(--orange3));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+        color: white;
+        cursor: pointer;
+      }
+
+      /* ── CONTENT ── */
+      .content {
+        padding: 28px 32px;
+        flex: 1;
+      }
+
+      /* ── WELCOME BANNER ── */
+      .welcome-banner {
+        background: linear-gradient(
+          135deg,
+          var(--orange) 0%,
+          var(--orange2) 100%
+        );
+        border-radius: 18px;
+        padding: 28px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 28px;
+        position: relative;
+        overflow: hidden;
+      }
+      .welcome-banner::before {
+        content: "";
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.08);
+        top: -60px;
+        right: 100px;
+      }
+      .welcome-banner::after {
+        content: "";
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.06);
+        bottom: -30px;
+        right: 40px;
+      }
+      .welcome-text {
+        position: relative;
+        z-index: 1;
+      }
+      .welcome-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 6px;
+      }
+      .welcome-sub {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.85);
+      }
+      .welcome-icon {
+        font-size: 48px;
+        position: relative;
+        z-index: 1;
+        opacity: 0.9;
+      }
+
+      /* ── STAT CARDS ── */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 28px;
+      }
+      .stat-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px;
+        border-top: 3px solid transparent;
+      }
+      .stat-card.blue {
+        border-top-color: #3b82f6;
+      }
+      .stat-card.teal {
+        border-top-color: #14b8a6;
+      }
+      .stat-card.amber {
+        border-top-color: #f59e0b;
+      }
+      .stat-card.green {
+        border-top-color: #22c55e;
+      }
+      .stat-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text2);
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .stat-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1;
+        margin-bottom: 4px;
+      }
+      .stat-sub {
+        font-size: 12px;
+        color: var(--text3);
+      }
+
+      /* ── SECTIONS ── */
+      .sections-grid {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 20px;
+      }
+
+      .section-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+      }
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+      .section-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .view-all {
+        font-size: 13px;
+        color: var(--orange);
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        gap: 4px;
+      }
+
+      /* ── RESERVATION ITEMS ── */
+      .reservation-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .reservation-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      .res-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: var(--text2);
+      }
+      .res-icon svg {
+        width: 20px;
+        height: 20px;
+      }
+      .res-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .res-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 3px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .res-meta {
+        font-size: 12px;
+        color: var(--text2);
+      }
+      .res-status {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 20px;
+        flex-shrink: 0;
+      }
+      .status-confirmed {
+        background: #dcfce7;
+        color: #15803d;
+      }
+      .status-pending {
+        background: #fef9c3;
+        color: #854d0e;
+      }
+      .status-cancelled {
+        background: #f1f5f9;
+        color: #64748b;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 32px;
+        color: var(--text3);
+        font-size: 13px;
+      }
+      .empty-icon {
+        font-size: 32px;
+        margin-bottom: 8px;
+      }
+
+      /* ── QUICK ACTIONS ── */
+      .quick-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .action-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 20px 16px;
+        border-radius: 14px;
+        border: 1.5px solid var(--border);
+        background: var(--white);
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+      }
+      .action-btn:hover {
+        border-color: var(--orange);
+        background: #fff7ed;
+        transform: translateY(-2px);
+        box-shadow: 0 4px 16px rgba(249, 115, 22, 0.1);
+      }
+      .action-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .action-icon svg {
+        width: 22px;
+        height: 22px;
+      }
+      .action-icon.blue {
+        background: #eff6ff;
+        color: #3b82f6;
+      }
+      .action-icon.orange {
+        background: #fff7ed;
+        color: var(--orange);
+      }
+      .action-icon.amber {
+        background: #fffbeb;
+        color: #f59e0b;
+      }
+      .action-icon.green {
+        background: #f0fdf4;
+        color: #22c55e;
+      }
+      .action-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+        text-align: center;
+      }
+
+      /* ── CANCEL BTN ── */
+      .btn-cancel-res {
+        font-size: 11px;
+        font-weight: 600;
+        color: #ef4444;
+        background: #fff1f2;
+        border: none;
+        border-radius: 6px;
+        padding: 4px 10px;
+        cursor: pointer;
+        margin-top: 4px;
+        transition: all 0.2s;
+      }
+      .btn-cancel-res:hover {
+        background: #fecdd3;
+      }
+
+      .alert {
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        margin-bottom: 16px;
+        display: none;
+      }
+      .alert.show {
+        display: block;
+      }
+      .alert.success {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #166534;
+      }
+      .alert.error {
+        background: #fff1f2;
+        border: 1px solid #fecdd3;
+        color: #be123c;
+      }
+
+      @media (max-width: 1200px) {
+        .sections-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 900px) {
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+        .main {
+          margin-left: 0;
+        }
+        .content {
+          padding: 20px 16px;
+        }
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-row">
+          <div class="brand-icon">
+            <svg
+              viewBox="0 0 32 32"
+              fill="none"
+              stroke="white"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="4" y1="16" x2="12" y2="16" />
+              <line x1="12" y1="9" x2="12" y2="23" />
+              <line x1="12" y1="10.5" x2="26" y2="5" />
+              <line x1="12" y1="21.5" x2="26" y2="27" />
+              <polygon
+                points="22,24.5 26,27 23.5,22.5"
+                fill="white"
+                stroke="none"
+              />
+              <line x1="26" y1="5" x2="26" y2="2" />
+              <line x1="26" y1="27" x2="26" y2="30" />
+            </svg>
+          </div>
+          <div>
+            <div class="brand-name">Laboratory Management System</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="nav-section">
+        <a href="/student-dashboard.html" class="nav-item active">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+          </svg>
+          Dashboard
+        </a>
+        <a href="/catalog.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+          </svg>
+          Equipment & Lab Spaces
+        </a>
+        <a href="/my-reservations.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+          My Reservations
+        </a>
+        <a href="/report-issue.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          Report Issue
+        </a>
+       
+      </nav>
+
+      <div class="sidebar-user">
+        <div class="user-avatar" id="sidebar-avatar">--</div>
+        <div>
+          <div class="user-name" id="sidebar-name">Loading...</div>
+          <div class="user-role" id="sidebar-role">Student</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── MAIN ── -->
+    <div class="main">
+      <div class="topbar">
+        <div class="topbar-title">Dashboard</div>
+        <div class="topbar-right">
+          <div class="search-box">
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input
+              type="text"
+              placeholder="Search equipment, labs..."
+              onclick="window.location.href = '/catalog.html'"
+            />
+          </div>
+          <div class="topbar-date" id="topbar-date"></div>
+          <div class="topbar-icon">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"
+              />
+            </svg>
+            <div class="notif-dot"></div>
+          </div>
+          <a href="/profile.html" style="text-decoration: none">
+            <div class="topbar-avatar" id="topbar-avatar">--</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="content">
+        <div id="main-alert" class="alert"></div>
+
+        <!-- Welcome Banner -->
+        <div class="welcome-banner">
+          <div class="welcome-text">
+            <div class="welcome-title" id="welcome-title">Welcome back! 👋</div>
+            <div class="welcome-sub" id="welcome-sub">
+              Here's what's happening with your reservations today.
+            </div>
+          </div>
+          <div class="welcome-icon">🔬</div>
+        </div>
+
+        <!-- Stats -->
+        <div class="stats-grid">
+          <div class="stat-card blue">
+            <div class="stat-label">Active Reservations</div>
+            <div class="stat-value" id="stat-active">—</div>
+            <div class="stat-sub" id="stat-active-sub">Loading...</div>
+          </div>
+          <div class="stat-card teal">
+            <div class="stat-label">Equipment Checked Out</div>
+            <div class="stat-value" id="stat-equipment">—</div>
+            <div class="stat-sub">Currently in use</div>
+          </div>
+          <div class="stat-card amber">
+            <div class="stat-label">Open Issue Tickets</div>
+            <div class="stat-value" id="stat-issues">0</div>
+            <div class="stat-sub">No pending issues</div>
+          </div>
+          <div class="stat-card green">
+            <div class="stat-label">Pending Requests</div>
+            <div class="stat-value" id="stat-requests">0</div>
+            <div class="stat-sub">No pending requests</div>
+          </div>
+        </div>
+
+        <!-- Main sections -->
+        <div class="sections-grid">
+          <!-- Upcoming Reservations -->
+          <div class="section-card">
+            <div class="section-header">
+              <div class="section-title">Upcoming Reservations</div>
+              <a href="/my-reservations.html" class="view-all">
+                View all
+                <svg
+                  width="14"
+                  height="14"
+                  viewBox="0 0 24 24"
+                  fill="none"
+                  stroke="currentColor"
+                  stroke-width="2"
+                >
+                  <line x1="5" y1="12" x2="19" y2="12" />
+                  <polyline points="12 5 19 12 12 19" />
+                </svg>
+              </a>
+            </div>
+            <div id="reservations-list">
+              <div class="empty-state">
+                <div
+                  class="spinner"
+                  style="
+                    width: 28px;
+                    height: 28px;
+                    border: 3px solid #e2e8f0;
+                    border-top-color: #f97316;
+                    border-radius: 50%;
+                    animation: spin 0.8s linear infinite;
+                    margin: 0 auto 8px;
+                  "
+                ></div>
+                Loading...
+              </div>
+            </div>
+          </div>
+
+          <!-- Quick Actions -->
+          <div class="section-card">
+            <div class="section-header">
+              <div class="section-title">Quick Actions</div>
+            </div>
+            <div class="quick-actions">
+              <a href="/catalog.html" class="action-btn">
+                <div class="action-icon blue">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <rect x="2" y="3" width="20" height="14" rx="2" />
+                    <path d="M6 9l3 3 3-6 3 5 2-2" />
+                  </svg>
+                </div>
+                <div class="action-label">Book Equipment</div>
+              </a>
+              <a href="/catalog.html" class="action-btn">
+                <div class="action-icon orange">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                    <polyline points="9 22 9 12 15 12 15 22" />
+                  </svg>
+                </div>
+                <div class="action-label">Reserve Lab Room</div>
+              </a>
+              <a href="/report-issue.html" class="action-btn">
+                <div class="action-icon amber">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+                    />
+                    <line x1="12" y1="9" x2="12" y2="13" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                  </svg>
+                </div>
+                <div class="action-label">Report Issue</div>
+              </a>
+              <a href="/equipment-requests.html" class="action-btn">
+                <div class="action-icon green">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <path
+                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2M12 12v4M10 14h4"
+                    />
+                  </svg>
+                </div>
+                <div class="action-label">Request Equipment</div>
+              </a>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <style>
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+    </style>
+
+    <script>
+      const API = "http://localhost:8080/api";
+      const token = sessionStorage.getItem("token");
+      const username = sessionStorage.getItem("username");
+      const role = sessionStorage.getItem("role");
+
+      if (!token) window.location.href = "/";
+
+      // Redirect admin to admin dashboard
+      if (role === "LAB_TECHNICIAN" || role === "ADMIN") {
+        window.location.href = "/admin-dashboard.html";
+      }
+
+      // Set user info
+      if (username) {
+        const initials = username.substring(0, 2).toUpperCase();
+        document.getElementById("sidebar-avatar").textContent = initials;
+        document.getElementById("topbar-avatar").textContent = initials;
+        document.getElementById("sidebar-name").textContent = username;
+        document.getElementById("welcome-title").textContent =
+          `Welcome back, ${username}! 👋`;
+      }
+
+      // Date
+      const now = new Date();
+      document.getElementById("topbar-date").textContent =
+        now.toLocaleDateString("en-GB", {
+          weekday: "short",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+
+      // Fetch reservations
+      async function loadDashboard() {
+        try {
+          const res = await fetch(`${API}/reservations/my`, {
+            headers: { Authorization: "Bearer " + token },
+          });
+          const reservations = await res.json();
+
+          const now = new Date();
+          const upcoming = reservations.filter(
+            (r) => r.status !== "CANCELLED" && new Date(r.endTime) > now,
+          );
+          const active = reservations.filter(
+            (r) =>
+              r.status !== "CANCELLED" &&
+              new Date(r.startTime) <= now &&
+              new Date(r.endTime) >= now,
+          );
+          const equipmentRes = reservations.filter(
+            (r) =>
+              r.status !== "CANCELLED" &&
+              r.equipment != null &&
+              new Date(r.endTime) > now,
+          );
+
+          // Stats
+          document.getElementById("stat-active").textContent = upcoming.length;
+          document.getElementById("stat-active-sub").textContent =
+            upcoming.length === 0
+              ? "No upcoming reservations"
+              : `${active.length} active now`;
+          document.getElementById("stat-equipment").textContent =
+            equipmentRes.length;
+
+          // Welcome sub
+          document.getElementById("welcome-sub").textContent =
+            upcoming.length > 0
+              ? `You have ${upcoming.length} upcoming reservation${upcoming.length > 1 ? "s" : ""}. Check your schedule below.`
+              : "No upcoming reservations. Browse the catalog to book equipment or labs.";
+
+          // Reservation list
+          const list = document.getElementById("reservations-list");
+          if (upcoming.length === 0) {
+            list.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-icon">📅</div>
+            No upcoming reservations.<br/>
+            <a href="/catalog.html" style="color:var(--orange);font-weight:600;text-decoration:none;">Browse catalog →</a>
+          </div>`;
+            return;
+          }
+          document.getElementById("sidebar-role").textContent =
+            role === "LAB_TECHNICIAN" ? "Lab Technician" : "Student";
+
+          list.innerHTML = upcoming
+            .slice(0, 5)
+            .map((r) => {
+              const start = new Date(r.startTime);
+              const end = new Date(r.endTime);
+              const name = r.equipment
+                ? r.equipment.name
+                : r.lab
+                  ? r.lab.labName
+                  : "Unknown";
+              const type = r.equipment ? "Equipment" : "Lab Space";
+              const location = r.lab ? r.lab.location : "";
+              const dateStr = start.toLocaleDateString("en-GB", {
+                weekday: "short",
+                day: "numeric",
+                month: "short",
+              });
+              const timeStr = `${start.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}–${end.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" })}`;
+              const statusClass =
+                r.status === "APPROVED" || r.status === "PENDING"
+                  ? "status-confirmed"
+                  : "status-pending";
+              const statusLabel =
+                r.status === "PENDING"
+                  ? "Pending"
+                  : r.status === "APPROVED"
+                    ? "Confirmed"
+                    : r.status;
+
+              const icon = r.equipment
+                ? `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M6 9l3 3 3-6 3 5 2-2"/></svg>`
+                : `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/></svg>`;
+
+              return `
+          <div class="reservation-item">
+            <div class="res-icon">${icon}</div>
+            <div class="res-info">
+              <div class="res-name">${name}</div>
+              <div class="res-meta">${type} · ${dateStr} · ${timeStr}${location ? " · " + location : ""}</div>
+              ${
+                r.status === "PENDING" || r.status === "APPROVED"
+                  ? `<button class="btn-cancel-res" onclick="cancelReservation(${r.id})">Cancel</button>`
+                  : ""
+              }
+            </div>
+            <span class="res-status ${statusClass}">${statusLabel}</span>
+          </div>`;
+            })
+            .join("");
+        } catch (e) {
+          document.getElementById("reservations-list").innerHTML =
+            '<div class="empty-state">Failed to load reservations.</div>';
+        }
+      }
+
+      async function cancelReservation(id) {
+        if (!confirm("Are you sure you want to cancel this reservation?"))
+          return;
+        try {
+          const res = await fetch(`${API}/reservations/${id}/cancel`, {
+            method: "PATCH",
+            headers: { Authorization: "Bearer " + token },
+          });
+          if (!res.ok) throw new Error("Failed to cancel");
+          showAlert("success", "Reservation cancelled successfully.");
+          loadDashboard();
+        } catch (e) {
+          showAlert("error", e.message);
+        }
+      }
+
+      function showAlert(type, msg) {
+        const el = document.getElementById("main-alert");
+        el.className = `alert ${type} show`;
+        el.textContent = msg;
+        setTimeout(() => el.classList.remove("show"), 4000);
+      }
+
+      loadDashboard();
+    </script>
+    <script src="/calendar.js"></script>
+    <script src="/notifications.js"></script>
+  </body>
+</html>

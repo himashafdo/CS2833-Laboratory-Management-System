@@ -1,0 +1,1196 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Report Issue — Lab Management System</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --orange: #f97316;
+        --orange2: #ea6c0a;
+        --orange3: #fb923c;
+        --text: #1a1a2e;
+        --text2: #64748b;
+        --text3: #94a3b8;
+        --border: #e2e8f0;
+        --white: #ffffff;
+        --bg: #f8fafc;
+        --font: "Plus Jakarta Sans", sans-serif;
+      }
+      body {
+        font-family: var(--font);
+        background: var(--bg);
+        min-height: 100vh;
+        display: flex;
+      }
+
+      /* ── SIDEBAR ── */
+      .sidebar {
+        width: 240px;
+        min-height: 100vh;
+        flex-shrink: 0;
+        background: linear-gradient(180deg, #f97316 0%, #c2410c 100%);
+        display: flex;
+        flex-direction: column;
+        padding: 24px 0;
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 100;
+      }
+      .sidebar-brand {
+        padding: 0 20px 28px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
+        margin-bottom: 16px;
+      }
+      .brand-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .brand-icon {
+        width: 38px;
+        height: 38px;
+        background: rgba(255, 255, 255, 0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .brand-icon svg {
+        width: 20px;
+        height: 20px;
+      }
+      .brand-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: white;
+        line-height: 1.2;
+      }
+      .nav-section {
+        padding: 0 12px;
+        flex: 1;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        margin-bottom: 4px;
+        color: rgba(255, 255, 255, 0.8);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+      }
+      .nav-item:hover {
+        background: rgba(255, 255, 255, 0.15);
+        color: white;
+      }
+      .nav-item.active {
+        background: rgba(255, 255, 255, 0.25);
+        color: white;
+        font-weight: 600;
+      }
+      .nav-item svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+      }
+      .sidebar-user {
+        margin: 16px 12px 0;
+        padding: 12px;
+        border-radius: 12px;
+        background: rgba(0, 0, 0, 0.15);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: rgba(255, 255, 255, 0.3);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+        color: white;
+        flex-shrink: 0;
+      }
+      .user-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: white;
+      }
+      .user-role {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.7);
+      }
+
+      /* ── MAIN ── */
+      .main {
+        margin-left: 240px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+
+      /* ── TOPBAR ── */
+      .topbar {
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+        padding: 16px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+      .topbar-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .topbar-date {
+        padding: 8px 14px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        font-size: 13px;
+        color: var(--text2);
+        background: var(--bg);
+      }
+      .topbar-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        background: var(--white);
+        color: var(--text2);
+      }
+      .topbar-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--orange), var(--orange3));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+        color: white;
+        text-decoration: none;
+      }
+
+      /* ── CONTENT ── */
+      .content {
+        padding: 28px 32px;
+        flex: 1;
+        max-width: 860px;
+      }
+
+      /* ── PAGE HEADER ── */
+      .page-header {
+        background: linear-gradient(135deg, #fff7ed 0%, #ffedd5 100%);
+        border: 1px solid #fed7aa;
+        border-radius: 16px;
+        padding: 24px 28px;
+        margin-bottom: 28px;
+        display: flex;
+        align-items: center;
+        gap: 16px;
+      }
+      .page-header-icon {
+        width: 52px;
+        height: 52px;
+        border-radius: 14px;
+        background: var(--orange);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .page-header-icon svg {
+        width: 26px;
+        height: 26px;
+        color: white;
+      }
+      .page-header-title {
+        font-size: 18px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+      .page-header-sub {
+        font-size: 13px;
+        color: var(--text2);
+      }
+
+      /* ── FORM CARD ── */
+      .form-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 28px;
+      }
+
+      /* ── ISSUE TYPE SELECTOR ── */
+      .type-selector {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 12px;
+        margin-bottom: 24px;
+      }
+      .type-btn {
+        padding: 16px 12px;
+        border-radius: 12px;
+        border: 2px solid var(--border);
+        background: var(--bg);
+        cursor: pointer;
+        transition: all 0.2s;
+        text-align: center;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: 8px;
+      }
+      .type-btn:hover {
+        border-color: var(--orange3);
+        background: #fff7ed;
+      }
+      .type-btn.active {
+        border-color: var(--orange);
+        background: #fff7ed;
+      }
+      .type-btn svg {
+        width: 24px;
+        height: 24px;
+        color: var(--text2);
+      }
+      .type-btn.active svg {
+        color: var(--orange);
+      }
+      .type-btn-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text2);
+      }
+      .type-btn.active .type-btn-label {
+        color: var(--orange);
+      }
+
+      /* ── FORM FIELDS ── */
+      .section-label {
+        font-size: 12px;
+        font-weight: 700;
+        color: var(--text2);
+        text-transform: uppercase;
+        letter-spacing: 0.06em;
+        margin-bottom: 16px;
+        padding-bottom: 8px;
+        border-bottom: 1px solid var(--border);
+      }
+      .field {
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+        margin-bottom: 18px;
+      }
+      .field label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text);
+        text-transform: uppercase;
+        letter-spacing: 0.03em;
+      }
+      .field input,
+      .field select,
+      .field textarea {
+        padding: 11px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 10px;
+        font-family: var(--font);
+        font-size: 14px;
+        color: var(--text);
+        outline: none;
+        transition: border-color 0.2s;
+        background: var(--bg);
+      }
+      .field input:focus,
+      .field select:focus,
+      .field textarea:focus {
+        border-color: var(--orange);
+        background: var(--white);
+        box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.08);
+      }
+      .field textarea {
+        resize: vertical;
+        min-height: 120px;
+        line-height: 1.6;
+      }
+      .field select {
+        appearance: none;
+        background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='12' viewBox='0 0 12 12'%3E%3Cpath fill='%2394a3b8' d='M6 8L1 3h10z'/%3E%3C/svg%3E");
+        background-repeat: no-repeat;
+        background-position: right 14px center;
+        padding-right: 36px;
+        cursor: pointer;
+        background-color: var(--bg);
+      }
+      .field-hint {
+        font-size: 11px;
+        color: var(--text3);
+      }
+      .row-2 {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 16px;
+      }
+
+      /* ── PRIORITY SELECTOR ── */
+      .priority-group {
+        display: flex;
+        gap: 10px;
+      }
+      .priority-btn {
+        flex: 1;
+        padding: 10px;
+        border-radius: 10px;
+        border: 1.5px solid var(--border);
+        background: var(--bg);
+        cursor: pointer;
+        transition: all 0.2s;
+        font-family: var(--font);
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text2);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        gap: 6px;
+      }
+      .priority-btn:hover {
+        border-color: var(--orange3);
+      }
+      .priority-btn.active-low {
+        border-color: #22c55e;
+        background: #f0fdf4;
+        color: #15803d;
+      }
+      .priority-btn.active-medium {
+        border-color: #f59e0b;
+        background: #fffbeb;
+        color: #92400e;
+      }
+      .priority-btn.active-high {
+        border-color: #ef4444;
+        background: #fff1f2;
+        color: #991b1b;
+      }
+      .priority-dot {
+        width: 8px;
+        height: 8px;
+        border-radius: 50%;
+      }
+      .dot-low {
+        background: #22c55e;
+      }
+      .dot-medium {
+        background: #f59e0b;
+      }
+      .dot-high {
+        background: #ef4444;
+      }
+
+      /* ── SUBMIT ── */
+      .btn-submit {
+        width: 100%;
+        padding: 14px;
+        border-radius: 12px;
+        border: none;
+        background: linear-gradient(135deg, var(--orange), var(--orange2));
+        font-family: var(--font);
+        font-size: 15px;
+        font-weight: 600;
+        color: white;
+        cursor: pointer;
+        transition: all 0.2s;
+        box-shadow: 0 4px 16px rgba(249, 115, 22, 0.35);
+        margin-top: 8px;
+      }
+      .btn-submit:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+      }
+      .btn-submit:disabled {
+        opacity: 0.6;
+        cursor: not-allowed;
+        transform: none;
+      }
+      .btn-submit .spinner {
+        display: none;
+        width: 18px;
+        height: 18px;
+        border: 2px solid rgba(255, 255, 255, 0.4);
+        border-top-color: white;
+        border-radius: 50%;
+        animation: spin 0.6s linear infinite;
+        margin: 0 auto;
+      }
+      .btn-submit.loading .btn-text {
+        display: none;
+      }
+      .btn-submit.loading .spinner {
+        display: block;
+      }
+
+      /* ── MY TICKETS SECTION ── */
+      .tickets-section {
+        margin-top: 32px;
+      }
+      .tickets-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 16px;
+      }
+      .tickets-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .ticket-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        margin-bottom: 10px;
+        transition: all 0.2s;
+      }
+      .ticket-card:hover {
+        box-shadow: 0 4px 16px rgba(0, 0, 0, 0.06);
+        border-color: #d1d5db;
+      }
+      .ticket-id {
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text3);
+        background: var(--bg);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 3px 8px;
+        flex-shrink: 0;
+      }
+      .ticket-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .ticket-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 3px;
+      }
+      .ticket-meta {
+        font-size: 12px;
+        color: var(--text2);
+      }
+      .ticket-right {
+        display: flex;
+        flex-direction: column;
+        align-items: flex-end;
+        gap: 6px;
+        flex-shrink: 0;
+      }
+
+      .status-badge {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 3px 10px;
+        border-radius: 20px;
+      }
+      .status-open {
+        background: #fef9c3;
+        color: #854d0e;
+      }
+      .status-in_progress {
+        background: #dbeafe;
+        color: #1e40af;
+      }
+      .status-resolved {
+        background: #dcfce7;
+        color: #15803d;
+      }
+      .status-closed {
+        background: #f1f5f9;
+        color: #64748b;
+      }
+
+      .priority-badge {
+        font-size: 10px;
+        font-weight: 600;
+        padding: 2px 8px;
+        border-radius: 10px;
+      }
+      .priority-low {
+        background: #f0fdf4;
+        color: #15803d;
+      }
+      .priority-medium {
+        background: #fffbeb;
+        color: #92400e;
+      }
+      .priority-high {
+        background: #fff1f2;
+        color: #991b1b;
+      }
+
+      .alert {
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        margin-bottom: 16px;
+        display: none;
+      }
+      .alert.show {
+        display: block;
+      }
+      .alert.success {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #166534;
+      }
+      .alert.error {
+        background: #fff1f2;
+        border: 1px solid #fecdd3;
+        color: #be123c;
+      }
+
+      .empty-state {
+        text-align: center;
+        padding: 40px;
+        color: var(--text3);
+        font-size: 13px;
+      }
+      .empty-icon {
+        font-size: 32px;
+        margin-bottom: 8px;
+      }
+
+      .spinner-center {
+        display: flex;
+        justify-content: center;
+        padding: 30px;
+      }
+      .spinner {
+        width: 28px;
+        height: 28px;
+        border: 3px solid var(--border);
+        border-top-color: var(--orange);
+        border-radius: 50%;
+        animation: spin 0.8s linear infinite;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+        .main {
+          margin-left: 0;
+        }
+        .content {
+          padding: 20px 16px;
+        }
+        .row-2 {
+          grid-template-columns: 1fr;
+        }
+        .type-selector {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- ── SIDEBAR ── -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-row">
+          <div class="brand-icon">
+            <svg
+              viewBox="0 0 32 32"
+              fill="none"
+              stroke="white"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="4" y1="16" x2="12" y2="16" />
+              <line x1="12" y1="9" x2="12" y2="23" />
+              <line x1="12" y1="10.5" x2="26" y2="5" />
+              <line x1="12" y1="21.5" x2="26" y2="27" />
+              <polygon
+                points="22,24.5 26,27 23.5,22.5"
+                fill="white"
+                stroke="none"
+              />
+              <line x1="26" y1="5" x2="26" y2="2" />
+              <line x1="26" y1="27" x2="26" y2="30" />
+            </svg>
+          </div>
+          <div><div class="brand-name">Laboratory Management System</div></div>
+        </div>
+      </div>
+      <nav class="nav-section">
+        <a href="/student-dashboard.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+          </svg>
+          Dashboard
+        </a>
+        <a href="/catalog.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+          </svg>
+          Equipment & Lab Spaces
+        </a>
+        <a href="/my-reservations.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+          My Reservations
+        </a>
+        <a href="/report-issue.html" class="nav-item active">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          Report Issue
+        </a>
+      </nav>
+      <div class="sidebar-user">
+        <div class="user-avatar" id="sidebar-avatar">--</div>
+        <div>
+          <div class="user-name" id="sidebar-name">Loading...</div>
+          <div class="user-role" id="sidebar-role">Student</div>
+        </div>
+      </div>
+    </aside>
+
+    <!-- ── MAIN ── -->
+    <div class="main">
+      <div class="topbar">
+        <div class="topbar-title">Report Issue</div>
+        <div class="topbar-right">
+          <div class="topbar-date" id="topbar-date"></div>
+          <div class="topbar-icon">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"
+              />
+            </svg>
+          </div>
+          <a href="/profile.html" style="text-decoration: none">
+            <div class="topbar-avatar" id="topbar-avatar">--</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="content">
+        <!-- Page Header -->
+        <div class="page-header">
+          <div class="page-header-icon">
+            <svg
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+              />
+              <line x1="12" y1="9" x2="12" y2="13" />
+              <line x1="12" y1="17" x2="12.01" y2="17" />
+            </svg>
+          </div>
+          <div>
+            <div class="page-header-title">Report an Issue</div>
+            <div class="page-header-sub">
+              Report broken equipment, lab problems, or any other issue. Our
+              technicians will be notified immediately.
+            </div>
+          </div>
+        </div>
+
+        <div id="main-alert" class="alert"></div>
+
+        <!-- Report Form -->
+        <div class="form-card">
+          <div class="section-label">Issue Type</div>
+
+          <!-- Type Selector -->
+          <div class="type-selector">
+            <div
+              class="type-btn active"
+              id="type-equipment"
+              onclick="selectType('EQUIPMENT')"
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <rect x="2" y="3" width="20" height="14" rx="2" />
+                <path d="M6 9l3 3 3-6 3 5 2-2" />
+              </svg>
+              <div class="type-btn-label">Equipment</div>
+            </div>
+            <div class="type-btn" id="type-lab" onclick="selectType('LAB')">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+                <polyline points="9 22 9 12 15 12 15 22" />
+              </svg>
+              <div class="type-btn-label">Lab Room</div>
+            </div>
+            <div class="type-btn" id="type-other" onclick="selectType('OTHER')">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="1.5"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <line x1="12" y1="8" x2="12" y2="12" />
+                <line x1="12" y1="16" x2="12.01" y2="16" />
+              </svg>
+              <div class="type-btn-label">Other</div>
+            </div>
+          </div>
+
+          <!-- Equipment selector -->
+          <div class="field" id="equipment-field">
+            <label>Select Equipment</label>
+            <select id="equipment-select">
+              <option value="">-- Select Equipment --</option>
+            </select>
+          </div>
+
+          <!-- Lab selector -->
+          <div class="field" id="lab-field" style="display: none">
+            <label>Select Lab Room</label>
+            <select id="lab-select">
+              <option value="">-- Select Lab --</option>
+            </select>
+          </div>
+
+          <!-- Other type -->
+          <div class="field" id="other-field" style="display: none">
+            <label>Specify Issue Type</label>
+            <input
+              type="text"
+              id="custom-type"
+              placeholder="e.g. Network, Electricity, Furniture..."
+            />
+          </div>
+
+          <div class="section-label" style="margin-top: 8px">Issue Details</div>
+
+          <div class="field">
+            <label>Issue Title</label>
+            <input
+              type="text"
+              id="issue-title"
+              placeholder="Brief summary of the issue"
+            />
+          </div>
+
+          <div class="field">
+            <label>Description</label>
+            <textarea
+              id="issue-description"
+              placeholder="Describe the issue in detail — what happened, what you were doing, any error messages..."
+            ></textarea>
+          </div>
+
+          <div class="row-2">
+            <div class="field">
+              <label>Date Issue Occurred</label>
+              <input type="date" id="date-occurred" />
+              <div class="field-hint">
+                When did you first notice this issue?
+              </div>
+            </div>
+            <div class="field">
+              <label>Priority</label>
+              <div class="priority-group">
+                <button
+                  class="priority-btn"
+                  id="priority-low"
+                  onclick="selectPriority('LOW')"
+                  type="button"
+                >
+                  <div class="priority-dot dot-low"></div>
+                  Low
+                </button>
+                <button
+                  class="priority-btn active-medium"
+                  id="priority-medium"
+                  onclick="selectPriority('MEDIUM')"
+                  type="button"
+                >
+                  <div class="priority-dot dot-medium"></div>
+                  Medium
+                </button>
+                <button
+                  class="priority-btn"
+                  id="priority-high"
+                  onclick="selectPriority('HIGH')"
+                  type="button"
+                >
+                  <div class="priority-dot dot-high"></div>
+                  High
+                </button>
+              </div>
+            </div>
+          </div>
+
+          <button class="btn-submit" id="submit-btn" onclick="submitIssue()">
+            <span class="btn-text">Submit Issue Report</span>
+            <div class="spinner"></div>
+          </button>
+        </div>
+
+        <!-- My Tickets -->
+        <div class="tickets-section">
+          <div class="tickets-header">
+            <div class="tickets-title">My Issue Reports</div>
+          </div>
+          <div id="tickets-list">
+            <div class="spinner-center"><div class="spinner"></div></div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const API = "http://localhost:8080/api";
+      const token = sessionStorage.getItem("token");
+      const username = sessionStorage.getItem("username");
+      const role = sessionStorage.getItem("role");
+
+      if (!token) window.location.href = "/";
+
+      if (username) {
+        const initials = username.substring(0, 2).toUpperCase();
+        document.getElementById("sidebar-avatar").textContent = initials;
+        document.getElementById("topbar-avatar").textContent = initials;
+        document.getElementById("sidebar-name").textContent = username;
+        document.getElementById("sidebar-role").textContent =
+          role === "LAB_TECHNICIAN" ? "Lab Technician" : "Student";
+      }
+
+      document.getElementById("topbar-date").textContent =
+        new Date().toLocaleDateString("en-GB", {
+          weekday: "short",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
+
+      // Set default date to today
+      document.getElementById("date-occurred").value = new Date()
+        .toISOString()
+        .split("T")[0];
+      document.getElementById("date-occurred").max = new Date()
+        .toISOString()
+        .split("T")[0];
+
+      let selectedType = "EQUIPMENT";
+      let selectedPriority = "MEDIUM";
+
+      // ── LOAD EQUIPMENT AND LABS ──
+      async function loadCatalog() {
+        try {
+          const [eqRes, labRes] = await Promise.all([
+            fetch(`${API}/catalog/equipment`, {
+              headers: { Authorization: "Bearer " + token },
+            }),
+            fetch(`${API}/catalog/labs`, {
+              headers: { Authorization: "Bearer " + token },
+            }),
+          ]);
+          const equipment = await eqRes.json();
+          const labs = await labRes.json();
+
+          const eqSel = document.getElementById("equipment-select");
+          equipment.forEach((eq) => {
+            const opt = document.createElement("option");
+            opt.value = eq.id;
+            opt.textContent = eq.name;
+            eqSel.appendChild(opt);
+          });
+
+          const labSel = document.getElementById("lab-select");
+          labs.forEach((lab) => {
+            const opt = document.createElement("option");
+            opt.value = lab.id;
+            opt.textContent = lab.labName;
+            labSel.appendChild(opt);
+          });
+        } catch (e) {
+          console.error("Failed to load catalog", e);
+        }
+      }
+
+      // ── TYPE SELECTOR ──
+      function selectType(type) {
+        selectedType = type;
+        document
+          .querySelectorAll(".type-btn")
+          .forEach((b) => b.classList.remove("active"));
+        document
+          .getElementById("type-" + type.toLowerCase())
+          .classList.add("active");
+
+        document.getElementById("equipment-field").style.display =
+          type === "EQUIPMENT" ? "" : "none";
+        document.getElementById("lab-field").style.display =
+          type === "LAB" ? "" : "none";
+        document.getElementById("other-field").style.display =
+          type === "OTHER" ? "" : "none";
+      }
+
+      // ── PRIORITY SELECTOR ──
+      function selectPriority(priority) {
+        selectedPriority = priority;
+        document.getElementById("priority-low").className =
+          "priority-btn" + (priority === "LOW" ? " active-low" : "");
+        document.getElementById("priority-medium").className =
+          "priority-btn" + (priority === "MEDIUM" ? " active-medium" : "");
+        document.getElementById("priority-high").className =
+          "priority-btn" + (priority === "HIGH" ? " active-high" : "");
+      }
+
+      // ── SUBMIT ──
+      async function submitIssue() {
+        const title = document.getElementById("issue-title").value.trim();
+        const description = document
+          .getElementById("issue-description")
+          .value.trim();
+        const dateOccurred = document.getElementById("date-occurred").value;
+        const equipmentId = document.getElementById("equipment-select").value;
+        const labId = document.getElementById("lab-select").value;
+        const customType = document.getElementById("custom-type").value.trim();
+
+        if (!title) return showAlert("error", "Please enter an issue title");
+        if (!description)
+          return showAlert("error", "Please describe the issue");
+        if (!dateOccurred)
+          return showAlert("error", "Please select when the issue occurred");
+        if (selectedType === "EQUIPMENT" && !equipmentId)
+          return showAlert("error", "Please select the equipment");
+        if (selectedType === "LAB" && !labId)
+          return showAlert("error", "Please select the lab room");
+        if (selectedType === "OTHER" && !customType)
+          return showAlert("error", "Please specify the issue type");
+
+        const body = {
+          issueType: selectedType,
+          title,
+          description,
+          priority: selectedPriority,
+          dateOccurred,
+        };
+
+        if (selectedType === "EQUIPMENT")
+          body.equipmentId = parseInt(equipmentId);
+        if (selectedType === "LAB") body.labId = parseInt(labId);
+        if (selectedType === "OTHER") body.customType = customType;
+
+        const btn = document.getElementById("submit-btn");
+        btn.classList.add("loading");
+        btn.disabled = true;
+
+        try {
+          const res = await fetch(`${API}/issues`, {
+            method: "POST",
+            headers: {
+              "Content-Type": "application/json",
+              Authorization: "Bearer " + token,
+            },
+            body: JSON.stringify(body),
+          });
+          if (!res.ok) {
+            const data = await res.json();
+            throw new Error(data.error || "Failed to submit issue");
+          }
+          showAlert(
+            "success",
+            "Issue reported successfully! Our technicians have been notified.",
+          );
+          // Reset form
+          document.getElementById("issue-title").value = "";
+          document.getElementById("issue-description").value = "";
+          document.getElementById("date-occurred").value = new Date()
+            .toISOString()
+            .split("T")[0];
+          document.getElementById("equipment-select").value = "";
+          document.getElementById("lab-select").value = "";
+          document.getElementById("custom-type").value = "";
+          selectType("EQUIPMENT");
+          selectPriority("MEDIUM");
+          loadMyTickets();
+        } catch (e) {
+          showAlert("error", e.message);
+        } finally {
+          btn.classList.remove("loading");
+          btn.disabled = false;
+        }
+      }
+
+      // ── LOAD MY TICKETS ──
+      async function loadMyTickets() {
+        try {
+          const res = await fetch(`${API}/issues/my`, {
+            headers: { Authorization: "Bearer " + token },
+          });
+          const issues = await res.json();
+          const list = document.getElementById("tickets-list");
+
+          if (!issues.length) {
+            list.innerHTML = `<div class="empty-state"><div class="empty-icon">📋</div>No issues reported yet.</div>`;
+            return;
+          }
+
+          issues.sort((a, b) => new Date(b.createdAt) - new Date(a.createdAt));
+
+          list.innerHTML = issues
+            .map((issue) => {
+              const date = new Date(issue.createdAt).toLocaleDateString(
+                "en-GB",
+                { day: "numeric", month: "short", year: "numeric" },
+              );
+              const type =
+                issue.issueType === "EQUIPMENT"
+                  ? issue.equipment
+                    ? issue.equipment.name
+                    : "Equipment"
+                  : issue.issueType === "LAB"
+                    ? issue.lab
+                      ? issue.lab.labName
+                      : "Lab"
+                    : issue.customType || "Other";
+              const statusClass =
+                "status-" + issue.status.toLowerCase().replace("_", "_");
+              const priorityClass = "priority-" + issue.priority.toLowerCase();
+              const statusLabel = issue.status.replace("_", " ");
+
+              return `
+          <div class="ticket-card">
+            <div class="ticket-id">#${issue.id}</div>
+            <div class="ticket-info">
+              <div class="ticket-title">${issue.title}</div>
+              <div class="ticket-meta">${type} · Reported ${date}</div>
+            </div>
+            <div class="ticket-right">
+              <span class="status-badge ${statusClass}">${statusLabel}</span>
+              <span class="priority-badge ${priorityClass}">${issue.priority}</span>
+            </div>
+          </div>`;
+            })
+            .join("");
+        } catch (e) {
+          document.getElementById("tickets-list").innerHTML =
+            '<div class="empty-state">Failed to load tickets.</div>';
+        }
+      }
+
+      function showAlert(type, msg) {
+        const el = document.getElementById("main-alert");
+        el.className = `alert ${type} show`;
+        el.textContent = msg;
+        setTimeout(() => el.classList.remove("show"), 5000);
+        window.scrollTo({ top: 0, behavior: "smooth" });
+      }
+
+      loadCatalog();
+      loadMyTickets();
+    </script>
+
+    <script src="/calendar.js"></script>
+    <script src="/notifications.js"></script>
+  </body>
+</html>

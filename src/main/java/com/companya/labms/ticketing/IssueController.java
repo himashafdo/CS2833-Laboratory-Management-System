@@ -42,6 +42,8 @@ public class IssueController {
             @RequestBody Map<String, Object> body) {
         try {
             String username = jwtUtil.extractUsername(authHeader.substring(7));
+            String equipmentNumber = body.get("equipmentNumber") != null ?
+        body.get("equipmentNumber").toString() : null;
 
             String issueType = body.get("issueType").toString();
             Long equipmentId = body.get("equipmentId") != null ?
@@ -59,7 +61,8 @@ public class IssueController {
 
             Issue issue = issueService.createIssue(username, issueType,
                     equipmentId, labId, customType, title,
-                    description, priority, dateOccurred);
+                    description, priority, dateOccurred, null);
+                    
             return ResponseEntity.ok(issue);
         } catch (Exception e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));

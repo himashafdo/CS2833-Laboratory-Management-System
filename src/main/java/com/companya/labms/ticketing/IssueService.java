@@ -37,11 +37,10 @@ public class IssueService {
                 .orElseThrow(() -> new RuntimeException("User not found"));
         return issueRepository.findByUserId(user.getId());
     }
-
     public Issue createIssue(String username, String issueType, Long equipmentId,
-                              Long labId, String customType, String title,
-                              String description, String priority,
-                              LocalDate dateOccurred) {
+                          Long labId, String customType, String title,
+                          String description, String priority,
+                          LocalDate dateOccurred, String equipmentNumber) {
         User user = userRepository.findByUsername(username)
                 .orElseThrow(() -> new RuntimeException("User not found"));
 
@@ -52,6 +51,10 @@ public class IssueService {
         issue.setDateOccurred(dateOccurred);
         issue.setIssueType(Issue.IssueType.valueOf(issueType.toUpperCase()));
         issue.setPriority(Issue.IssuePriority.valueOf(priority.toUpperCase()));
+
+        if (equipmentNumber != null && !equipmentNumber.isEmpty()) {
+            issue.setEquipmentNumber(equipmentNumber);
+        }
 
         if (issueType.equalsIgnoreCase("EQUIPMENT") && equipmentId != null) {
             Equipment equipment = equipmentRepository.findById(equipmentId)

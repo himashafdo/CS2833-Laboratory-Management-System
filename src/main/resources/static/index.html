@@ -187,7 +187,7 @@ body { font-family: var(--font); background: #f8fafc; min-height: 100vh; display
 </div>
 
 <script>
-const API = 'http://localhost:8080/api/auth';
+const API = 'http://localhost:8081/api/auth';
 function showPage(p) {
   document.getElementById('login-page').classList.toggle('active', p==='login');
   document.getElementById('register-page').classList.toggle('active', p==='register');
@@ -219,8 +219,18 @@ async function doLogin() {
     if (!res.ok) throw new Error(data.error || 'Login failed');
     sessionStorage.setItem('token', data.token);
     sessionStorage.setItem('username', username);
+    
+    // Extract role to determine redirect
+    let redirectUrl = '/student-dashboard.html';
+    try {
+        const payload = JSON.parse(atob(data.token.split('.')[1]));
+        if (payload.role !== 'STUDENT') {
+            redirectUrl = '/requests.html'; // Fallback for admins/techs
+        }
+    } catch(e) {}
+    
     showAlert('login-alert','success','Login successful! Redirecting...');
-    setTimeout(() => window.location.href = '/dashboard.html', 1200);
+    setTimeout(() => window.location.href = redirectUrl, 1200);
   } catch(e) { showAlert('login-alert','error', e.message); }
   finally { setLoading('login-btn', false); }
 }

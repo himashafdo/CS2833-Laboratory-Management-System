@@ -29,7 +29,10 @@ public class Reservation extends BaseEntity {
     @Enumerated(EnumType.STRING)
     private ReservationStatus status = ReservationStatus.PENDING;
 
+    private int workstations = 1;
+
     public enum ReservationStatus { PENDING, APPROVED, CANCELLED, COMPLETED }
+
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
@@ -43,4 +46,8 @@ public class Reservation extends BaseEntity {
     public void setEndTime(LocalDateTime endTime) { this.endTime = endTime; }
     public ReservationStatus getStatus() { return status; }
     public void setStatus(ReservationStatus status) { this.status = status; }
+    
+
+    public int getWorkstations() { return workstations; }
+    public void setWorkstations(int workstations) { this.workstations = workstations; }
 }

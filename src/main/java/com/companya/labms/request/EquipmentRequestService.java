@@ -71,6 +71,36 @@ public class EquipmentRequestService {
         return toDTO(requestRepository.save(request));
     }
 
+    /** Student: edit a pending request */
+    public EquipmentRequestDTO editRequest(Long id, String username, EquipmentRequestDTO dto) {
+        EquipmentRequest request = findById(id);
+        if (!request.getUser().getUsername().equals(username)) {
+            throw new RuntimeException("You can only edit your own requests");
+        }
+        if (request.getStatus() != EquipmentRequest.RequestStatus.PENDING) {
+            throw new RuntimeException("Only pending requests can be edited");
+        }
+        request.setItemName(dto.getItemName());
+        request.setDescription(dto.getDescription());
+        request.setQuantity(dto.getQuantity() > 0 ? dto.getQuantity() : 1);
+        if (dto.getUrgencyLevel() != null) {
+            request.setUrgencyLevel(EquipmentRequest.UrgencyLevel.valueOf(dto.getUrgencyLevel()));
+        }
+        return toDTO(requestRepository.save(request));
+    }
+
+    /** Student: delete a pending request */
+    public void deleteRequest(Long id, String username) {
+        EquipmentRequest request = findById(id);
+        if (!request.getUser().getUsername().equals(username)) {
+            throw new RuntimeException("You can only delete your own requests");
+        }
+        if (request.getStatus() != EquipmentRequest.RequestStatus.PENDING) {
+            throw new RuntimeException("Only pending requests can be deleted");
+        }
+        requestRepository.delete(request);
+    }
+
     /** Summary stats for charts */
     public Map<String, Object> getStats() {
         Map<String, Object> stats = new HashMap<>();

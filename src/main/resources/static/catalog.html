@@ -805,6 +805,12 @@
           My Reservations
         </a>
 
+                <a href="/requests.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+          </svg>
+          Equipment Requests
+        </a>
         <a href="/report-issue.html" class="nav-item">
           <svg
             viewBox="0 0 24 24"
@@ -992,7 +998,7 @@
     </div>
 
     <script>
-      const API = "http://localhost:8080/api";
+      const API = "http://localhost:8081/api";
       let allEquipment = [];
       let allLabs = [];
       let currentFilter = "all";
@@ -1397,3 +1403,5 @@
     <script src="/notifications.js"></script>
   </body>
 </html>
+
+

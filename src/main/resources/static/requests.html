@@ -527,6 +527,7 @@
           </svg>
           Equipment Requests
         </a>
+
         <a href="/report-issue.html" class="nav-item">
           <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
             <circle cx="12" cy="12" r="10" />
@@ -562,13 +563,7 @@
                 <input type="text" placeholder="Search requests..." />
               </div>
               <div class="topbar-date" id="topbar-date"></div>
-              <div class="topbar-icon">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                  <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
-                </svg>
-                <div class="notif-dot"></div>
-              </div>
-              <div class="topbar-avatar" id="topbar-avatar">--</div>
+              <a href="#" style="text-decoration: none; color: inherit;"><div class="topbar-icon" onclick="alert('No new notifications')"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" /></svg><div class="notif-dot"></div></div></a><a href="/profile.html" style="text-decoration: none;"><div class="topbar-avatar" id="topbar-avatar">--</div></a>
             </div>
         </div>
 
@@ -699,6 +694,61 @@
         </div>
     </div>
 
+    <!-- Edit Request Modal (Student) -->
+    <div class="modal-overlay" id="editModal">
+        <div class="modal">
+            <div class="modal-header">
+                <h2 class="modal-title">Edit Equipment Request</h2>
+                <button class="close-btn" onclick="closeModal('editModal')">&times;</button>
+            </div>
+            <form id="editForm" onsubmit="submitEditRequest(event)">
+                <input type="hidden" id="edit-id">
+                <div class="form-group">
+                    <label class="form-label">Item Name / Specification</label>
+                    <input type="text" id="edit-item" class="form-control" required placeholder="e.g. Oscilloscope 200MHz">
+                </div>
+                <div style="display: flex; gap: 16px;">
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label">Quantity</label>
+                        <input type="number" id="edit-qty" class="form-control" min="1" value="1" required>
+                    </div>
+                    <div class="form-group" style="flex: 1;">
+                        <label class="form-label">Urgency Level</label>
+                        <select id="edit-urgency" class="form-control" required>
+                            <option value="LOW">Low</option>
+                            <option value="MEDIUM">Medium</option>
+                            <option value="HIGH">High</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="form-group">
+                    <label class="form-label">Justification / Reason</label>
+                    <textarea id="edit-desc" class="form-control" required placeholder="Explain why this equipment is needed..."></textarea>
+                </div>
+                <div class="modal-actions">
+                    <button type="button" class="btn btn-outline" onclick="closeModal('editModal')">Cancel</button>
+                    <button type="submit" class="btn btn-primary">Save Changes</button>
+                </div>
+            </form>
+        </div>
+    </div>
+
+    <!-- Delete Confirmation Modal -->
+    <div class="modal-overlay" id="deleteModal">
+        <div class="modal" style="max-width: 420px;">
+            <div class="modal-header">
+                <h2 class="modal-title">Delete Request</h2>
+                <button class="close-btn" onclick="closeModal('deleteModal')">&times;</button>
+            </div>
+            <p style="color: var(--text2); margin-bottom: 20px;">Are you sure you want to delete this request? This action cannot be undone.</p>
+            <input type="hidden" id="delete-id">
+            <div class="modal-actions">
+                <button type="button" class="btn btn-outline" onclick="closeModal('deleteModal')">Cancel</button>
+                <button type="button" class="btn btn-danger" onclick="confirmDelete()">Delete</button>
+            </div>
+        </div>
+    </div>
+
     <script>
         const API_BASE = 'http://localhost:8081/api/requests';
         let currentUserRole = '';
@@ -819,7 +869,14 @@
                             <button class="btn btn-danger btn-small" onclick="openAdminModal(${req.id}, 'reject')">Reject</button>
                         </div>
                     `;
-                } else if (currentUserRole === 'STUDENT' && !req.adminNote) {
+                } else if (currentUserRole === 'STUDENT' && req.status === 'PENDING') {
+                    actionsHtml = `
+                        <div class="action-btns">
+                            <button class="btn btn-outline btn-small" onclick="openEditModal(${req.id}, '${req.itemName.replace(/'/g, "\\'"}', ${req.quantity}, '${req.urgencyLevel}', '${(req.description || '').replace(/'/g, "\\'")}')" style="font-size:11px; padding:4px 10px;">✏️ Edit</button>
+                            <button class="btn btn-danger btn-small" onclick="openDeleteModal(${req.id})" style="font-size:11px; padding:4px 10px;">🗑️ Delete</button>
+                        </div>
+                    `;
+                } else if (currentUserRole === 'STUDENT') {
                     actionsHtml = '<span style="color:var(--text3); font-size:12px;">-</span>';
                 }
 
@@ -980,3 +1037,6 @@
     </script>
 </body>
 </html>
+
+
+

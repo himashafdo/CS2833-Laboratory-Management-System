@@ -91,6 +91,32 @@ public class EquipmentRequestController {
         }
     }
 
+    /** PUT /api/requests/{id} — Student edits a pending request */
+    @PutMapping("/{id}")
+    public ResponseEntity<?> edit(@RequestHeader("Authorization") String authHeader,
+                                   @PathVariable Long id,
+                                   @RequestBody EquipmentRequestDTO dto) {
+        try {
+            String username = extractUsername(authHeader);
+            return ResponseEntity.ok(service.editRequest(id, username, dto));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    /** DELETE /api/requests/{id} — Student deletes a pending request */
+    @DeleteMapping("/{id}")
+    public ResponseEntity<?> delete(@RequestHeader("Authorization") String authHeader,
+                                     @PathVariable Long id) {
+        try {
+            String username = extractUsername(authHeader);
+            service.deleteRequest(id, username);
+            return ResponseEntity.ok(Map.of("message", "Request deleted successfully"));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
     /** GET /api/requests/stats — Chart data */
     @GetMapping("/stats")
     public ResponseEntity<?> stats(@RequestHeader("Authorization") String authHeader) {

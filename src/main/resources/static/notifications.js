@@ -121,79 +121,158 @@
 
   // ── STATE ────────────────────────────────────────────────────
   let reservations = [];
+  let requests = [];
   let isOpen = false;
   let popupEl = null;
   let overlayEl = null;
   let seenIds = JSON.parse(sessionStorage.getItem("notif_seen") || "[]");
 
   // ── FETCH ────────────────────────────────────────────────────
-  async function fetchReservations() {
+  async function fetchData() {
     const token = sessionStorage.getItem("token");
     if (!token) return;
+    
+    let role = sessionStorage.getItem("role");
+    if (!role) {
+      try {
+        role = JSON.parse(atob(token.split('.')[1])).role;
+        sessionStorage.setItem("role", role);
+      } catch(e) {}
+    }
+
+    let resUrl = `${API}/reservations/my`;
+    let reqUrl = `${API}/requests/my`;
+
+    if (role === "LAB_TECHNICIAN" || role === "ADMIN") {
+      resUrl = `${API}/reservations`;
+      reqUrl = `${API}/requests`;
+    }
+
     try {
-      const res = await fetch(`${API}/reservations/my`, {
-        headers: { Authorization: "Bearer " + token },
-      });
-      reservations = await res.json();
+      const [resRes, reqRes] = await Promise.all([
+        fetch(resUrl, { headers: { Authorization: "Bearer " + token } }).catch(() => null),
+        fetch(reqUrl, { headers: { Authorization: "Bearer " + token } }).catch(() => null)
+      ]);
+      
+      if (resRes && resRes.ok) reservations = await resRes.json();
+      else reservations = [];
+      
+      if (reqRes && reqRes.ok) requests = await reqRes.json();
+      else requests = [];
+      
       updateBadge();
     } catch (e) {
       reservations = [];
+      requests = [];
     }
   }
 
-  // ── BUILD NOTIFICATIONS FROM RESERVATIONS ────────────────────
+  // ── BUILD NOTIFICATIONS FROM DATA ────────────────────
   function buildNotifications() {
-    if (!reservations.length) return [];
+    let allNotifs = [];
 
-    return reservations
-      .filter((r) => r.status !== "CANCELLED")
-      .slice(0, 10)
-      .map((r) => {
-        const name = r.equipment
-          ? r.equipment.name
-          : r.lab
-            ? r.lab.labName
-            : "Unknown";
-        const type = r.equipment ? "equipment" : "lab";
-        const start = new Date(r.startTime);
-        const dateStr = start.toLocaleDateString("en-GB", {
-          day: "numeric",
-          month: "short",
-        });
-        const timeStr = start.toLocaleTimeString("en-GB", {
-          hour: "2-digit",
-          minute: "2-digit",
-        });
-        const isUnread = !seenIds.includes(r.id);
+    if (reservations && reservations.length > 0) {
+      const resNotifs = reservations
+        .filter((r) => r.status !== "CANCELLED")
+        .map((r) => {
+          const name = r.equipment ? r.equipment.name : r.lab ? r.lab.labName : "Unknown";
+          const type = r.equipment ? "equipment" : "lab";
+          const start = new Date(r.startTime);
+          const dateStr = start.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+          const timeStr = start.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+          const isUnread = !seenIds.includes("res_" + r.id) && !seenIds.includes(r.id);
 
-        let msg = "";
-        let iconClass = "";
-        let iconSvg = "";
+          let msg = "";
+          let iconClass = "";
+          let iconSvg = "";
 
-        if (r.status === "PENDING") {
-          msg = `<span>${name}</span> booking is pending approval`;
-          iconClass = "pending";
-          iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
-        } else if (r.status === "APPROVED") {
-          msg = `<span>${name}</span> booking confirmed for ${dateStr}`;
-          iconClass = "approved";
-          iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`;
-        } else if (r.status === "COMPLETED") {
-          msg = `<span>${name}</span> reservation completed on ${dateStr}`;
-          iconClass = type;
-          iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`;
-        }
+          if (r.status === "PENDING") {
+            msg = `<span>${name}</span> booking is pending approval`;
+            iconClass = "pending";
+            iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+          } else if (r.status === "APPROVED") {
+            msg = `<span>${name}</span> booking confirmed for ${dateStr}`;
+            iconClass = "approved";
+            iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`;
+          } else if (r.status === "COMPLETED") {
+            msg = `<span>${name}</span> reservation completed on ${dateStr}`;
+            iconClass = type;
+            iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`;
+          }
 
-        return {
-          id: r.id,
-          msg,
-          iconClass,
-          iconSvg,
-          time: `${dateStr} · ${timeStr}`,
-          isUnread,
-        };
-      })
-      .filter((n) => n.msg);
+          return {
+            id: "res_" + r.id,
+            timestamp: start.getTime(),
+            msg,
+            iconClass,
+            iconSvg,
+            time: `${dateStr} · ${timeStr}`,
+            isUnread,
+          };
+        })
+        .filter((n) => n.msg);
+      allNotifs = allNotifs.concat(resNotifs);
+    }
+
+    if (requests && requests.length > 0) {
+      let role = sessionStorage.getItem("role");
+      if (!role) {
+        try {
+          role = JSON.parse(atob(sessionStorage.getItem("token").split('.')[1])).role;
+        } catch(e) {}
+      }
+      const reqNotifs = requests
+        .filter((r) => {
+          if (role === "LAB_TECHNICIAN" || role === "ADMIN") {
+            return r.status === "PENDING";
+          }
+          return r.status === "APPROVED" || r.status === "REJECTED";
+        })
+        .map((r) => {
+          const name = r.itemName;
+          const start = new Date(r.createdAt);
+          const dateStr = start.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
+          const timeStr = start.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+          const isUnread = !seenIds.includes("req_" + r.id);
+
+          let msg = "";
+          let iconClass = "";
+          let iconSvg = "";
+
+          if (role === "LAB_TECHNICIAN" || role === "ADMIN") {
+            if (r.status === "PENDING") {
+              msg = `New request for <span>${name}</span> is pending review`;
+              iconClass = "pending";
+              iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
+            }
+          } else {
+            if (r.status === "APPROVED") {
+              msg = `Request for <span>${name}</span> was approved`;
+              iconClass = "approved";
+              iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`;
+            } else if (r.status === "REJECTED") {
+              msg = `Request for <span>${name}</span> was rejected`;
+              iconClass = "cancelled";
+              iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
+            }
+          }
+
+          return {
+            id: "req_" + r.id,
+            timestamp: start.getTime(),
+            msg,
+            iconClass,
+            iconSvg,
+            time: `${dateStr} · ${timeStr}`,
+            isUnread,
+          };
+        })
+        .filter((n) => n.msg);
+      allNotifs = allNotifs.concat(reqNotifs);
+    }
+
+    allNotifs.sort((a, b) => b.timestamp - a.timestamp);
+    return allNotifs.slice(0, 10);
   }
 
   // ── BADGE ─────────────────────────────────────────────────────
@@ -245,19 +324,23 @@
         notifs.length > 0
           ? `
         <div class="notif-footer">
-          <a href="/my-reservations.html">View all reservations →</a>
+          <a href="/my-reservations.html" style="margin-right:12px;">View reservations</a>
+          <a href="/requests.html">View requests</a>
         </div>`
           : ""
       }`;
   }
 
   // ── OPEN / CLOSE ─────────────────────────────────────────────
-  function openNotif(anchorEl) {
+  async function openNotif(anchorEl) {
     if (isOpen) {
       closeNotif();
       return;
     }
     isOpen = true;
+
+    // Fetch latest data before opening
+    await fetchData();
 
     overlayEl = document.createElement("div");
     overlayEl.className = "notif-overlay";
@@ -300,7 +383,7 @@
 
   // ── INIT ─────────────────────────────────────────────────────
   async function initNotifications() {
-    await fetchReservations();
+    await fetchData();
     await new Promise((resolve) => setTimeout(resolve, 200));
 
     // Find bell icon
@@ -317,9 +400,9 @@
 
     updateBadge();
 
-    bellEl.addEventListener("click", function (e) {
+    bellEl.addEventListener("click", async function (e) {
       e.stopPropagation();
-      openNotif(bellEl);
+      await openNotif(bellEl);
     });
   }
 

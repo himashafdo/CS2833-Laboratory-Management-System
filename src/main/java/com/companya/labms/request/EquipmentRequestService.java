@@ -2,6 +2,8 @@ package com.companya.labms.request;
 
 import com.companya.labms.auth.User;
 import com.companya.labms.auth.UserRepository;
+import com.companya.labms.shared.EmailService;
+import com.companya.labms.shared.Role;
 import org.springframework.stereotype.Service;
 
 import java.util.HashMap;
@@ -15,11 +17,14 @@ public class EquipmentRequestService {
 
     private final EquipmentRequestRepository requestRepository;
     private final UserRepository userRepository;
+    private final EmailService emailService;
 
     public EquipmentRequestService(EquipmentRequestRepository requestRepository,
-                                   UserRepository userRepository) {
+                                   UserRepository userRepository,
+                                   EmailService emailService) {
         this.requestRepository = requestRepository;
         this.userRepository = userRepository;
+        this.emailService = emailService;
     }
 
     /** Student: submit a new equipment request */
@@ -38,7 +43,25 @@ public class EquipmentRequestService {
                         : EquipmentRequest.UrgencyLevel.MEDIUM
         );
 
-        return toDTO(requestRepository.save(request));
+        EquipmentRequest savedRequest = requestRepository.save(request);
+
+        // Send notifications to lab technicians
+        List<User> technicians = userRepository.findByRole(Role.LAB_TECHNICIAN);
+        for (User tech : technicians) {
+            try {
+                emailService.sendEquipmentRequestNotification(
+                    tech.getEmail(),
+                    user.getUsername(),
+                    savedRequest.getItemName(),
+                    savedRequest.getQuantity()
+                );
+            } catch (Exception e) {
+                // Log exception and continue so submission doesn't fail if email fails
+                System.err.println("Failed to send notification to " + tech.getEmail() + ": " + e.getMessage());
+            }
+        }
+
+        return toDTO(savedRequest);
     }
 
     /** Student: view own requests */

@@ -28,4 +28,19 @@ public class EmailService {
         );
         mailSender.send(message);
     }
+
+    public void sendEquipmentRequestNotification(String toEmail, String studentName, String itemName, int quantity) {
+        SimpleMailMessage message = new SimpleMailMessage();
+        message.setTo(toEmail);
+        message.setSubject("New Equipment Request - Lab Reservation System");
+        message.setText(
+            "Hello,\n\n" +
+            "A new equipment request has been submitted by " + studentName + ".\n\n" +
+            "Requested Item: " + itemName + "\n" +
+            "Quantity: " + quantity + "\n\n" +
+            "Please log in to the Laboratory Management System to review and approve/reject this request.\n\n" +
+            "Laboratory Management System - Company A"
+        );
+        mailSender.send(message);
+    }
 }

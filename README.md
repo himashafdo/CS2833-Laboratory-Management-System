@@ -227,4 +227,4 @@ If stuck — message the team lead before wasting time.
 Do NOT guess and break things on main branch.
 
 **GitHub Repo:**
-https://github.com/himashafdo/CS2833-Laboratory-Management-System.git
+https://github.c-om/himashafdo/CS2833-Laboratory-Management-System.git

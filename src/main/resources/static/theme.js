@@ -1,18 +1,38 @@
 // theme.js — include in every page
-(function() {
-  const saved = localStorage.getItem('theme') || 'light';
-  document.documentElement.setAttribute('data-theme', saved);
+(function () {
+  const THEME_KEY = "theme";
 
-  document.addEventListener('DOMContentLoaded', function() {
-    const btn = document.getElementById('theme-btn');
+  function applyTheme(theme) {
+    document.documentElement.setAttribute("data-theme", theme);
+
+    const btn = document.getElementById("theme-btn");
     if (btn) {
-      btn.textContent = saved === 'dark' ? '☀️' : '🌙';
-      btn.addEventListener('click', function() {
-        const current = document.documentElement.getAttribute('data-theme');
-        const next = current === 'dark' ? 'light' : 'dark';
-        document.documentElement.setAttribute('data-theme', next);
-        localStorage.setItem('theme', next);
-        btn.textContent = next === 'dark' ? '☀️' : '🌙';
+      btn.textContent = theme === "dark" ? "☀️" : "🌙";
+      btn.title =
+        theme === "dark" ? "Switch to light mode" : "Switch to dark mode";
+    }
+  }
+
+  const saved = localStorage.getItem(THEME_KEY) || "light";
+
+  // Apply immediately before page fully loads
+  applyTheme(saved);
+
+  document.addEventListener("DOMContentLoaded", function () {
+    const btn = document.getElementById("theme-btn");
+
+    // Update button icon after DOM loads
+    applyTheme(localStorage.getItem(THEME_KEY) || "light");
+
+    if (btn) {
+      btn.addEventListener("click", function () {
+        const current =
+          document.documentElement.getAttribute("data-theme") || "light";
+
+        const next = current === "dark" ? "light" : "dark";
+
+        localStorage.setItem(THEME_KEY, next);
+        applyTheme(next);
       });
     }
   });

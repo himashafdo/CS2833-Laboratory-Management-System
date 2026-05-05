@@ -35,6 +35,14 @@
         --danger: #ef4444;
         --info: #3b82f6;
       }
+      [data-theme="dark"] {
+        --text: #f1f5f9;
+        --text2: #cbd5e1;
+        --text3: #94a3b8;
+        --border: #334155;
+        --white: #1e293b;
+        --bg: #0f172a;
+      }
       body {
         font-family: var(--font);
         background: var(--bg);
@@ -70,6 +78,25 @@
         display: flex;
         align-items: center;
         gap: 10px;
+      }
+      .theme-toggle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: var(--white);
+        color: var(--text2);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        transition: all 0.2s;
+      }
+
+      .theme-toggle:hover {
+        background: var(--bg);
+        transform: scale(1.05);
       }
       .brand-icon {
         width: 38px;
@@ -198,6 +225,7 @@
         align-items: center;
         gap: 12px;
       }
+
       .topbar-date {
         padding: 8px 16px;
         border: 1px solid var(--border);
@@ -731,6 +759,7 @@
       }
     </style>
   </head>
+
   <body>
     <!-- ── SIDEBAR ── -->
     <aside class="sidebar">
@@ -805,9 +834,16 @@
           My Reservations
         </a>
 
-                <a href="/requests.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+        <a href="/requests.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+            />
           </svg>
           Equipment Requests
         </a>
@@ -824,7 +860,6 @@
           </svg>
           Report Issue
         </a>
-        
       </nav>
 
       <div class="sidebar-user">
@@ -843,6 +878,7 @@
         <div class="topbar-title">Resources & Lab Catalog</div>
         <div class="topbar-right">
           <div class="topbar-date" id="topbar-date"></div>
+          
           <div class="topbar-icon">
             <svg
               width="16"
@@ -1401,7 +1437,6 @@
     </script>
     <script src="/calendar.js"></script>
     <script src="/notifications.js"></script>
+    <script src="/theme.js"></script>
   </body>
 </html>
-
-

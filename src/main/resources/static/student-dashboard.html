@@ -665,9 +665,16 @@
           </svg>
           My Reservations
         </a>
-                <a href="/requests.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/>
+        <a href="/requests.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+            />
           </svg>
           Equipment Requests
         </a>
@@ -684,7 +691,6 @@
           </svg>
           Report Issue
         </a>
-       
       </nav>
 
       <div class="sidebar-user">
@@ -900,7 +906,7 @@
     </style>
 
     <script>
-      const API = "http://localhost:8081/api";
+      const API = "http://localhost:8080/api";
       const token = sessionStorage.getItem("token");
       const username = sessionStorage.getItem("username");
       const role = sessionStorage.getItem("role");
@@ -973,13 +979,21 @@
             });
             if (reqRes.ok) {
               const requests = await reqRes.json();
-              const pendingRequests = requests.filter(r => r.status === "PENDING");
-              document.getElementById("stat-requests").textContent = pendingRequests.length;
-              const sub = document.querySelector("#stat-requests + .stat-sub") || document.getElementById("stat-requests").parentElement.querySelector(".stat-sub");
+              const pendingRequests = requests.filter(
+                (r) => r.status === "PENDING",
+              );
+              document.getElementById("stat-requests").textContent =
+                pendingRequests.length;
+              const sub =
+                document.querySelector("#stat-requests + .stat-sub") ||
+                document
+                  .getElementById("stat-requests")
+                  .parentElement.querySelector(".stat-sub");
               if (sub) {
-                sub.textContent = pendingRequests.length === 0
-                  ? "No pending requests"
-                  : `${pendingRequests.length} pending request${pendingRequests.length > 1 ? "s" : ""}`;
+                sub.textContent =
+                  pendingRequests.length === 0
+                    ? "No pending requests"
+                    : `${pendingRequests.length} pending request${pendingRequests.length > 1 ? "s" : ""}`;
               }
             }
           } catch (e) {
@@ -1090,5 +1104,3 @@
     <script src="/notifications.js"></script>
   </body>
 </html>
-
-

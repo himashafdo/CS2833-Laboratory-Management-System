@@ -1,5 +1,5 @@
 
-        const API_BASE = 'http://localhost:8081/api/requests';
+        const API_BASE = 'http://localhost:8080/api/requests';
         let currentUserRole = '';
         let myChartInstance = null;
         let pieChartInstance = null;

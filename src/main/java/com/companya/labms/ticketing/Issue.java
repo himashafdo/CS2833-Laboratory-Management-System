@@ -43,6 +43,8 @@ public class Issue extends BaseEntity {
     public enum IssueType { EQUIPMENT, LAB, OTHER }
     public enum IssueStatus { OPEN, IN_PROGRESS, RESOLVED, CLOSED }
     public enum IssuePriority { LOW, MEDIUM, HIGH }
+    private String equipmentNumber;
+
 
     public User getUser() { return user; }
     public void setUser(User user) { this.user = user; }
@@ -64,4 +66,8 @@ public class Issue extends BaseEntity {
     public void setStatus(IssueStatus status) { this.status = status; }
     public IssuePriority getPriority() { return priority; }
     public void setPriority(IssuePriority priority) { this.priority = priority; }
+
+    
+    public String getEquipmentNumber() { return equipmentNumber; }
+    public void setEquipmentNumber(String equipmentNumber) { this.equipmentNumber = equipmentNumber; }
 }

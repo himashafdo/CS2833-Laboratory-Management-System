@@ -28,6 +28,14 @@
         --bg: #f8fafc;
         --font: "Plus Jakarta Sans", sans-serif;
       }
+      [data-theme="dark"] {
+        --text: #f1f5f9;
+        --text2: #cbd5e1;
+        --text3: #94a3b8;
+        --border: #334155;
+        --white: #1e293b;
+        --bg: #0f172a;
+      }
       body {
         font-family: var(--font);
         background: var(--bg);
@@ -223,6 +231,25 @@
         color: var(--text2);
         position: relative;
       }
+      .theme-toggle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: var(--white);
+        color: var(--text2);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        transition: all 0.2s;
+      }
+
+      .theme-toggle:hover {
+        background: var(--bg);
+        transform: scale(1.05);
+      }
       .notif-dot {
         width: 8px;
         height: 8px;
@@ -231,7 +258,7 @@
         position: absolute;
         top: 6px;
         right: 6px;
-        border: 2px solid white;
+        border: 2px solid var(--white);
       }
       .topbar-avatar {
         width: 36px;
@@ -665,6 +692,19 @@
           </svg>
           My Reservations
         </a>
+        <a href="/requests.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+            />
+          </svg>
+          Equipment Requests
+        </a>
         <a href="/report-issue.html" class="nav-item">
           <svg
             viewBox="0 0 24 24"
@@ -678,7 +718,6 @@
           </svg>
           Report Issue
         </a>
-       
       </nav>
 
       <div class="sidebar-user">
@@ -714,6 +753,14 @@
             />
           </div>
           <div class="topbar-date" id="topbar-date"></div>
+          <button
+            id="theme-btn"
+            class="theme-toggle"
+            type="button"
+            title="Toggle theme"
+          >
+            🌙
+          </button>
           <div class="topbar-icon">
             <svg
               width="16"
@@ -864,7 +911,7 @@
                 </div>
                 <div class="action-label">Report Issue</div>
               </a>
-              <a href="/equipment-requests.html" class="action-btn">
+              <a href="/requests.html" class="action-btn">
                 <div class="action-icon green">
                   <svg
                     viewBox="0 0 24 24"
@@ -903,7 +950,7 @@
 
       // Redirect admin to admin dashboard
       if (role === "LAB_TECHNICIAN" || role === "ADMIN") {
-        window.location.href = "/admin-dashboard.html";
+        window.location.href = "/requests.html";
       }
 
       // Set user info
@@ -959,6 +1006,34 @@
               : `${active.length} active now`;
           document.getElementById("stat-equipment").textContent =
             equipmentRes.length;
+
+          // Fetch equipment requests for Pending Requests stat
+          try {
+            const reqRes = await fetch(`${API}/requests/my`, {
+              headers: { Authorization: "Bearer " + token },
+            });
+            if (reqRes.ok) {
+              const requests = await reqRes.json();
+              const pendingRequests = requests.filter(
+                (r) => r.status === "PENDING",
+              );
+              document.getElementById("stat-requests").textContent =
+                pendingRequests.length;
+              const sub =
+                document.querySelector("#stat-requests + .stat-sub") ||
+                document
+                  .getElementById("stat-requests")
+                  .parentElement.querySelector(".stat-sub");
+              if (sub) {
+                sub.textContent =
+                  pendingRequests.length === 0
+                    ? "No pending requests"
+                    : `${pendingRequests.length} pending request${pendingRequests.length > 1 ? "s" : ""}`;
+              }
+            }
+          } catch (e) {
+            console.log("Could not load equipment requests:", e);
+          }
 
           // Welcome sub
           document.getElementById("welcome-sub").textContent =
@@ -1062,5 +1137,6 @@
     </script>
     <script src="/calendar.js"></script>
     <script src="/notifications.js"></script>
+    <script src="/theme.js"></script>
   </body>
 </html>

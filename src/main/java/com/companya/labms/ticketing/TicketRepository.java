@@ -1,12 +1,9 @@
 package com.companya.labms.ticketing;
 
+
 import org.springframework.data.jpa.repository.JpaRepository;
 import java.util.List;
 import java.util.Optional;
-
-public class TicketRepository {
-    
-}
 
 public interface TicketRepository extends JpaRepository<Ticket, Long> {
     // Find tickets assigned to a specific Lab Assistant or Admin[cite: 5]

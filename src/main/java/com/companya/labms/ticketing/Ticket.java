@@ -1,13 +1,11 @@
 package com.companya.labms.ticketing;
 
+
 import com.companya.labms.auth.User;
 import com.companya.labms.shared.BaseEntity;
 import jakarta.persistence.*;
 import java.time.LocalDateTime;
 
-public class Ticket {
-    
-}
 @Entity
 @Table(name = "admin_tickets")
 public class Ticket extends BaseEntity {
@@ -30,3 +28,20 @@ public class Ticket extends BaseEntity {
     private TicketPriority adminPriority = TicketPriority.MEDIUM;
 
     public enum TicketPriority { LOW, MEDIUM, HIGH, URGENT }
+
+    // Getters and Setters[cite: 3]
+    public Issue getOriginalIssue() { return originalIssue; }
+    public void setOriginalIssue(Issue originalIssue) { this.originalIssue = originalIssue; }
+    public User getAssignedTo() { return assignedTo; }
+    public void setAssignedTo(User assignedTo) { this.assignedTo = assignedTo; }
+    public String getInternalNotes() { return internalNotes; }
+    public void setInternalNotes(String internalNotes) { this.internalNotes = internalNotes; }
+    public String getResolutionDetails() { return resolutionDetails; }
+    public void setResolutionDetails(String resolutionDetails) { this.resolutionDetails = resolutionDetails; }
+    public LocalDateTime getAssignmentDate() { return assignmentDate; }
+    public void setAssignmentDate(LocalDateTime assignmentDate) { this.assignmentDate = assignmentDate; }
+    public TicketPriority getAdminPriority() { return adminPriority; }
+    public void setAdminPriority(TicketPriority adminPriority) { this.adminPriority = adminPriority; }
+}
+
+    

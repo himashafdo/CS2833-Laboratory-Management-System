@@ -70,4 +70,8 @@ public class Issue extends BaseEntity {
     
     public String getEquipmentNumber() { return equipmentNumber; }
     public void setEquipmentNumber(String equipmentNumber) { this.equipmentNumber = equipmentNumber; }
+    
+
+
+
 }

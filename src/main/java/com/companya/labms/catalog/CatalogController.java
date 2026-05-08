@@ -20,6 +20,45 @@ public class CatalogController {
         this.labEquipmentRepository = labEquipmentRepository;
     }
 
+    // ──────────────────────────────────────────────────────────────
+    // GROUPED EQUIPMENT TYPES (for student catalog page)
+    // ──────────────────────────────────────────────────────────────
+
+    /** One row per equipment NAME with total + available unit counts. */
+    @GetMapping("/equipment-types")
+    public ResponseEntity<List<EquipmentTypeDto>> getEquipmentTypes(
+            @RequestParam(required = false) String search) {
+        if (search != null && !search.isEmpty()) {
+            return ResponseEntity.ok(catalogService.searchEquipmentTypes(search));
+        }
+        return ResponseEntity.ok(catalogService.getEquipmentTypes());
+    }
+
+    /** Modal Step 1 — labs that hold at least one unit of this equipment name. */
+    @GetMapping("/equipment-types/{name}/labs")
+    public ResponseEntity<?> getLabsForType(@PathVariable String name) {
+        try {
+            return ResponseEntity.ok(catalogService.getLabsForEquipmentType(name));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    /** Modal Step 2 — available unit codes of this equipment name in this lab. */
+    @GetMapping("/equipment-types/{name}/labs/{labId}/units")
+    public ResponseEntity<?> getAvailableUnits(@PathVariable String name,
+                                               @PathVariable Long labId) {
+        try {
+            return ResponseEntity.ok(catalogService.getAvailableUnitsInLab(name, labId));
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+
+    // ──────────────────────────────────────────────────────────────
+    // EQUIPMENT (individual units) — kept for admin/CRUD pages
+    // ──────────────────────────────────────────────────────────────
+
     @GetMapping("/equipment")
     public ResponseEntity<List<Equipment>> getAllEquipment(
             @RequestParam(required = false) String search,
@@ -72,6 +111,10 @@ public class CatalogController {
             return ResponseEntity.ok(labs);
         } catch (Exception e) { return ResponseEntity.badRequest().body(Map.of("error", e.getMessage())); }
     }
+
+    // ──────────────────────────────────────────────────────────────
+    // LABS
+    // ──────────────────────────────────────────────────────────────
 
     @GetMapping("/labs")
     public ResponseEntity<List<Lab>> getAllLabs(

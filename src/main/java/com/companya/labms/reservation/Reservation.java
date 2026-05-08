@@ -50,4 +50,9 @@ public class Reservation extends BaseEntity {
 
     public int getWorkstations() { return workstations; }
     public void setWorkstations(int workstations) { this.workstations = workstations; }
+
+    private String equipmentCode;
+
+public String getEquipmentCode() { return equipmentCode; }
+public void setEquipmentCode(String equipmentCode) { this.equipmentCode = equipmentCode; }
 }

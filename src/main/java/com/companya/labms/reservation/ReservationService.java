@@ -56,7 +56,7 @@ public class ReservationService {
         if (!start.isBefore(end))
             throw new RuntimeException("End time must be after start time");
         if (start.isBefore(LocalDateTime.now()))
-            throw new RuntimeException("Cannot book in the past");
+           throw new RuntimeException("Cannot book in the past");
 
         // Check workstation limit (max 3 per user per lab)
         if (labId != null && equipmentId == null) {

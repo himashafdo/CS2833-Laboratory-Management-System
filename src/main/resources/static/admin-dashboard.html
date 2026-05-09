@@ -5,7 +5,6 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title>Admin Dashboard — Lab Management System</title>
   <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <!-- Chart.js for Advanced Analytics -->
   <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
   <style>
     *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
@@ -16,7 +15,6 @@
     }
     body { font-family: var(--font); background: var(--bg); min-height: 100vh; display: flex; overflow-x: hidden;}
 
-    /* ── SIDEBAR ── */
     .sidebar { width: 240px; min-height: 100vh; flex-shrink: 0; background: linear-gradient(180deg, #f97316 0%, #c2410c 100%); display: flex; flex-direction: column; padding: 24px 0; position: fixed; left: 0; top: 0; bottom: 0; z-index: 100; }
     .sidebar-brand { padding: 0 20px 28px; border-bottom: 1px solid rgba(255, 255, 255, 0.15); margin-bottom: 16px; }
     .brand-row { display: flex; align-items: center; gap: 10px; }
@@ -33,24 +31,20 @@
     .user-name { font-size: 13px; font-weight: 600; color: white; }
     .user-role { font-size: 11px; color: rgba(255, 255, 255, 0.7); }
 
-    /* ── MAIN ── */
     .main { margin-left: 240px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
     .topbar { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
     .topbar-title { font-size: 20px; font-weight: 700; color: var(--text); }
     .topbar-right { display: flex; align-items: center; gap: 12px; }
     .topbar-icon { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; background: var(--white); color: var(--text2); position: relative; }
 
-    /* ── TABS ── */
     .tabs-container { padding: 20px 32px 0; background: var(--white); border-bottom: 1px solid var(--border); display: flex; gap: 24px; }
     .tab-btn { padding: 12px 0; font-size: 14px; font-weight: 600; color: var(--text2); cursor: pointer; border: none; background: none; border-bottom: 3px solid transparent; transition: all 0.2s; font-family: var(--font); }
     .tab-btn:hover { color: var(--orange); }
     .tab-btn.active { color: var(--orange); border-bottom-color: var(--orange); }
-    
     .tab-content { display: none; padding: 28px 32px; }
     .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
     @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
 
-    /* ── CONTENT ── */
     .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
     .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 20px; border-top: 3px solid transparent; transition: transform 0.2s; display: flex; justify-content: space-between; align-items: center; }
     .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
@@ -65,30 +59,25 @@
     .section-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
     .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
     .section-title { font-size: 16px; font-weight: 700; color: var(--text); }
-    
     .chart-container { width: 100%; height: 300px; }
 
-    /* ── FORMS & BUTTONS ── */
     .form-group { margin-bottom: 16px; }
     .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
     .form-input, .form-textarea, .form-select { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; font-family: var(--font); font-size: 13px; color: var(--text); outline: none; transition: border-color 0.2s; background: var(--white); }
     .form-textarea { resize: vertical; min-height: 100px; }
     .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--orange); }
     .form-checkbox { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text); cursor: pointer; }
-    
     .btn-submit { background: var(--text); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
     .btn-submit:hover { background: #0f172a; }
     .btn-outline { background: var(--white); color: var(--text); border: 1px solid var(--border); padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
     .btn-outline:hover { background: #f1f5f9; border-color: #cbd5e1; }
 
-    /* ── TOOLBARS & FILTERS ── */
     .toolbar { display: flex; gap: 12px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
     .search-box { position: relative; flex: 1; min-width: 250px; }
     .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text3); }
     .search-input { width: 100%; padding: 10px 14px 10px 40px; border: 1px solid var(--border); border-radius: 10px; font-family: var(--font); font-size: 13px; }
     .filter-select { padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; font-family: var(--font); font-size: 13px; background: white; min-width: 140px; }
 
-    /* ── TABLES ── */
     .table-container { overflow-x: auto; }
     .data-table { width: 100%; border-collapse: collapse; white-space: nowrap; }
     .data-table th { text-align: left; padding: 14px; font-size: 12px; font-weight: 600; color: var(--text2); border-bottom: 2px solid var(--border); text-transform: uppercase; letter-spacing: 0.05em; }
@@ -101,7 +90,6 @@
     .action-btn.reject { color: #991b1b; background: #fef2f2; border-color: #fecaca; }
     .action-btn.reject:hover { background: #fee2e2; }
 
-    /* ── PAGINATION ── */
     .pagination { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 20px; font-size: 13px; color: var(--text2); }
     .page-btn { padding: 6px 12px; border: 1px solid var(--border); background: white; border-radius: 6px; cursor: pointer; font-family: var(--font); transition: all 0.2s; }
     .page-btn:hover:not(:disabled) { background: #f1f5f9; }
@@ -109,26 +97,22 @@
     .page-active { background: var(--orange); color: white; border-color: var(--orange); }
     .page-active:hover { background: var(--orange2); }
 
-    /* ── NOTICE ITEMS ── */
     .notice-item { padding: 16px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; display: flex; gap: 16px; background: var(--bg); }
     .notice-icon { width: 40px; height: 40px; border-radius: 10px; background: #eff6ff; color: #3b82f6; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
     .notice-info { flex: 1; }
     .notice-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
     .notice-desc { font-size: 13px; color: var(--text2); line-height: 1.5; }
-    
     .status-badge { font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 20px; text-transform: uppercase; }
     .status-badge.active { background: #dcfce7; color: #15803d; }
     .status-badge.inactive { background: #f1f5f9; color: #64748b; }
     .status-badge.pending { background: #fef9c3; color: #854d0e; }
 
-    /* ── TOAST NOTIFICATIONS ── */
     .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
     .toast { background: white; border-left: 4px solid var(--orange); box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 16px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 12px; min-width: 300px; transform: translateX(120%); transition: transform 0.3s ease-in-out; }
     .toast.show { transform: translateX(0); }
     .toast.success { border-left-color: #10b981; }
     .toast.error { border-left-color: #ef4444; }
 
-    /* ── MODALS ── */
     .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(2px); z-index: 1000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; }
     .modal-overlay.active { display: flex; opacity: 1; }
     .modal { background: white; border-radius: 16px; width: 100%; max-width: 500px; padding: 24px; transform: translateY(20px); transition: transform 0.2s; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
@@ -138,65 +122,183 @@
     .close-modal { background: none; border: none; font-size: 20px; color: var(--text3); cursor: pointer; }
     .close-modal:hover { color: var(--text); }
     .modal-footer { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
+
+    /* ── ML SETTINGS STYLES ── */
+    .ml-header-bar {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 24px; flex-wrap: wrap; gap: 12px;
+    }
+    .ml-header-info h2 { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .ml-header-info p { font-size: 13px; color: var(--text2); }
+    .ml-badge {
+      display: inline-flex; align-items: center; gap: 6px;
+      padding: 6px 12px; border-radius: 999px; font-size: 11px; font-weight: 700;
+      text-transform: uppercase; letter-spacing: 0.05em;
+    }
+    .ml-badge.on  { background: #dcfce7; color: #15803d; }
+    .ml-badge.off { background: #f1f5f9; color: #64748b; }
+    .ml-badge .dot {
+      width: 7px; height: 7px; border-radius: 50%;
+    }
+    .ml-badge.on  .dot { background: #16a34a; animation: pulse-dot 1.5s ease-in-out infinite; }
+    .ml-badge.off .dot { background: #94a3b8; }
+    @keyframes pulse-dot {
+      0%,100% { opacity: 1; transform: scale(1); }
+      50%      { opacity: 0.5; transform: scale(1.3); }
+    }
+
+    .ml-feature-card {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px; margin-bottom: 16px;
+      display: flex; align-items: flex-start; justify-content: space-between;
+      gap: 20px; transition: box-shadow 0.2s;
+    }
+    .ml-feature-card:hover { box-shadow: 0 4px 16px rgba(15,23,42,0.06); }
+    .ml-feature-card.enabled { border-left: 4px solid var(--orange); }
+    .ml-feature-card.disabled { border-left: 4px solid var(--border); opacity: 0.75; }
+
+    .ml-feature-left { display: flex; align-items: flex-start; gap: 16px; flex: 1; }
+    .ml-feature-icon {
+      width: 44px; height: 44px; border-radius: 12px; flex-shrink: 0;
+      display: grid; place-items: center;
+    }
+    .ml-feature-icon.on  { background: #fff7ed; color: var(--orange); }
+    .ml-feature-icon.off { background: var(--bg); color: var(--text3); }
+    .ml-feature-icon svg { width: 20px; height: 20px; }
+
+    .ml-feature-name { font-size: 15px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .ml-feature-desc { font-size: 13px; color: var(--text2); line-height: 1.5; margin-bottom: 8px; }
+    .ml-feature-meta { font-size: 11px; color: var(--text3); }
+
+    .ml-toggle-wrap { display: flex; flex-direction: column; align-items: flex-end; gap: 10px; flex-shrink: 0; }
+
+    /* iOS-style toggle */
+    .toggle-switch { position: relative; display: inline-block; width: 48px; height: 26px; }
+    .toggle-switch input { opacity: 0; width: 0; height: 0; }
+    .toggle-slider {
+      position: absolute; cursor: pointer; inset: 0;
+      background: #cbd5e1; border-radius: 999px;
+      transition: background 0.25s;
+    }
+    .toggle-slider::before {
+      content: ""; position: absolute;
+      width: 20px; height: 20px; border-radius: 50%;
+      background: white; left: 3px; top: 3px;
+      transition: transform 0.25s;
+      box-shadow: 0 1px 3px rgba(0,0,0,0.2);
+    }
+    .toggle-switch input:checked + .toggle-slider { background: var(--orange); }
+    .toggle-switch input:checked + .toggle-slider::before { transform: translateX(22px); }
+    .toggle-switch input:disabled + .toggle-slider { opacity: 0.5; cursor: not-allowed; }
+
+    .ml-toggle-label { font-size: 11px; font-weight: 600; color: var(--text2); }
+
+    .ml-info-box {
+      background: #fff7ed; border: 1px solid #fed7aa;
+      border-radius: 12px; padding: 14px 16px;
+      display: flex; gap: 10px; align-items: flex-start;
+      margin-bottom: 24px; font-size: 13px; color: #92400e; line-height: 1.5;
+    }
+    .ml-info-box svg { width: 16px; height: 16px; flex-shrink: 0; margin-top: 1px; color: var(--orange); }
+
+    .ml-forecast-panel {
+      background: var(--white); border: 1px solid var(--border);
+      border-radius: 16px; padding: 24px; margin-top: 8px;
+    }
+    .ml-forecast-header {
+      display: flex; align-items: center; justify-content: space-between;
+      margin-bottom: 20px;
+    }
+    .ml-forecast-title { font-size: 15px; font-weight: 700; color: var(--text); }
+    .btn-refresh-forecast {
+      display: flex; align-items: center; gap: 6px;
+      padding: 8px 14px; border: 1px solid var(--border);
+      border-radius: 8px; background: var(--bg);
+      font-family: var(--font); font-size: 12px; font-weight: 600;
+      color: var(--text2); cursor: pointer; transition: all 0.2s;
+    }
+    .btn-refresh-forecast:hover { border-color: var(--orange); color: var(--orange); background: #fff7ed; }
+    .btn-refresh-forecast svg { width: 13px; height: 13px; }
+
+    .ml-ranking-list { display: flex; flex-direction: column; gap: 8px; }
+    .ml-ranking-item {
+      display: flex; align-items: center; gap: 12px;
+      padding: 10px 12px; background: var(--bg);
+      border-radius: 10px; font-size: 13px;
+    }
+    .ml-rank-num {
+      width: 24px; height: 24px; border-radius: 50%;
+      background: var(--orange); color: white;
+      font-size: 11px; font-weight: 700;
+      display: grid; place-items: center; flex-shrink: 0;
+    }
+    .ml-rank-name { flex: 1; font-weight: 600; color: var(--text); }
+    .ml-rank-score { font-size: 12px; color: var(--text2); }
+    .ml-level-badge {
+      font-size: 10px; font-weight: 700; padding: 3px 8px;
+      border-radius: 999px; text-transform: uppercase;
+    }
+    .ml-level-badge.HIGH   { background: #fee2e2; color: #b91c1c; }
+    .ml-level-badge.MEDIUM { background: #fef3c7; color: #92400e; }
+    .ml-level-badge.LOW    { background: #f1f5f9; color: #64748b; }
+
+    .ml-top-slots { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 10px; margin-top: 16px; }
+    .ml-slot-card {
+      background: var(--bg); border: 1px solid var(--border);
+      border-radius: 10px; padding: 12px 14px;
+    }
+    .ml-slot-day  { font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 4px; }
+    .ml-slot-time { font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 2px; }
+    .ml-slot-equip { font-size: 11px; color: var(--text2); margin-bottom: 6px; }
+
+    .ml-empty {
+      text-align: center; padding: 32px 20px;
+      color: var(--text3); font-size: 13px;
+    }
+    .ml-empty-icon { font-size: 28px; margin-bottom: 8px; }
   </style>
 </head>
 <body>
-  <!-- TOAST CONTAINER -->
   <div class="toast-container" id="toast-container"></div>
 
-  <!-- ── SIDEBAR ── -->
   <aside class="sidebar">
     <div class="sidebar-brand">
       <div class="brand-row">
         <div class="brand-icon">
           <svg viewBox="0 0 32 32" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="4" y1="16" x2="12" y2="16" />
-            <line x1="12" y1="9" x2="12" y2="23" />
-            <line x1="12" y1="10.5" x2="26" y2="5" />
-            <line x1="12" y1="21.5" x2="26" y2="27" />
+            <line x1="4" y1="16" x2="12" y2="16" /><line x1="12" y1="9" x2="12" y2="23" />
+            <line x1="12" y1="10.5" x2="26" y2="5" /><line x1="12" y1="21.5" x2="26" y2="27" />
             <polygon points="22,24.5 26,27 23.5,22.5" fill="white" stroke="none" />
-            <line x1="26" y1="5" x2="26" y2="2" />
-            <line x1="26" y1="27" x2="26" y2="30" />
+            <line x1="26" y1="5" x2="26" y2="2" /><line x1="26" y1="27" x2="26" y2="30" />
           </svg>
         </div>
         <div><div class="brand-name">Laboratory Management System</div></div>
       </div>
     </div>
-
     <nav class="nav-section">
       <a href="/student-dashboard.html" class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" />
-          <rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" />
-        </svg> Dashboard
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg> Dashboard
       </a>
       <a href="/catalog.html" class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg> Equipment & Lab Spaces
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg> Equipment & Lab Spaces
       </a>
       <a href="/my-reservations.html" class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="4" width="18" height="18" rx="2" />
-          <line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
-        </svg> My Reservations
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg> My Reservations
       </a>
       <a href="/report-issue.html" class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
-        </svg> Report Issue
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg> Report Issue
       </a>
-      <div style="margin: 20px 0 10px 12px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em;">Admin</div>
+      <div style="margin:20px 0 10px 12px;font-size:11px;font-weight:700;color:rgba(255,255,255,0.5);text-transform:uppercase;letter-spacing:0.05em;">Admin</div>
       <a href="/admin-dashboard.html" class="nav-item active">
         <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Admin Control Panel
       </a>
     </nav>
-
     <div class="sidebar-user">
-      <div class="user-avatar">AD</div>
-      <div><div class="user-name">Admin User</div><div class="user-role">System Administrator</div></div>
+      <div class="user-avatar" id="sidebar-avatar">AD</div>
+      <div><div class="user-name" id="sidebar-name">Admin User</div><div class="user-role">System Administrator</div></div>
     </div>
   </aside>
 
-  <!-- ── MAIN ── -->
   <div class="main">
     <div class="topbar">
       <div class="topbar-title">Admin Control Panel</div>
@@ -209,10 +311,13 @@
 
     <!-- TABS -->
     <div class="tabs-container">
-      <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
-      <button class="tab-btn" onclick="switchTab('equipment')">Manage Equipment</button>
-      <button class="tab-btn" onclick="switchTab('reservations')">Reservations Queue</button>
-      <button class="tab-btn" onclick="switchTab('issues')">Issue Tracker</button>
+      <button class="tab-btn active" onclick="switchTab('overview', this)">Overview</button>
+      <button class="tab-btn" onclick="switchTab('equipment', this)">Manage Equipment</button>
+      <button class="tab-btn" onclick="switchTab('reservations', this)">Reservations Queue</button>
+      <button class="tab-btn" onclick="switchTab('issues', this)">Issue Tracker</button>
+      <button class="tab-btn" onclick="switchTab('ml', this)">
+        🤖 ML Settings
+      </button>
     </div>
 
     <!-- OVERVIEW TAB -->
@@ -224,7 +329,7 @@
             <div class="stat-value" id="stat-users">...</div>
             <div class="stat-sub">Registered students and staff</div>
           </div>
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.3"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.3"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 0 0-3-3.87"/><path d="M16 3.13a4 4 0 0 1 0 7.75"/></svg>
         </div>
         <div class="stat-card teal">
           <div>
@@ -232,7 +337,7 @@
             <div class="stat-value" id="stat-equipment">...</div>
             <div class="stat-sub">Tracked in database</div>
           </div>
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" stroke-width="2" opacity="0.3"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" stroke-width="2" opacity="0.3"><polygon points="12 2 2 7 12 12 22 7 12 2"/><polyline points="2 17 12 22 22 17"/><polyline points="2 12 12 17 22 12"/></svg>
         </div>
         <div class="stat-card amber">
           <div>
@@ -240,10 +345,9 @@
             <div class="stat-value" id="stat-notices">0</div>
             <div class="stat-sub">Total published notices</div>
           </div>
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" opacity="0.3"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path></svg>
+          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" opacity="0.3"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg>
         </div>
       </div>
-
       <div class="sections-grid">
         <div class="section-card">
           <div class="section-header"><div class="section-title">Broadcast Notice</div></div>
@@ -259,38 +363,27 @@
             <div class="form-group">
               <label class="form-checkbox"><input type="checkbox" id="notice-active" checked /> Mark as active</label>
             </div>
-            <button type="submit" class="btn-submit" id="btn-submit" style="width: 100%;">Publish Notice</button>
+            <button type="submit" class="btn-submit" id="btn-submit" style="width:100%;">Publish Notice</button>
           </form>
         </div>
-
         <div class="section-card">
-          <div class="section-header">
-            <div class="section-title">Dashboard Analytics</div>
-          </div>
-          <div class="chart-container">
-            <canvas id="dashboardChart"></canvas>
-          </div>
+          <div class="section-header"><div class="section-title">Dashboard Analytics</div></div>
+          <div class="chart-container"><canvas id="dashboardChart"></canvas></div>
         </div>
       </div>
-      
-      <div class="section-card" style="margin-bottom: 20px;">
-          <div class="section-header">
-            <div class="section-title">Recent Notices</div>
-          </div>
-          <div id="notices-list"><div style="text-align:center;padding:30px;color:var(--text3);font-size:13px;">Loading notices...</div></div>
+      <div class="section-card" style="margin-bottom:20px;">
+        <div class="section-header"><div class="section-title">Recent Notices</div></div>
+        <div id="notices-list"><div style="text-align:center;padding:30px;color:var(--text3);font-size:13px;">Loading notices...</div></div>
       </div>
     </div>
 
     <!-- EQUIPMENT TAB -->
     <div id="tab-equipment" class="tab-content">
       <div class="section-card">
-        <div class="section-header">
-          <div class="section-title">Equipment Inventory</div>
-        </div>
-        
+        <div class="section-header"><div class="section-title">Equipment Inventory</div></div>
         <div class="toolbar">
           <div class="search-box">
-            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <input type="text" class="search-input" id="search-equipment" placeholder="Search equipment by name..." onkeyup="renderEquipmentTable()" />
           </div>
           <select class="filter-select" id="filter-equipment-status" onchange="renderEquipmentTable()">
@@ -299,13 +392,12 @@
             <option value="MAINTENANCE">Maintenance</option>
             <option value="IN_USE">In Use</option>
           </select>
-          <div style="flex-grow: 1;"></div>
+          <div style="flex-grow:1;"></div>
           <button class="btn-outline" onclick="exportCSV('equipment')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Export
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align:middle;margin-right:4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg> Export
           </button>
           <button class="btn-submit" onclick="openModal('modal-equipment')">+ Add Equipment</button>
         </div>
-
         <div class="table-container">
           <table class="data-table">
             <thead><tr><th>Name</th><th>Description</th><th>Status</th><th>Qty</th><th>Actions</th></tr></thead>
@@ -319,13 +411,10 @@
     <!-- RESERVATIONS TAB -->
     <div id="tab-reservations" class="tab-content">
       <div class="section-card">
-        <div class="section-header">
-          <div class="section-title">Reservations Queue</div>
-        </div>
-        
+        <div class="section-header"><div class="section-title">Reservations Queue</div></div>
         <div class="toolbar">
           <div class="search-box">
-            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <input type="text" class="search-input" id="search-reservations" placeholder="Search by ID..." onkeyup="renderReservationsTable()" />
           </div>
           <select class="filter-select" id="filter-reservations-status" onchange="renderReservationsTable()">
@@ -335,12 +424,9 @@
             <option value="REJECTED">Rejected</option>
             <option value="CONFIRMED">Confirmed</option>
           </select>
-          <div style="flex-grow: 1;"></div>
-          <button class="btn-outline" onclick="exportCSV('reservations')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Export
-          </button>
+          <div style="flex-grow:1;"></div>
+          <button class="btn-outline" onclick="exportCSV('reservations')">Export</button>
         </div>
-
         <div class="table-container">
           <table class="data-table">
             <thead><tr><th>Booking ID</th><th>Start Time</th><th>End Time</th><th>Status</th><th>Actions</th></tr></thead>
@@ -354,13 +440,10 @@
     <!-- ISSUES TAB -->
     <div id="tab-issues" class="tab-content">
       <div class="section-card">
-        <div class="section-header">
-          <div class="section-title">Issue Tracker</div>
-        </div>
-        
+        <div class="section-header"><div class="section-title">Issue Tracker</div></div>
         <div class="toolbar">
           <div class="search-box">
-            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
             <input type="text" class="search-input" id="search-issues" placeholder="Search issues by title..." onkeyup="renderIssuesTable()" />
           </div>
           <select class="filter-select" id="filter-issues-status" onchange="renderIssuesTable()">
@@ -369,12 +452,9 @@
             <option value="IN_PROGRESS">In Progress</option>
             <option value="RESOLVED">Resolved</option>
           </select>
-          <div style="flex-grow: 1;"></div>
-          <button class="btn-outline" onclick="exportCSV('issues')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Export
-          </button>
+          <div style="flex-grow:1;"></div>
+          <button class="btn-outline" onclick="exportCSV('issues')">Export</button>
         </div>
-
         <div class="table-container">
           <table class="data-table">
             <thead><tr><th>Title</th><th>Description</th><th>Type</th><th>Status</th><th>Priority</th><th>Actions</th></tr></thead>
@@ -384,10 +464,49 @@
         <div class="pagination" id="pagination-issues"></div>
       </div>
     </div>
+
+    <!-- ── ML SETTINGS TAB ── -->
+    <div id="tab-ml" class="tab-content">
+
+      <div class="ml-header-bar">
+        <div class="ml-header-info">
+          <h2>ML Settings</h2>
+          <p>Enable or disable machine learning features. Changes take effect immediately.</p>
+        </div>
+        <button class="btn-refresh-forecast" onclick="loadMLSettings()">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+          Refresh
+        </button>
+      </div>
+
+      <div class="ml-info-box">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+        <div>ML features are <strong>off by default</strong>. All features are only visible to Admins and Lab Technicians — students are unaffected. You can toggle each feature independently without restarting the server.</div>
+      </div>
+
+      <!-- Feature cards rendered here -->
+      <div id="ml-features-list">
+        <div class="ml-empty"><div class="ml-empty-icon">⚙️</div>Loading ML features...</div>
+      </div>
+
+      <!-- Demand Forecast Results Panel (shown when demand_forecast is enabled) -->
+      <div id="ml-forecast-panel" class="ml-forecast-panel" style="display:none;">
+        <div class="ml-forecast-header">
+          <div class="ml-forecast-title">📊 Demand Forecast Results</div>
+          <button class="btn-refresh-forecast" onclick="loadForecast()">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
+            Run Forecast
+          </button>
+        </div>
+        <div id="ml-forecast-content">
+          <div class="ml-empty"><div class="ml-empty-icon">📈</div>Click "Run Forecast" to generate predictions from your reservation history.</div>
+        </div>
+      </div>
+
+    </div>
   </div>
 
-  <!-- ── MODALS ── -->
-  <!-- Equipment Modal -->
+  <!-- MODALS -->
   <div class="modal-overlay" id="modal-equipment">
     <div class="modal">
       <div class="modal-header">
@@ -395,26 +514,11 @@
         <button class="close-modal" onclick="closeModal('modal-equipment')">&times;</button>
       </div>
       <form id="equipment-form" onsubmit="handleEquipmentSubmit(event)">
-        <div class="form-group">
-          <label class="form-label">Name</label>
-          <input type="text" class="form-input" id="eq-name" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Description</label>
-          <textarea class="form-textarea" id="eq-desc" style="min-height: 60px;"></textarea>
-        </div>
-        <div style="display: flex; gap: 16px;">
-          <div class="form-group" style="flex: 1;">
-            <label class="form-label">Status</label>
-            <select class="form-select" id="eq-status">
-              <option value="AVAILABLE">AVAILABLE</option>
-              <option value="MAINTENANCE">MAINTENANCE</option>
-            </select>
-          </div>
-          <div class="form-group" style="flex: 1;">
-            <label class="form-label">Quantity</label>
-            <input type="number" class="form-input" id="eq-qty" min="0" value="1">
-          </div>
+        <div class="form-group"><label class="form-label">Name</label><input type="text" class="form-input" id="eq-name" required></div>
+        <div class="form-group"><label class="form-label">Description</label><textarea class="form-textarea" id="eq-desc" style="min-height:60px;"></textarea></div>
+        <div style="display:flex;gap:16px;">
+          <div class="form-group" style="flex:1;"><label class="form-label">Status</label><select class="form-select" id="eq-status"><option value="AVAILABLE">AVAILABLE</option><option value="MAINTENANCE">MAINTENANCE</option></select></div>
+          <div class="form-group" style="flex:1;"><label class="form-label">Quantity</label><input type="number" class="form-input" id="eq-qty" min="0" value="1"></div>
         </div>
         <div class="modal-footer">
           <button type="button" class="btn-outline" onclick="closeModal('modal-equipment')">Cancel</button>
@@ -424,153 +528,122 @@
     </div>
   </div>
 
-  <!-- Action Confirmation Modal -->
   <div class="modal-overlay" id="modal-confirm">
-    <div class="modal" style="max-width: 400px;">
+    <div class="modal" style="max-width:400px;">
       <div class="modal-header">
         <div class="modal-title" id="confirm-title">Confirm Action</div>
         <button class="close-modal" onclick="closeModal('modal-confirm')">&times;</button>
       </div>
-      <p style="font-size: 14px; color: var(--text2); margin-bottom: 20px;" id="confirm-message">Are you sure you want to proceed?</p>
+      <p style="font-size:14px;color:var(--text2);margin-bottom:20px;" id="confirm-message">Are you sure you want to proceed?</p>
       <div class="modal-footer">
         <button class="btn-outline" onclick="closeModal('modal-confirm')">Cancel</button>
-        <button class="btn-submit" id="confirm-action-btn" style="background: #ef4444;">Confirm</button>
+        <button class="btn-submit" id="confirm-action-btn" style="background:#ef4444;">Confirm</button>
       </div>
     </div>
   </div>
 
   <script>
-    // Global State for Data and Pagination
+    const API = "http://localhost:8080/api";
+    const token = sessionStorage.getItem("token");
+    const username = sessionStorage.getItem("username");
+    if (!token) window.location.href = "/login.html";
+    if (username) {
+      const initials = username.substring(0,2).toUpperCase();
+      document.getElementById("sidebar-avatar").textContent = initials;
+      document.getElementById("sidebar-name").textContent = username;
+    }
+
     const state = {
-      equipment: [],
-      reservations: [],
-      issues: [],
+      equipment: [], reservations: [], issues: [],
+      mlSettings: [],
       pagination: {
-        equipment: { page: 1, limit: 5 },
-        reservations: { page: 1, limit: 5 },
-        issues: { page: 1, limit: 5 }
+        equipment: { page:1, limit:5 },
+        reservations: { page:1, limit:5 },
+        issues: { page:1, limit:5 }
       }
     };
 
     let dashboardChartInstance = null;
 
-    document.addEventListener('DOMContentLoaded', () => {
-      refreshAllData();
-    });
+    document.addEventListener('DOMContentLoaded', () => { refreshAllData(); });
 
-    function showToast(message, type = 'success') {
+    function showToast(message, type='success') {
       const container = document.getElementById('toast-container');
       const toast = document.createElement('div');
       toast.className = `toast ${type}`;
       toast.innerHTML = `
         <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          ${type === 'success' ? '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>' : '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>'}
-        </svg>
-        <span>${message}</span>
-      `;
+          ${type==='success'?'<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>':'<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>'}
+        </svg><span>${message}</span>`;
       container.appendChild(toast);
-      
-      // Trigger animation
       setTimeout(() => toast.classList.add('show'), 10);
-      
-      // Remove toast
-      setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
+      setTimeout(() => { toast.classList.remove('show'); setTimeout(() => toast.remove(), 300); }, 3000);
     }
 
-    function openModal(id) {
-      document.getElementById(id).classList.add('active');
-    }
-    
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('active');
-    }
+    function openModal(id) { document.getElementById(id).classList.add('active'); }
+    function closeModal(id) { document.getElementById(id).classList.remove('active'); }
 
-    function switchTab(tabId) {
+    function switchTab(tabId, btn) {
       document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
       document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-      
       document.getElementById('tab-' + tabId).classList.add('active');
-      event.currentTarget.classList.add('active');
-
+      if (btn) btn.classList.add('active');
       if (tabId === 'overview') updateChart();
       if (tabId === 'equipment') renderEquipmentTable();
       if (tabId === 'reservations') renderReservationsTable();
       if (tabId === 'issues') renderIssuesTable();
+      if (tabId === 'ml') loadMLSettings();
     }
 
     async function refreshAllData() {
-      await Promise.all([
-        loadStats(),
-        loadNotices(),
-        fetchData('equipment'),
-        fetchData('reservations'),
-        fetchData('issues')
-      ]);
+      await Promise.all([loadStats(), loadNotices(), fetchData('equipment'), fetchData('reservations'), fetchData('issues')]);
       initChart();
       showToast('Data refreshed successfully', 'success');
     }
 
     async function loadStats() {
       try {
-        const res = await fetch('/api/admin/notices/stats');
+        const res = await fetch(`${API}/admin/notices/stats`);
         if (res.ok) {
           const stats = await res.json();
           document.getElementById('stat-users').textContent = stats.users || 0;
           document.getElementById('stat-equipment').textContent = stats.equipment || 0;
           document.getElementById('stat-notices').textContent = stats.notices || 0;
         }
-      } catch (e) { console.error('Stats fail', e); }
+      } catch(e) { console.error('Stats fail', e); }
     }
 
-    // Chart logic
     function initChart() {
       const ctx = document.getElementById('dashboardChart').getContext('2d');
       if (dashboardChartInstance) dashboardChartInstance.destroy();
-      
-      // Count statuses for demo chart
-      const pendingRes = state.reservations.filter(r => r.status === 'PENDING').length;
-      const approvedRes = state.reservations.filter(r => r.status === 'APPROVED').length;
-      const openIssues = state.issues.filter(i => i.status !== 'RESOLVED').length;
-
+      const pendingRes = state.reservations.filter(r => r.status==='PENDING').length;
+      const approvedRes = state.reservations.filter(r => r.status==='APPROVED').length;
+      const openIssues = state.issues.filter(i => i.status!=='RESOLVED').length;
       dashboardChartInstance = new Chart(ctx, {
         type: 'bar',
         data: {
-          labels: ['Pending Reservations', 'Approved Reservations', 'Open Issues'],
-          datasets: [{
-            label: 'System Metrics',
-            data: [pendingRes, approvedRes, openIssues],
-            backgroundColor: ['#f59e0b', '#10b981', '#ef4444'],
-            borderRadius: 6
-          }]
+          labels: ['Pending Reservations','Approved Reservations','Open Issues'],
+          datasets: [{ label:'System Metrics', data:[pendingRes,approvedRes,openIssues], backgroundColor:['#f59e0b','#10b981','#ef4444'], borderRadius:6 }]
         },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
-          plugins: { legend: { display: false } }
-        }
+        options: { responsive:true, maintainAspectRatio:false, scales:{ y:{ beginAtZero:true, ticks:{ precision:0 } } }, plugins:{ legend:{ display:false } } }
       });
     }
 
     function updateChart() {
-      if(dashboardChartInstance) {
-          dashboardChartInstance.data.datasets[0].data = [
-              state.reservations.filter(r => r.status === 'PENDING').length,
-              state.reservations.filter(r => r.status === 'APPROVED').length,
-              state.issues.filter(i => i.status !== 'RESOLVED').length
-          ];
-          dashboardChartInstance.update();
+      if (dashboardChartInstance) {
+        dashboardChartInstance.data.datasets[0].data = [
+          state.reservations.filter(r=>r.status==='PENDING').length,
+          state.reservations.filter(r=>r.status==='APPROVED').length,
+          state.issues.filter(i=>i.status!=='RESOLVED').length
+        ];
+        dashboardChartInstance.update();
       }
     }
 
-    // Generic fetch data
     async function fetchData(type) {
       try {
-        const res = await fetch(`/api/admin/notices/${type}`);
-        if(res.ok) {
+        const res = await fetch(`${API}/admin/notices/${type}`);
+        if (res.ok) {
           state[type] = await res.json();
           if (document.getElementById(`tab-${type}`).classList.contains('active')) {
             if(type==='equipment') renderEquipmentTable();
@@ -578,236 +651,331 @@
             if(type==='issues') renderIssuesTable();
           }
         }
-      } catch (e) { console.error(`Error loading ${type}`, e); }
+      } catch(e) { console.error(`Error loading ${type}`, e); }
     }
 
-    // Notices
     document.getElementById('notice-form').addEventListener('submit', async e => {
       e.preventDefault();
-      const btn = document.getElementById('btn-submit'); btn.disabled = true; btn.textContent = 'Publishing...';
-      const payload = {
-        title: document.getElementById('notice-title').value,
-        message: document.getElementById('notice-message').value,
-        active: document.getElementById('notice-active').checked
-      };
+      const btn = document.getElementById('btn-submit'); btn.disabled=true; btn.textContent='Publishing...';
       try {
-        const res = await fetch('/api/admin/notices', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        if (res.ok) {
-          document.getElementById('notice-form').reset();
-          loadNotices(); loadStats();
-          showToast('Notice published successfully!');
-        }
-      } catch (e) { showToast('Error publishing notice', 'error'); }
-      finally { btn.disabled = false; btn.textContent = 'Publish Notice'; }
+        const res = await fetch(`${API}/admin/notices`, {
+          method:'POST', headers:{'Content-Type':'application/json'},
+          body: JSON.stringify({ title: document.getElementById('notice-title').value, message: document.getElementById('notice-message').value, active: document.getElementById('notice-active').checked })
+        });
+        if (res.ok) { document.getElementById('notice-form').reset(); loadNotices(); loadStats(); showToast('Notice published successfully!'); }
+      } catch(e) { showToast('Error publishing notice','error'); }
+      finally { btn.disabled=false; btn.textContent='Publish Notice'; }
     });
 
     async function loadNotices() {
       const list = document.getElementById('notices-list');
       try {
-        const res = await fetch('/api/admin/notices');
+        const res = await fetch(`${API}/admin/notices`);
         const data = await res.json();
-        if(data.length===0){ list.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text3);font-size:13px;">No notices yet.</div>'; return; }
+        if (!data.length) { list.innerHTML='<div style="text-align:center;padding:30px;color:var(--text3);font-size:13px;">No notices yet.</div>'; return; }
         list.innerHTML = data.reverse().map(n => `
           <div class="notice-item">
-            <div class="notice-icon ${!n.active ? 'inactive' : ''}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path></svg></div>
+            <div class="notice-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"/></svg></div>
             <div class="notice-info">
-              <div class="notice-title">${n.title} <span class="status-badge ${n.active ? 'active' : 'inactive'}">${n.active ? 'Active' : 'Inactive'}</span></div>
+              <div class="notice-title">${n.title} <span class="status-badge ${n.active?'active':'inactive'}">${n.active?'Active':'Inactive'}</span></div>
               <div class="notice-desc">${n.message}</div>
             </div>
-          </div>
-        `).join('');
-      } catch (e) { list.innerHTML = 'Error loading notices'; }
+          </div>`).join('');
+      } catch(e) { list.innerHTML='Error loading notices'; }
     }
 
-    // Render Helpers
-    function paginate(array, page_size, page_number) {
-      return array.slice((page_number - 1) * page_size, page_number * page_size);
-    }
+    function paginate(array, size, page) { return array.slice((page-1)*size, page*size); }
 
     function renderPagination(total, type) {
-      const totalPages = Math.ceil(total / state.pagination[type].limit) || 1;
+      const totalPages = Math.ceil(total/state.pagination[type].limit)||1;
       const curr = state.pagination[type].page;
-      const container = document.getElementById(`pagination-${type}`);
-      
-      let html = `<button class="page-btn" ${curr === 1 ? 'disabled' : ''} onclick="changePage('${type}', ${curr - 1})">Prev</button>`;
-      html += `<span>Page ${curr} of ${totalPages}</span>`;
-      html += `<button class="page-btn" ${curr === totalPages ? 'disabled' : ''} onclick="changePage('${type}', ${curr + 1})">Next</button>`;
-      
-      container.innerHTML = html;
+      document.getElementById(`pagination-${type}`).innerHTML =
+        `<button class="page-btn" ${curr===1?'disabled':''} onclick="changePage('${type}',${curr-1})">Prev</button>
+         <span>Page ${curr} of ${totalPages}</span>
+         <button class="page-btn" ${curr===totalPages?'disabled':''} onclick="changePage('${type}',${curr+1})">Next</button>`;
     }
 
     function changePage(type, newPage) {
       state.pagination[type].page = newPage;
-      if(type === 'equipment') renderEquipmentTable();
-      if(type === 'reservations') renderReservationsTable();
-      if(type === 'issues') renderIssuesTable();
+      if(type==='equipment') renderEquipmentTable();
+      if(type==='reservations') renderReservationsTable();
+      if(type==='issues') renderIssuesTable();
     }
 
-    // Equipment Logic
     function renderEquipmentTable() {
       const tbody = document.getElementById('table-equipment');
       const search = document.getElementById('search-equipment').value.toLowerCase();
       const statusFilter = document.getElementById('filter-equipment-status').value;
-
-      let filtered = state.equipment.filter(item => {
-        const matchesSearch = (item.name || '').toLowerCase().includes(search);
-        const matchesStatus = statusFilter === 'ALL' || item.status === statusFilter;
-        return matchesSearch && matchesStatus;
-      });
-
+      let filtered = state.equipment.filter(item => (item.name||'').toLowerCase().includes(search) && (statusFilter==='ALL'||item.status===statusFilter));
       const paginated = paginate(filtered, state.pagination.equipment.limit, state.pagination.equipment.page);
-      
-      if(paginated.length === 0){ tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No equipment found.</td></tr>'; }
-      else {
-        tbody.innerHTML = paginated.map(item => {
-          const displayStatus = item.quantity === 0 ? 'OUT OF STOCK' : (item.status || 'N/A');
-          const badgeClass = (item.quantity > 0 && item.status === 'AVAILABLE') ? 'active' : 'inactive';
-          return `
-          <tr>
-            <td style="font-weight:600;">${item.name || 'Unnamed'}</td>
-            <td style="color:var(--text2); font-size:12px;">${(item.description || '').substring(0,50)}...</td>
-            <td><span class="status-badge ${badgeClass}">${displayStatus}</span></td>
-            <td>${item.quantity || 0}</td>
-            <td>
-              <button class="action-btn" onclick="openEquipmentModal(${item.id})">Edit</button>
-            </td>
-          </tr>
-        `}).join('');
-      }
+      tbody.innerHTML = paginated.length===0 ? '<tr><td colspan="5" style="text-align:center;">No equipment found.</td></tr>'
+        : paginated.map(item => `<tr>
+          <td style="font-weight:600;">${item.name||'Unnamed'}</td>
+          <td style="color:var(--text2);font-size:12px;">${(item.description||'').substring(0,50)}...</td>
+          <td><span class="status-badge ${item.status==='AVAILABLE'?'active':'inactive'}">${item.status||'N/A'}</span></td>
+          <td>${item.quantity||0}</td>
+          <td><button class="action-btn" onclick="openEquipmentModal(${item.id})">Edit</button></td>
+        </tr>`).join('');
       renderPagination(filtered.length, 'equipment');
     }
 
     function openEquipmentModal(id) {
       document.getElementById('equipment-modal-title').textContent = id ? 'Edit Equipment' : 'Add Equipment';
       document.getElementById('equipment-form').reset();
-      // If editing, populate data (Placeholder for actual fetch)
       openModal('modal-equipment');
     }
 
     function handleEquipmentSubmit(e) {
       e.preventDefault();
-      // Placeholder for POST/PUT request
       showToast('Equipment saved successfully!', 'success');
       closeModal('modal-equipment');
       fetchData('equipment');
     }
 
-    // Reservations Logic
     function renderReservationsTable() {
       const tbody = document.getElementById('table-reservations');
       const search = document.getElementById('search-reservations').value.toLowerCase();
       const statusFilter = document.getElementById('filter-reservations-status').value;
-
-      let filtered = state.reservations.filter(item => {
-        const matchesSearch = String(item.id).includes(search);
-        const matchesStatus = statusFilter === 'ALL' || item.status === statusFilter;
-        return matchesSearch && matchesStatus;
-      });
-
+      let filtered = state.reservations.filter(item => String(item.id).includes(search) && (statusFilter==='ALL'||item.status===statusFilter));
       const paginated = paginate(filtered, state.pagination.reservations.limit, state.pagination.reservations.page);
-
-      if(paginated.length===0){ tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No reservations found.</td></tr>'; }
-      else {
-        tbody.innerHTML = paginated.map(item => {
-           let statusClass = item.status === 'PENDING' ? 'pending' : (item.status === 'APPROVED' || item.status === 'CONFIRMED' ? 'active' : 'inactive');
-           let start = item.startTime ? new Date(item.startTime).toLocaleString() : 'N/A';
-           let end = item.endTime ? new Date(item.endTime).toLocaleString() : 'N/A';
-           return `
-          <tr>
-            <td style="font-weight:600;">#RES-${item.id}</td>
-            <td>${start}</td>
-            <td>${end}</td>
-            <td><span class="status-badge ${statusClass}">${item.status || 'PENDING'}</span></td>
-            <td>
-              ${item.status === 'PENDING' ? `
-                <button class="action-btn approve" onclick="confirmAction('approve reservation #${item.id}', () => resolveReservation(${item.id}, 'APPROVED'))">Approve</button>
-                <button class="action-btn reject" onclick="confirmAction('reject reservation #${item.id}', () => resolveReservation(${item.id}, 'REJECTED'))">Reject</button>
-              ` : '<span style="font-size:12px;color:var(--text3)">No actions</span>'}
-            </td>
-          </tr>
-        `}).join('');
-      }
+      tbody.innerHTML = paginated.length===0 ? '<tr><td colspan="5" style="text-align:center;">No reservations found.</td></tr>'
+        : paginated.map(item => `<tr>
+          <td style="font-weight:600;">#RES-${item.id}</td>
+          <td>${item.startTime?new Date(item.startTime).toLocaleString():'N/A'}</td>
+          <td>${item.endTime?new Date(item.endTime).toLocaleString():'N/A'}</td>
+          <td><span class="status-badge ${item.status==='PENDING'?'pending':item.status==='APPROVED'?'active':'inactive'}">${item.status||'PENDING'}</span></td>
+          <td>${item.status==='PENDING'?`
+            <button class="action-btn approve" onclick="confirmAction('approve reservation #${item.id}',()=>resolveReservation(${item.id},'APPROVED'))">Approve</button>
+            <button class="action-btn reject" onclick="confirmAction('reject reservation #${item.id}',()=>resolveReservation(${item.id},'REJECTED'))">Reject</button>
+          `:'<span style="font-size:12px;color:var(--text3)">No actions</span>'}</td>
+        </tr>`).join('');
       renderPagination(filtered.length, 'reservations');
     }
 
-    function resolveReservation(id, status) {
-       // Placeholder for PUT request
-       showToast(`Reservation ${id} marked as ${status}`);
-       fetchData('reservations');
-    }
+    function resolveReservation(id, status) { showToast(`Reservation ${id} marked as ${status}`); fetchData('reservations'); }
 
-    // Issues Logic
     function renderIssuesTable() {
       const tbody = document.getElementById('table-issues');
       const search = document.getElementById('search-issues').value.toLowerCase();
       const statusFilter = document.getElementById('filter-issues-status').value;
-
-      let filtered = state.issues.filter(item => {
-        const matchesSearch = (item.title || '').toLowerCase().includes(search);
-        const matchesStatus = statusFilter === 'ALL' || item.status === statusFilter;
-        return matchesSearch && matchesStatus;
-      });
-
+      let filtered = state.issues.filter(item => (item.title||'').toLowerCase().includes(search) && (statusFilter==='ALL'||item.status===statusFilter));
       const paginated = paginate(filtered, state.pagination.issues.limit, state.pagination.issues.page);
-
-      if(paginated.length===0){ tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No issues reported.</td></tr>'; }
-      else {
-        tbody.innerHTML = paginated.map(item => `
-          <tr>
-            <td style="font-weight:600;">${item.title || 'Untitled Issue'}</td>
-            <td style="font-size:12px;color:var(--text2);">${(item.description || '').substring(0, 40)}...</td>
-            <td><span class="status-badge inactive">${item.issueType || 'GENERAL'}</span></td>
-            <td><span class="status-badge ${item.status==='RESOLVED'?'active':'pending'}">${item.status || 'OPEN'}</span></td>
-            <td style="font-weight:600;color:${item.priority==='HIGH'?'red':'inherit'};">${item.priority || 'MEDIUM'}</td>
-            <td>
-              ${item.status !== 'RESOLVED' ? `<button class="action-btn approve" onclick="confirmAction('resolve issue: ${item.title}', () => markIssueResolved(${item.id}))">Resolve</button>` : '<span style="font-size:12px;color:var(--text3)">Resolved</span>'}
-            </td>
-          </tr>
-        `).join('');
-      }
+      tbody.innerHTML = paginated.length===0 ? '<tr><td colspan="6" style="text-align:center;">No issues reported.</td></tr>'
+        : paginated.map(item => `<tr>
+          <td style="font-weight:600;">${item.title||'Untitled'}</td>
+          <td style="font-size:12px;color:var(--text2);">${(item.description||'').substring(0,40)}...</td>
+          <td><span class="status-badge inactive">${item.issueType||'GENERAL'}</span></td>
+          <td><span class="status-badge ${item.status==='RESOLVED'?'active':'pending'}">${item.status||'OPEN'}</span></td>
+          <td style="font-weight:600;color:${item.priority==='HIGH'?'red':'inherit'};">${item.priority||'MEDIUM'}</td>
+          <td>${item.status!=='RESOLVED'?`<button class="action-btn approve" onclick="confirmAction('resolve issue: ${item.title}',()=>markIssueResolved(${item.id}))">Resolve</button>`:'<span style="font-size:12px;color:var(--text3)">Resolved</span>'}</td>
+        </tr>`).join('');
       renderPagination(filtered.length, 'issues');
     }
 
-    function markIssueResolved(id) {
-       showToast(`Issue ${id} resolved`);
-       fetchData('issues');
-    }
+    function markIssueResolved(id) { showToast(`Issue ${id} resolved`); fetchData('issues'); }
 
-    // Action Confirmation
     let currentConfirmCallback = null;
     function confirmAction(actionText, callback) {
       document.getElementById('confirm-message').textContent = `Are you sure you want to ${actionText}?`;
       currentConfirmCallback = callback;
       openModal('modal-confirm');
     }
-
     document.getElementById('confirm-action-btn').addEventListener('click', () => {
-      if(currentConfirmCallback) currentConfirmCallback();
+      if (currentConfirmCallback) currentConfirmCallback();
       closeModal('modal-confirm');
     });
 
-    // CSV Export
     function exportCSV(type) {
       const data = state[type];
-      if(!data || data.length === 0) {
-        showToast('No data to export', 'error');
+      if (!data||!data.length) { showToast('No data to export','error'); return; }
+      const keys = Object.keys(data[0]);
+      const csv = "data:text/csv;charset=utf-8," + keys.join(",") + "\n"
+        + data.map(row => keys.map(k=>`"${(row[k]||'').toString().replace(/"/g,'""')}"`).join(",")).join("\n");
+      const link = document.createElement("a");
+      link.setAttribute("href", encodeURI(csv));
+      link.setAttribute("download", `lms_${type}_export_${new Date().toISOString().split('T')[0]}.csv`);
+      document.body.appendChild(link); link.click(); document.body.removeChild(link);
+      showToast(`Exported ${type} data successfully`);
+    }
+
+    /* ══════════════════════════════════════════
+       ML SETTINGS
+    ══════════════════════════════════════════ */
+
+    const ML_FEATURE_META = {
+      demand_forecast: {
+        label: "Demand Forecasting",
+        desc: "Predicts busy equipment and time slots using weighted historical reservation data. Results shown below when enabled.",
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="22 12 18 12 15 21 9 3 6 12 2 12"/></svg>`,
+        comingSoon: false,
+      },
+      failure_prediction: {
+        label: "Equipment Failure Prediction",
+        desc: "Flags equipment at risk of failure based on issue report frequency and recency patterns.",
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+        comingSoon: true,
+      },
+      recommendation: {
+        label: "Equipment Recommendations",
+        desc: "Suggests related equipment when a student books a reservation, based on co-booking patterns.",
+        icon: `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><path d="M9.09 9a3 3 0 0 1 5.83 1c0 2-3 3-3 3"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>`,
+        comingSoon: true,
+      },
+    };
+
+    async function loadMLSettings() {
+      const list = document.getElementById('ml-features-list');
+      list.innerHTML = '<div class="ml-empty"><div class="ml-empty-icon">⚙️</div>Loading...</div>';
+      try {
+        const res = await fetch(`${API}/ml/settings`, {
+          headers: { Authorization: "Bearer " + token }
+        });
+        if (!res.ok) throw new Error("Failed to load ML settings");
+        state.mlSettings = await res.json();
+        renderMLFeatures();
+      } catch(e) {
+        list.innerHTML = `<div class="ml-empty"><div class="ml-empty-icon">⚠️</div>${e.message}</div>`;
+      }
+    }
+
+    function renderMLFeatures() {
+      const list = document.getElementById('ml-features-list');
+      if (!state.mlSettings.length) {
+        list.innerHTML = '<div class="ml-empty"><div class="ml-empty-icon">📭</div>No ML features found.</div>';
         return;
       }
-      
-      const keys = Object.keys(data[0]);
-      const csvContent = "data:text/csv;charset=utf-8," 
-        + keys.join(",") + "\n"
-        + data.map(row => keys.map(k => `"${(row[k] || '').toString().replace(/"/g, '""')}"`).join(",")).join("\n");
-      
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", `lms_${type}_export_${new Date().toISOString().split('T')[0]}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      showToast(`Exported ${type} data successfully`);
+
+      list.innerHTML = state.mlSettings.map(f => {
+        const meta = ML_FEATURE_META[f.featureName] || { label: f.featureName, desc: f.description || '', icon: '🤖', comingSoon: false };
+        const on = f.enabled;
+        const cs = meta.comingSoon;
+        return `
+        <div class="ml-feature-card ${on ? 'enabled' : 'disabled'}" id="card-${f.featureName}">
+          <div class="ml-feature-left">
+            <div class="ml-feature-icon ${on ? 'on' : 'off'}">${meta.icon}</div>
+            <div>
+              <div class="ml-feature-name">
+                ${meta.label}
+                ${cs ? '<span style="font-size:10px;background:#ede9fe;color:#7c3aed;padding:2px 7px;border-radius:999px;font-weight:700;margin-left:6px;vertical-align:middle;">COMING SOON</span>' : ''}
+              </div>
+              <div class="ml-feature-desc">${meta.desc}</div>
+              <div class="ml-feature-meta">
+                ${f.updatedBy ? `Last toggled by <strong>${f.updatedBy}</strong>` : 'Not yet modified'}
+                ${f.updatedAt ? ' · ' + new Date(f.updatedAt).toLocaleString() : ''}
+              </div>
+            </div>
+          </div>
+          <div class="ml-toggle-wrap">
+            <span class="ml-badge ${on ? 'on' : 'off'}">
+              <span class="dot"></span>${on ? 'Enabled' : 'Disabled'}
+            </span>
+            <label class="toggle-switch" title="${cs ? 'Coming soon' : (on ? 'Click to disable' : 'Click to enable')}">
+              <input type="checkbox" ${on ? 'checked' : ''} ${cs ? 'disabled' : ''}
+                onchange="toggleFeature('${f.featureName}', this)" />
+              <span class="toggle-slider"></span>
+            </label>
+            <span class="ml-toggle-label">${cs ? 'Not available yet' : (on ? 'Click to turn off' : 'Click to turn on')}</span>
+          </div>
+        </div>`;
+      }).join('');
+
+      // Show/hide forecast panel based on demand_forecast status
+      const demandSetting = state.mlSettings.find(f => f.featureName === 'demand_forecast');
+      const panel = document.getElementById('ml-forecast-panel');
+      panel.style.display = demandSetting && demandSetting.enabled ? 'block' : 'none';
+    }
+
+    async function toggleFeature(featureName, checkbox) {
+      checkbox.disabled = true;
+      try {
+        const res = await fetch(`${API}/ml/settings/${featureName}/toggle`, {
+          method: 'PATCH',
+          headers: { Authorization: "Bearer " + token }
+        });
+        if (!res.ok) throw new Error("Toggle failed");
+        const updated = await res.json();
+        // Update state
+        const idx = state.mlSettings.findIndex(f => f.featureName === featureName);
+        if (idx !== -1) state.mlSettings[idx] = updated;
+        renderMLFeatures();
+        showToast(`${featureName.replace(/_/g,' ')} ${updated.enabled ? 'enabled' : 'disabled'}`, 'success');
+      } catch(e) {
+        checkbox.checked = !checkbox.checked; // revert
+        showToast('Failed to toggle feature', 'error');
+      } finally {
+        checkbox.disabled = false;
+      }
+    }
+
+    async function loadForecast() {
+      const content = document.getElementById('ml-forecast-content');
+      content.innerHTML = '<div class="ml-empty"><div class="ml-empty-icon">⏳</div>Running forecast...</div>';
+      try {
+        const res = await fetch(`${API}/ml/forecast/demand`, {
+          headers: { Authorization: "Bearer " + token }
+        });
+        const data = await res.json();
+        if (!data.enabled) {
+          content.innerHTML = '<div class="ml-empty"><div class="ml-empty-icon">⚠️</div>Enable demand forecasting first.</div>';
+          return;
+        }
+        if (!data.topDemand || data.topDemand.length === 0) {
+          content.innerHTML = `<div class="ml-empty"><div class="ml-empty-icon">📭</div>${data.message || 'Not enough data yet. Make some reservations first.'}</div>`;
+          return;
+        }
+        renderForecastResults(data);
+      } catch(e) {
+        content.innerHTML = `<div class="ml-empty"><div class="ml-empty-icon">⚠️</div>Error: ${e.message}</div>`;
+      }
+    }
+
+    function renderForecastResults(data) {
+      const content = document.getElementById('ml-forecast-content');
+      const ranking = data.equipmentRanking || [];
+      const top = (data.topDemand || []).slice(0, 6);
+      const summary = data.summary || {};
+
+      content.innerHTML = `
+        <div style="display:grid;grid-template-columns:1fr 1fr;gap:20px;margin-bottom:20px;">
+
+          <!-- Equipment Ranking -->
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">Most In-Demand Equipment</div>
+            <div class="ml-ranking-list">
+              ${ranking.slice(0,6).map((r, i) => `
+                <div class="ml-ranking-item">
+                  <div class="ml-rank-num">${i+1}</div>
+                  <div class="ml-rank-name">${r.equipmentName}</div>
+                  <div class="ml-rank-score">${r.totalScore} pts</div>
+                  <span class="ml-level-badge ${r.level}">${r.level}</span>
+                </div>`).join('')}
+            </div>
+          </div>
+
+          <!-- Summary -->
+          <div>
+            <div style="font-size:13px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">Analysis Summary</div>
+            <div style="background:var(--bg);border-radius:12px;padding:16px;font-size:13px;line-height:2;">
+              <div>📅 <strong>${summary.weeksOfHistory || 8}</strong> weeks of history analysed</div>
+              <div>📋 <strong>${summary.totalReservationsAnalysed || 0}</strong> reservations processed</div>
+              <div>🔬 <strong>${summary.uniqueEquipmentTypes || 0}</strong> equipment types found</div>
+              <div>⚖️ Decay factor: <strong>${summary.decayFactor || 0.85}</strong> (recent = higher weight)</div>
+              <div style="margin-top:8px;font-size:11px;color:var(--text3);">Generated: ${new Date(data.generatedAt).toLocaleString()}</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Top Demand Slots -->
+        <div style="font-size:13px;font-weight:700;color:var(--text2);text-transform:uppercase;letter-spacing:0.05em;margin-bottom:12px;">Top Demand Time Slots</div>
+        <div class="ml-top-slots">
+          ${top.map(s => `
+            <div class="ml-slot-card">
+              <div class="ml-slot-day">${s.dayOfWeek}</div>
+              <div class="ml-slot-time">${s.hourLabel}</div>
+              <div class="ml-slot-equip">${s.equipmentName}</div>
+              <span class="ml-level-badge ${s.level}">${s.level} · ${s.score} pts</span>
+            </div>`).join('')}
+        </div>`;
     }
   </script>
 </body>

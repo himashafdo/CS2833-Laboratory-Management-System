@@ -29,4 +29,9 @@ public void setQuantity(int quantity) { this.quantity = quantity; }
     public void setImageUrl(String imageUrl) { this.imageUrl = imageUrl; }
     public EquipmentStatus getStatus() { return status; }
     public void setStatus(EquipmentStatus status) { this.status = status; }
+
+    private String equipmentCode;
+
+public String getEquipmentCode() { return equipmentCode; }
+public void setEquipmentCode(String equipmentCode) { this.equipmentCode = equipmentCode; }
 }

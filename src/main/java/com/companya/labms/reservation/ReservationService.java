@@ -92,6 +92,7 @@ public class ReservationService {
             Equipment equipment = equipmentRepository.findById(equipmentId)
                     .orElseThrow(() -> new RuntimeException("Equipment not found"));
             reservation.setEquipment(equipment);
+            reservation.setEquipmentCode(equipment.getEquipmentCode());
         }
 
         if (labId != null) {

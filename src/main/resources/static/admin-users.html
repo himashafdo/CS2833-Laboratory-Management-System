@@ -1,0 +1,322 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>All Accounts — Admin Dashboard</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+      :root {
+        --orange: #f97316; --orange2: #ea6c0a; --text: #1a1a2e; --text2: #64748b;
+        --text3: #94a3b8; --border: #e2e8f0; --white: #ffffff; --bg: #f8fafc;
+        --font: "Plus Jakarta Sans", sans-serif;
+      }
+      [data-theme="dark"] {
+        --text: #f1f5f9; --text2: #cbd5e1; --text3: #94a3b8; --border: #334155;
+        --white: #1e293b; --bg: #0f172a;
+      }
+      body { font-family: var(--font); background: var(--bg); min-height: 100vh; display: flex; color: var(--text); }
+
+      /* SIDEBAR */
+      .sidebar { width: 240px; min-height: 100vh; flex-shrink: 0; background: linear-gradient(180deg, #f97316 0%, #c2410c 100%); display: flex; flex-direction: column; padding: 24px 0; position: fixed; left: 0; top: 0; bottom: 0; z-index: 100; transition: transform 0.3s ease; }
+      .sidebar-brand { padding: 0 20px 28px; border-bottom: 1px solid rgba(255, 255, 255, 0.15); margin-bottom: 16px; }
+      .brand-row { display: flex; align-items: center; gap: 10px; }
+      .brand-icon { width: 38px; height: 38px; background: rgba(255, 255, 255, 0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
+      .brand-name { font-size: 14px; font-weight: 700; color: white; line-height: 1.2; }
+      .nav-section { padding: 0 12px; flex: 1; }
+      .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; margin-bottom: 4px; color: rgba(255, 255, 255, 0.8); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; text-decoration: none; }
+      .nav-item:hover { background: rgba(255, 255, 255, 0.15); color: white; }
+      .nav-item.active { background: rgba(255, 255, 255, 0.25); color: white; font-weight: 600; }
+      .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
+      
+      /* MAIN */
+      .main { margin-left: 240px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
+      .topbar { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
+      .topbar-title { font-size: 20px; font-weight: 700; }
+      .topbar-right { display: flex; align-items: center; gap: 12px; }
+      
+      .topbar-date { padding: 8px 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; color: var(--text2); background: var(--bg); white-space: nowrap; }
+      .theme-toggle { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); background: var(--white); color: var(--text2); cursor: pointer; display: flex; align-items: center; justify-content: center; font-size: 16px; transition: all 0.2s; }
+      .theme-toggle:hover { background: var(--bg); transform: scale(1.05); }
+      .topbar-icon { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; background: var(--white); color: var(--text2); position: relative; transition: all 0.2s; }
+      .topbar-icon:hover { background: var(--bg); }
+      .notif-dot { width: 8px; height: 8px; background: var(--orange); border-radius: 50%; position: absolute; top: 6px; right: 6px; border: 2px solid var(--white); }
+      
+      .topbar-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--orange), var(--orange3)); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: white; cursor: pointer; transition: all 0.2s; }
+      .topbar-avatar:hover { transform: scale(1.05); box-shadow: 0 4px 10px rgba(249, 115, 22, 0.2); }
+      
+      .sidebar-user { margin: 16px 12px 0; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.15); display: flex; align-items: center; gap: 10px; cursor: pointer; text-decoration: none; transition: background 0.2s; }
+      .sidebar-user:hover { background: rgba(0, 0, 0, 0.25); }
+      .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: rgba(255, 255, 255, 0.3); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: white; flex-shrink: 0; }
+      .user-name { font-size: 13px; font-weight: 600; color: white; }
+      .user-role { font-size: 11px; color: rgba(255, 255, 255, 0.7); }
+      
+      .logout-btn { margin-left: auto; background: none; border: none; color: white; cursor: pointer; opacity: 0.7; transition: 0.2s; padding: 4px; }
+      .logout-btn:hover { opacity: 1; transform: scale(1.1); }
+      
+      .content { padding: 28px 32px; flex: 1; }
+      
+      .section-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
+      .section-header { margin-bottom: 20px; }
+      .section-title { font-size: 18px; font-weight: 700; color: var(--text); }
+      .section-desc { font-size: 13px; color: var(--text2); margin-top: 4px; }
+      
+      /* TOOLBAR */
+      .toolbar { display: flex; gap: 12px; margin-bottom: 20px; align-items: center; flex-wrap: wrap; }
+      .search-box { position: relative; flex: 1; min-width: 250px; }
+      .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text3); }
+      .search-input { width: 100%; padding: 10px 14px 10px 40px; border: 1px solid var(--border); border-radius: 10px; font-family: var(--font); font-size: 13px; background: var(--bg); color: var(--text); outline: none; transition: border-color 0.2s; }
+      .search-input:focus { border-color: var(--orange); }
+      .filter-select { padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; font-family: var(--font); font-size: 13px; background: var(--bg); color: var(--text); min-width: 140px; outline: none; }
+      
+      /* TABLE */
+      .table-container { overflow-x: auto; }
+      .data-table { width: 100%; border-collapse: collapse; white-space: nowrap; }
+      .data-table th { text-align: left; padding: 14px; font-size: 12px; font-weight: 600; color: var(--text2); border-bottom: 2px solid var(--border); text-transform: uppercase; letter-spacing: 0.05em; }
+      .data-table td { padding: 16px 14px; font-size: 13px; color: var(--text); border-bottom: 1px solid var(--border); vertical-align: middle; }
+      .data-table tr:hover { background: var(--bg); }
+      
+      .status-badge { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 20px; }
+      .status-active { background: #dcfce7; color: #15803d; }
+      .status-inactive { background: #f1f5f9; color: #64748b; }
+      
+      .role-badge { font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 6px; }
+      .role-admin { background: #fee2e2; color: #991b1b; }
+      .role-technician { background: #e0e7ff; color: #3730a3; }
+      .role-student { background: #fef9c3; color: #854d0e; }
+      
+      .action-btn { background: none; border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; color: var(--text); margin-right: 4px; }
+      .action-btn:hover { background: var(--border); }
+      .action-danger { color: #ef4444; border-color: #fecaca; }
+      .action-danger:hover { background: #fef2f2; }
+      
+      .alert { padding: 14px 20px; border-radius: 10px; font-size: 13px; font-weight: 500; margin-bottom: 20px; display: none; align-items: center; gap: 10px; }
+      .alert.show { display: flex; }
+      .alert.warning { background: #fffbeb; border: 1px solid #fde68a; color: #92400e; }
+      
+      @media (max-width: 768px) {
+        .sidebar { transform: translateX(-100%); }
+        .main { margin-left: 0; }
+        .content { padding: 20px 16px; }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-row">
+          <div class="brand-icon">
+            <svg viewBox="0 0 32 32" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="16" x2="12" y2="16" />
+              <line x1="12" y1="9" x2="12" y2="23" />
+              <line x1="12" y1="10.5" x2="26" y2="5" />
+              <line x1="12" y1="21.5" x2="26" y2="27" />
+              <polygon points="22,24.5 26,27 23.5,22.5" fill="white" stroke="none" />
+              <line x1="26" y1="5" x2="26" y2="2" />
+              <line x1="26" y1="27" x2="26" y2="30" />
+            </svg>
+          </div>
+          <div class="brand-name">Lab Management<br/>System</div>
+        </div>
+      </div>
+      <nav class="nav-section">
+        <div style="margin: 10px 0 10px 12px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.5); text-transform: uppercase;">Admin Controls</div>
+        <a href="/admin-dashboard.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2z"></path><polyline points="9 22 9 12 15 12 15 22"></polyline></svg>
+          Home
+        </a>
+        <a href="/admin-users.html" class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
+          All Accounts
+        </a>
+        <a href="/catalog.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"></path></svg>
+          Equipment & Lab Spaces
+        </a>
+        <a href="/my-reservations.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"></rect><line x1="16" y1="2" x2="16" y2="6"></line><line x1="8" y1="2" x2="8" y2="6"></line><line x1="3" y1="10" x2="21" y2="10"></line></svg>
+          My Reservations
+        </a>
+        <a href="/requests.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"></path></svg>
+          Equipment Requests
+        </a>
+        <a href="/report-issue.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line></svg>
+          Report Issue
+        </a>
+      </nav>
+      <div class="sidebar-user" onclick="window.location.href='/profile.html'" title="View Profile">
+        <div class="user-avatar" id="sidebar-avatar">AD</div>
+        <div>
+          <div class="user-name" id="sidebar-name">Admin User</div>
+          <div class="user-role" id="sidebar-role">System Administrator</div>
+        </div>
+        <button onclick="logout(event)" class="logout-btn" title="Logout">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
+            <polyline points="16 17 21 12 16 7"></polyline>
+            <line x1="21" y1="12" x2="9" y2="12"></line>
+          </svg>
+        </button>
+      </div>
+    </aside>
+
+    <!-- MAIN -->
+    <div class="main">
+      <div class="topbar">
+        <div class="topbar-title">All Accounts</div>
+        <div class="topbar-right">
+          <div class="topbar-date" id="topbar-date"></div>
+          <button id="theme-btn" class="theme-toggle" title="Toggle theme">🌙</button>
+          <div class="topbar-icon" id="notif-btn">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+              <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/>
+            </svg>
+            <div class="notif-dot"></div>
+          </div>
+          <a href="/profile.html" style="text-decoration: none;">
+            <div class="topbar-avatar" id="topbar-avatar">AD</div>
+          </a>
+        </div>
+      </div>
+
+      <div class="content">
+        <div id="api-warning" class="alert warning">
+          <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 0 0 1.71 3h16.94a2 2 0 0 0 1.71-3L13.71 3.86a2 2 0 0 0-3.42 0z"></path><line x1="12" y1="9" x2="12" y2="13"></line><line x1="12" y1="17" x2="12.01" y2="17"></line></svg>
+          <span>The API endpoint <code>/api/auth/users</code> is currently missing from the backend. Displaying mock data for demonstration purposes. Please create an issue in the repository to implement this endpoint in <code>AuthController.java</code>.</span>
+        </div>
+
+        <div class="section-card">
+          <div class="section-header">
+            <div class="section-title">Manage Users</div>
+            <div class="section-desc">View, filter, and manage all student and technician accounts in the system.</div>
+          </div>
+          
+          <div class="toolbar">
+            <div class="search-box">
+              <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
+              <input type="text" class="search-input" id="search-users" placeholder="Search by username or email..." />
+            </div>
+            <select class="filter-select" id="filter-role">
+              <option value="ALL">All Roles</option>
+              <option value="STUDENT">Student</option>
+              <option value="TECHNICIAN">Lab Technician</option>
+              <option value="ADMIN">Admin</option>
+            </select>
+          </div>
+
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Role</th>
+                  <th>Registration Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="users-table-body">
+                <tr><td colspan="6" style="text-align:center; padding: 40px;">Loading users...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <script src="/calendar.js"></script>
+    <script src="/notifications.js"></script>
+    <script src="/theme.js"></script>
+    <script>
+      // Date Display
+      const topbarDate = document.getElementById('topbar-date');
+      const dateOptions = { weekday: 'long', year: 'numeric', month: 'long', day: 'numeric' };
+      if(topbarDate) topbarDate.textContent = new Date().toLocaleDateString('en-US', dateOptions);
+
+      // Logout function
+      function logout(e) {
+        if(e) e.stopPropagation();
+        sessionStorage.clear();
+        window.location.href = '/login.html';
+      }
+
+      // Data and Rendering
+      let usersData = [];
+
+      async function fetchUsers() {
+        try {
+          const API = "http://localhost:8080/api";
+          const headers = { Authorization: "Bearer " + sessionStorage.getItem("token") };
+          const response = await fetch(`${API}/auth/users`, { headers });
+          if (response.ok) {
+            usersData = await response.json();
+            document.getElementById('api-warning').classList.remove('show');
+          } else {
+            throw new Error('API Endpoint Missing');
+          }
+        } catch (error) {
+          // Show warning and use mock data
+          document.getElementById('api-warning').classList.add('show');
+          usersData = [
+            { id: 1, username: 'jdoe', email: 'jdoe@student.university.edu', role: 'STUDENT', createdAt: '2026-05-01', active: true },
+            { id: 2, username: 'asmith', email: 'asmith@university.edu', role: 'TECHNICIAN', createdAt: '2026-04-15', active: true },
+            { id: 3, username: 'admin01', email: 'admin@university.edu', role: 'ADMIN', createdAt: '2026-01-10', active: true },
+            { id: 4, username: 'mjackson', email: 'mj@student.university.edu', role: 'STUDENT', createdAt: '2026-05-08', active: false },
+          ];
+        }
+        renderTable();
+      }
+
+      function renderTable() {
+        const tbody = document.getElementById('users-table-body');
+        const searchTerm = document.getElementById('search-users').value.toLowerCase();
+        const roleFilter = document.getElementById('filter-role').value;
+
+        const filtered = usersData.filter(user => {
+          const matchesSearch = user.username.toLowerCase().includes(searchTerm) || user.email.toLowerCase().includes(searchTerm);
+          const matchesRole = roleFilter === 'ALL' || user.role === roleFilter;
+          return matchesSearch && matchesRole;
+        });
+
+        if (filtered.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" style="text-align:center; padding: 30px;">No users found matching your criteria.</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = filtered.map(user => {
+          let roleClass = 'role-student';
+          if (user.role === 'ADMIN') roleClass = 'role-admin';
+          if (user.role === 'TECHNICIAN') roleClass = 'role-technician';
+          
+          return `
+            <tr>
+              <td style="font-weight:600;">${user.username}</td>
+              <td style="color:var(--text2);">${user.email}</td>
+              <td><span class="role-badge ${roleClass}">${user.role}</span></td>
+              <td style="font-size:12px; color:var(--text2);">${new Date(user.createdAt || Date.now()).toLocaleDateString()}</td>
+              <td><span class="status-badge ${user.active ? 'status-active' : 'status-inactive'}">${user.active ? 'Active' : 'Disabled'}</span></td>
+              <td>
+                <button class="action-btn" onclick="alert('Edit User feature coming soon!')">Edit</button>
+                <button class="action-btn action-danger" onclick="alert('Account Status toggle coming soon!')">${user.active ? 'Disable' : 'Enable'}</button>
+              </td>
+            </tr>
+          `;
+        }).join('');
+      }
+
+      document.getElementById('search-users').addEventListener('input', renderTable);
+      document.getElementById('filter-role').addEventListener('change', renderTable);
+
+      // Initialize
+      fetchUsers();
+    </script>
+  </body>
+</html>

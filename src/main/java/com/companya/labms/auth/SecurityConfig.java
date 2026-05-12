@@ -19,6 +19,7 @@ public class SecurityConfig {
                     "/", 
                     "/index.html",
                     "/dashboard.html",
+                    "/admin-catalog.html",
                     "/api/auth/**"
                 ).permitAll()
                 .anyRequest().permitAll()

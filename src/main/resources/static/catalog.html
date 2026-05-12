@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Resources & Lab Catalog — Lab Reservation System</title>
+    <title>Resources & Lab Catalog — LabMS</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
@@ -206,7 +206,7 @@
         color: var(--text2);
         background: var(--bg);
       }
-      .topbar-icon {
+      .topbar-notif {
         width: 36px;
         height: 36px;
         border-radius: 50%;
@@ -759,7 +759,8 @@
             </svg>
           </div>
           <div>
-            <div class="brand-name">Laboratory Management System</div>
+            <div class="brand-name">LabMS</div>
+            <div class="brand-sub">UoM · ENTC Dept</div>
           </div>
         </div>
       </div>
@@ -788,9 +789,9 @@
           >
             <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
           </svg>
-          Equipment & Lab Spaces
+          Resources & Labs
         </a>
-        <a href="/my-reservations.html" class="nav-item">
+        <a href="/reservations.html" class="nav-item">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -804,7 +805,6 @@
           </svg>
           My Reservations
         </a>
-
         <a href="/report-issue.html" class="nav-item">
           <svg
             viewBox="0 0 24 24"
@@ -818,7 +818,19 @@
           </svg>
           Report Issue
         </a>
-        
+        <a href="/requests.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+            />
+          </svg>
+          Equipment Requests
+        </a>
       </nav>
 
       <div class="sidebar-user">
@@ -837,7 +849,7 @@
         <div class="topbar-title">Resources & Lab Catalog</div>
         <div class="topbar-right">
           <div class="topbar-date" id="topbar-date"></div>
-          <div class="topbar-icon">
+          <div class="topbar-notif">
             <svg
               width="16"
               height="16"
@@ -851,9 +863,7 @@
               />
             </svg>
           </div>
-          <a href="/profile.html" style="text-decoration: none">
-            <div class="topbar-avatar" id="topbar-avatar">--</div>
-          </a>
+          <div class="topbar-avatar" id="topbar-avatar">MS</div>
         </div>
       </div>
 
@@ -1308,6 +1318,7 @@
         el.className = `alert ${type} show`;
         el.textContent = msg;
       }
+
       async function confirmBooking() {
         const date = document.getElementById("booking-date").value;
         const start = document.getElementById("booking-start").value;
@@ -1318,25 +1329,23 @@
           return showModalAlert("error", "Please fill in all fields");
         if (start >= end)
           return showModalAlert("error", "End time must be after start time");
-        if (selectedType === "equipment" && !labId)
-          return showModalAlert("error", "Please select a lab");
-
-        let quantity = 1;
         if (selectedType === "lab") {
-          quantity = parseInt(
+          const qty = parseInt(
             document.getElementById("booking-quantity").value,
           );
-          if (!quantity || quantity < 1 || quantity > 3)
+          if (!qty || qty < 1 || qty > 3)
             return showModalAlert(
               "error",
               "You can reserve between 1 and 3 workstations only",
             );
+          body.quantity = qty;
         }
+        if (selectedType === "equipment" && !labId)
+          return showModalAlert("error", "Please select a lab");
 
         const body = {
           startTime: `${date}T${start}:00`,
           endTime: `${date}T${end}:00`,
-          quantity: quantity,
         };
 
         if (selectedType === "equipment") {
@@ -1393,7 +1402,5 @@
       // ── INIT ──
       fetchAll();
     </script>
-    <script src="/calendar.js"></script>
-    <script src="/notifications.js"></script>
   </body>
 </html>

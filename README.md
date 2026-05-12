@@ -15,12 +15,10 @@ A centralized web-based Lab and Equipment Allocation System for the Department o
 **MSD | Company A**
 =======
 # Laboratory Management System
->>>>>>> origin/main
+
 
 ### CS2833 Modular Software Development — Company A
->>>>>>> 8e8d5d3dde839fa09afaa6914df19ebb348eb123
 
-<<<<<<< HEAD
 ---
 
 <<<<<<< HEAD
@@ -41,7 +39,7 @@ A centralized web-based Lab and Equipment Allocation System for the Department o
 ![Java](https://img.shields.io/badge/Java-17+-orange)
 ![MySQL](https://img.shields.io/badge/MySQL-8.0-blue)
 ![JWT](https://img.shields.io/badge/Auth-JWT-red)
->>>>>>> origin/main
+
 
 A centralized web-based Lab and Equipment Allocation System for the Department of Electronics and Telecommunications Engineering, University of Moratuwa.
 
@@ -52,7 +50,6 @@ Install these VS Code extensions (press Ctrl+Shift+X):
 - **GitLens** (by GitKraken)
 
 Wait for extensions to finish installing. Reload if asked.
->>>>>>> 8e8d5d3dde839fa09afaa6914df19ebb348eb123
 
 ---
 
@@ -310,8 +307,8 @@ Do NOT guess and break things on main branch.
 
 **GitHub Repo:**
 https://github.com/himashafdo/CS2833-Laboratory-Management-System.git
-=======
----
+
+
 
 ## Table of Contents
 
@@ -523,5 +520,4 @@ Full API documentation is available in the Wiki.
 ---
 
 Made with coffee by Company A — CS2833 MSD 2026
->>>>>>> origin/main
->>>>>>> 8e8d5d3dde839fa09afaa6914df19ebb348eb123
+

@@ -7,7 +7,7 @@ public interface EquipmentRepository extends JpaRepository<Equipment, Long> {
     List<Equipment> findByStatus(Equipment.EquipmentStatus status);
     List<Equipment> findByNameContainingIgnoreCase(String name);
 
-    // NEW: needed for grouped catalog view
+    // needed for grouped catalog view
     List<Equipment> findByName(String name);
     List<Equipment> findByNameAndStatus(String name, Equipment.EquipmentStatus status);
 }

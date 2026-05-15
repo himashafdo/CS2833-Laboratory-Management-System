@@ -827,7 +827,9 @@
           const start = new Date(r.startTime);
           const end = new Date(r.endTime);
           const name = r.equipment
-            ? r.equipment.name
+            ? r.equipment.equipmentCode
+              ? `${r.equipment.equipmentCode} — ${r.equipment.name}`
+              : r.equipment.name
             : r.lab
               ? r.lab.labName
               : "Unknown";

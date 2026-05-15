@@ -3,6 +3,7 @@ package com.companya.labms.catalog;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.companya.labms.reservation.ReservationRepository;
 
 @Service
 public class AdminCatalogService {
@@ -11,16 +12,19 @@ public class AdminCatalogService {
     private final EquipmentTypeRepository equipmentTypeRepository;
     private final LabRepository labRepository;
     private final LabEquipmentRepository labEquipmentRepository;
+    private final ReservationRepository reservationRepository;
 
     public AdminCatalogService(EquipmentRepository equipmentRepository,
-                               EquipmentTypeRepository equipmentTypeRepository,
-                               LabRepository labRepository,
-                               LabEquipmentRepository labEquipmentRepository) {
-        this.equipmentRepository = equipmentRepository;
-        this.equipmentTypeRepository = equipmentTypeRepository;
-        this.labRepository = labRepository;
-        this.labEquipmentRepository = labEquipmentRepository;
-    }
+                           EquipmentTypeRepository equipmentTypeRepository,
+                           LabRepository labRepository,
+                           LabEquipmentRepository labEquipmentRepository,
+                           ReservationRepository reservationRepository) {
+    this.equipmentRepository = equipmentRepository;
+    this.equipmentTypeRepository = equipmentTypeRepository;
+    this.labRepository = labRepository;
+    this.labEquipmentRepository = labEquipmentRepository;
+    this.reservationRepository = reservationRepository;
+}
 
     // ══════════════════════════════════════════
     // EQUIPMENT TYPES
@@ -65,23 +69,19 @@ public class AdminCatalogService {
         return equipmentTypeRepository.save(existing);
     }
 
-    public void deleteEquipmentType(Long id) {
-        if (!equipmentTypeRepository.existsById(id)) {
-            throw new RuntimeException("Equipment type not found with ID: " + id);
-        }
-        
-        // Check if there are equipment items using this type
-        List<Equipment> equipment = equipmentRepository.findAll().stream()
-            .filter(e -> e.getEquipmentType() != null && e.getEquipmentType().getId().equals(id))
-            .collect(Collectors.toList());
-        
-        if (!equipment.isEmpty()) {
-            throw new RuntimeException("Cannot delete equipment type: " + equipment.size() + 
-                " equipment item(s) still reference this type. Please delete or reassign them first.");
-        }
-        
-        equipmentTypeRepository.deleteById(id);
+    public void deleteEquipment(Long id) {
+    if (!equipmentRepository.existsById(id)) {
+        throw new RuntimeException("Equipment not found with ID: " + id);
     }
+    // Null out equipment on any reservations first
+    reservationRepository.findByEquipmentId(id).forEach(r -> {
+        r.setEquipment(null);
+        reservationRepository.save(r);
+    });
+    // Remove lab assignments
+    labEquipmentRepository.deleteAll(labEquipmentRepository.findByEquipmentId(id));
+    equipmentRepository.deleteById(id);
+}
 
     // ══════════════════════════════════════════
     // EQUIPMENT

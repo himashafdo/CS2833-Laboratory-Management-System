@@ -134,4 +134,13 @@ public ResponseEntity<?> getStudents() {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
+    @DeleteMapping("/users/{id}")
+public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+    try {
+        userRepository.deleteById(id);
+        return ResponseEntity.ok(Map.of("message", "User deleted successfully"));
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+    }
+}
 }

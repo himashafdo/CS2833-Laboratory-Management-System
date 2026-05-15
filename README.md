@@ -208,6 +208,18 @@ Full API documentation is available in the Wiki.
 | UAT with Company B | May 8, 2026     |
 | Final Demo         | May 15-26, 2026 |
 
+In the VS Code terminal run:
+```
+./mvnw clean spring-boot:run
+```
+First time takes 2-3 minutes. Wait until you see:
+```
+Started LabmsApplication in x.xxx seconds
+```
+Open your browser and go to: **http://localhost:8080**
+
+You should see the login page. ✅
+
 ---
 
 ## Important Notes for All Team Members
@@ -221,3 +233,61 @@ Full API documentation is available in the Wiki.
 ---
 
 Made with coffee by Company A — CS2833 MSD 2026
+
+---
+
+## STEP 11 — START WORKING ON YOUR MODULE
+
+Your module folder:
+```
+src/main/java/com/companya/labms/YOUR_MODULE_NAME/
+```
+
+Each team must build:
+1. `Entity.java` — database table (extends BaseEntity)
+2. `Repository.java` — talks to the database
+3. `Service.java` — business logic
+4. `Controller.java` — REST API endpoints
+5. An HTML page in `src/main/resources/static/`
+
+After changes, commit to YOUR branch only:
+```
+git add .
+git commit -m "describe what you did"
+git push origin feature/YOUR_MODULE_NAME
+```
+> ❌ DO NOT push to main. The team lead (Himasha) will merge.
+
+---
+
+## IMPORTANT RULES
+
+- Always pull before starting work:
+```
+  git pull origin feature/YOUR_MODULE_NAME
+```
+- Never commit directly to main ❌
+- For testing API endpoints use Postman with:
+```
+  Header: Authorization: Bearer YOUR_JWT_TOKEN
+```
+- If project won't start check:
+  1. Is MySQL running? (search Services in Windows → MySQL80 → Running)
+  2. Is the database created? (Step 4)
+  3. Is your password correct in application.properties?
+
+- If you get JAVA_HOME error run in PowerShell (Admin):
+```
+  [System.Environment]::SetEnvironmentVariable("JAVA_HOME","C:\Program Files\Eclipse Adoptium\jdk-17.0.14.7-hotspot","Machine")
+```
+  Then restart VS Code.
+
+---
+
+## CONTACT
+
+If stuck — message the team lead before wasting time.
+Do NOT guess and break things on main branch.
+
+**GitHub Repo:**
+https://github.com/himashafdo/CS2833-Laboratory-Management-System.git

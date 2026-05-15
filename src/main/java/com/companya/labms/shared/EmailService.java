@@ -21,7 +21,7 @@ public class EmailService {
             "Hello,\n\n" +
             "You requested a password reset for your Laboratory Management System (LabMS) account.\n\n" +
             "Click the link below to reset your password:\n" +
-            "http://localhost:8080/reset-password.html?token=" + resetToken + "\n\n" +  // TODO : Update to actual frontend URL
+            "http://localhost:8081/reset-password.html?token=" + resetToken + "\n\n" +  // TODO : Update to actual frontend URL
             "This link expires in 30 minutes.\n\n" +
             "If you did not request this, ignore this email.\n\n" +
             "Laboratory Management System - Company A"

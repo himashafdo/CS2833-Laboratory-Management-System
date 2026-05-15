@@ -167,20 +167,6 @@
             color: rgba(255, 255, 255, 0.7);
         }
 
-        .logout-btn {
-            margin-left: auto;
-            background: none;
-            border: none;
-            color: white;
-            cursor: pointer;
-            opacity: 0.7;
-            transition: 0.2s;
-        }
-
-        .logout-btn:hover {
-            opacity: 1;
-        }
-
         /* ── MAIN ── */
         .main {
             margin-left: 240px;
@@ -729,13 +715,6 @@
                 <div class="user-name" id="sidebar-name">Loading...</div>
                 <div class="user-role" id="sidebar-role">Role</div>
             </div>
-            <button onclick="logout()" class="logout-btn" title="Logout">
-                <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-                    <path d="M9 21H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h4"></path>
-                    <polyline points="16 17 21 12 16 7"></polyline>
-                    <line x1="21" y1="12" x2="9" y2="12"></line>
-                </svg>
-            </button>
         </div>
     </aside>
 
@@ -988,10 +967,11 @@
 
                 document.body.setAttribute('data-role', currentUserRole);
                 document.getElementById('sidebar-name').textContent = username;
-                document.getElementById('sidebar-role').textContent = currentUserRole.replace('_', ' ');
-                const initial = username.charAt(0).toUpperCase();
-                document.getElementById('sidebar-avatar').textContent = initial;
-                document.getElementById('topbar-avatar').textContent = initial;
+                let displayRole = currentUserRole.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
+                document.getElementById('sidebar-role').textContent = displayRole;
+                const initials = username.substring(0, 2).toUpperCase();
+                document.getElementById('sidebar-avatar').textContent = initials;
+                document.getElementById('topbar-avatar').textContent = initials;
 
                 loadRequestsBasedOnRole();
                 if (currentUserRole !== 'STUDENT') {

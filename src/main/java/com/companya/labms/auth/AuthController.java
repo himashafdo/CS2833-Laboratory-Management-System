@@ -104,6 +104,16 @@ public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
+    @GetMapping("/users/students")
+public ResponseEntity<?> getStudents() {
+    try {
+        List<User> users = userRepository.findByRole(Role.STUDENT);
+        users.forEach(u -> u.setPassword(null));
+        return ResponseEntity.ok(users);
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+    }
+}
 
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> body) {

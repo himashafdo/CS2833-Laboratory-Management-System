@@ -42,6 +42,9 @@ public class AdminCatalogDTO {
         public void setSerialNumber(String serialNumber) { this.serialNumber = serialNumber; }
         public Long getEquipmentTypeId() { return equipmentTypeId; }
         public void setEquipmentTypeId(Long equipmentTypeId) { this.equipmentTypeId = equipmentTypeId; }
+        private String equipmentCode;
+public String getEquipmentCode() { return equipmentCode; }
+public void setEquipmentCode(String equipmentCode) { this.equipmentCode = equipmentCode; }
     }
 
     // ── Lab DTO ──

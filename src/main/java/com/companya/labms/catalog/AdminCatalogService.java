@@ -45,6 +45,7 @@ public class AdminCatalogService {
         if (dto.getName() == null || dto.getName().trim().isEmpty()) {
             throw new IllegalArgumentException("Equipment type name cannot be empty");
         }
+        
         EquipmentType type = new EquipmentType();
         type.setName(dto.getName().trim());
         type.setDescription(dto.getDescription());
@@ -109,8 +110,8 @@ public class AdminCatalogService {
         equipment.setDescription(dto.getDescription());
         equipment.setImageUrl(dto.getImageUrl());
         equipment.setSerialNumber(dto.getSerialNumber());
-        equipment.setQuantity(dto.getQuantity());
-
+equipment.setQuantity(dto.getQuantity());
+if (dto.getEquipmentCode() != null) equipment.setEquipmentCode(dto.getEquipmentCode());
         if (dto.getEquipmentTypeId() != null) {
             EquipmentType type = equipmentTypeRepository.findById(dto.getEquipmentTypeId())
                 .orElseThrow(() -> new RuntimeException("Equipment type not found"));
@@ -145,7 +146,8 @@ public class AdminCatalogService {
         existing.setDescription(dto.getDescription());
         existing.setImageUrl(dto.getImageUrl());
         existing.setSerialNumber(dto.getSerialNumber());
-        existing.setQuantity(dto.getQuantity());
+existing.setQuantity(dto.getQuantity());
+if (dto.getEquipmentCode() != null) existing.setEquipmentCode(dto.getEquipmentCode());
 
         if (dto.getEquipmentTypeId() != null) {
             EquipmentType type = equipmentTypeRepository.findById(dto.getEquipmentTypeId())

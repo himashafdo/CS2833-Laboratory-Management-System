@@ -3,6 +3,7 @@ package com.companya.labms.catalog;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 import java.util.Map;
+import java.util.List;
 
 @RestController
 @RequestMapping("/api/admin/catalog")
@@ -137,6 +138,61 @@ public class AdminCatalogController {
             return ResponseEntity.internalServerError().body(Map.of("error", e.getMessage()));
         }
     }
+    
+@PatchMapping("/equipment/{id}/status")
+public ResponseEntity<?> patchEquipmentStatus(@PathVariable Long id,
+                                               @RequestBody Map<String, String> body) {
+    try {
+        AdminCatalogDTO.EquipmentDTO dto = new AdminCatalogDTO.EquipmentDTO();
+        Equipment existing = adminCatalogService.getAllEquipment().stream()
+            .filter(e -> e.getId().equals(id))
+            .findFirst()
+            .orElseThrow(() -> new RuntimeException("Equipment not found"));
+        dto.setName(existing.getName());
+        dto.setDescription(existing.getDescription());
+        dto.setImageUrl(existing.getImageUrl());
+        dto.setSerialNumber(existing.getSerialNumber());
+        dto.setQuantity(existing.getQuantity());
+        dto.setStatus(body.get("status").toUpperCase());
+        dto.setEquipmentCode(existing.getEquipmentCode());
+        if (existing.getEquipmentType() != null)
+            dto.setEquipmentTypeId(existing.getEquipmentType().getId());
+        return ResponseEntity.ok(adminCatalogService.updateEquipment(id, dto));
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+    }
+}
+
+@GetMapping("/equipment/grouped")
+public ResponseEntity<?> getEquipmentGrouped() {
+    try {
+        List<Equipment> all = adminCatalogService.getAllEquipment();
+        Map<String, Map<String, Object>> grouped = new java.util.LinkedHashMap<>();
+        all.forEach(e -> {
+            String key = e.getName();
+            grouped.computeIfAbsent(key, k -> {
+                Map<String, Object> m = new java.util.LinkedHashMap<>();
+                m.put("name", k);
+                m.put("total", 0L);
+                m.put("available", 0L);
+                m.put("maintenance", 0L);
+                m.put("reserved", 0L);
+                return m;
+            });
+            Map<String, Object> m = grouped.get(key);
+            m.put("total", (Long)m.get("total") + 1);
+            if (e.getStatus() == Equipment.EquipmentStatus.AVAILABLE)
+                m.put("available", (Long)m.get("available") + 1);
+            if (e.getStatus() == Equipment.EquipmentStatus.MAINTENANCE)
+                m.put("maintenance", (Long)m.get("maintenance") + 1);
+            if (e.getStatus() == Equipment.EquipmentStatus.RESERVED)
+                m.put("reserved", (Long)m.get("reserved") + 1);
+        });
+        return ResponseEntity.ok(grouped.values());
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+    }
+}
 
     // ══════════════════════════════════════════
     // LABS

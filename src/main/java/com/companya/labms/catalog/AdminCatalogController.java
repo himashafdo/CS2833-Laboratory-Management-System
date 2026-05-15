@@ -70,17 +70,17 @@ public class AdminCatalogController {
         }
     }
 
-    @DeleteMapping("/equipment-types/{id}")
+   /*  @DeleteMapping("/equipment-types/{id}")
     public ResponseEntity<?> deleteEquipmentType(@PathVariable Long id) {
         try {
             adminCatalogService.deleteEquipmentType(id);
-            return ResponseEntity.ok(Map.of("message", "Equipment type deleted successfully"));
+          return ResponseEntity.ok(Map.of("message", "Equipment type deleted successfully"));
         } catch (RuntimeException e) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         } catch (Exception e) {
             return ResponseEntity.internalServerError().body(Map.of("error", e.getMessage()));
         }
-    }
+    }*/
 
     @GetMapping("/equipment-types/{typeId}/equipment")
     public ResponseEntity<?> getEquipmentByType(@PathVariable Long typeId) {

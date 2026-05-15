@@ -166,14 +166,7 @@ if (dto.getEquipmentCode() != null) existing.setEquipmentCode(dto.getEquipmentCo
         return equipmentRepository.save(existing);
     }
 
-    public void deleteEquipment(Long id) {
-        if (!equipmentRepository.existsById(id)) {
-            throw new RuntimeException("Equipment not found with ID: " + id);
-        }
-        List<LabEquipment> assignments = labEquipmentRepository.findByEquipmentId(id);
-        labEquipmentRepository.deleteAll(assignments);
-        equipmentRepository.deleteById(id);
-    }
+
 
     // ══════════════════════════════════════════
     // LABS

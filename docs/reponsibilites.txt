@@ -1,0 +1,35 @@
+# Role & Responsibility
+
+## 1. Lead Admin (ADMIN)
+Primary: System control, users, approvals.
+
+- Manage all users (Students, Lab Technicians, Admins)
+- Approve/reject procurement requests
+- View system analytics & reports
+- Manage system settings & backups
+- Dashboard: lead-admin-dashboard.html
+
+## 2. Lab Technician (LAB_TECHNICIAN)
+Primary: Lab operations & equipment management.
+
+- Manage equipment inventory (add/update/remove)
+- Handle reservations (approve/reject)
+- Maintain equipment & resolve issues
+- Create procurement requests
+- Lab notices & updates
+- Dashboard: labtech-dashboard.html
+
+## 3. Student (STUDENT)
+Primary: Use lab resources.
+
+- Browse equipment & labs
+- Make reservations
+- Track personal bookings
+- Report issues
+- Dashboard: student-dashboard.html
+
+## Rules
+- Users only see role-specific UI
+- Students: no admin/procurement access
+- Technicians: no user management access
+- Admin = Lead Admin only (no ambiguity)

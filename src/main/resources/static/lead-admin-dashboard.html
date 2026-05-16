@@ -800,26 +800,8 @@
           Procurement Requests
         </a>
 
-        <div class="nav-label">System</div>
-        <a href="/admin-dashboard.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z" />
-          </svg>
-          Lab Tech Panel
-        </a>
-        <a
-          href="#"
-          class="nav-item"
-          onclick="
-            switchTab('users', this);
-            return false;
-          "
-        >
+
+        <a href="/manage-users.html" class="nav-item">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -831,7 +813,7 @@
             <path d="M23 21v-2a4 4 0 00-3-3.87" />
             <path d="M16 3.13a4 4 0 010 7.75" />
           </svg>
-          Manage Staff
+          Manage Users
         </a>
       </nav>
 
@@ -1233,7 +1215,7 @@
       const role = sessionStorage.getItem("role");
 
       if (!token) window.location.href = "/login.html";
-      if (role !== "ADMIN") window.location.href = "/admin-dashboard.html";
+      if (role !== "ADMIN") window.location.href = "/labtech-dashboard.html";
 
       if (username) {
         document.getElementById("sidebar-avatar").textContent = username

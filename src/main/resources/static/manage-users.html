@@ -596,81 +596,29 @@
             </svg>
           </div>
           <div>
-            <div class="brand-name">Laboratory Management System</div>
-            <div class="brand-sub">Lab Technician</div>
+            <div class="brand-name">Lead Admin Portal</div>
+            <div class="brand-sub">System Administration</div>
           </div>
         </div>
       </div>
 
       <nav class="nav-section">
         <div class="nav-label">Overview</div>
-        <a href="/admin-dashboard.html" class="nav-item">
+        <a href="/lead-admin-dashboard.html" class="nav-item">
           <svg
             viewBox="0 0 24 24"
             fill="none"
             stroke="currentColor"
             stroke-width="2"
           >
-            <rect x="3" y="3" width="7" height="7" />
-            <rect x="14" y="3" width="7" height="7" />
-            <rect x="3" y="14" width="7" height="7" />
-            <rect x="14" y="14" width="7" height="7" />
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 00-3-3.87" />
+            <path d="M16 3.13a4 4 0 010 7.75" />
           </svg>
           Dashboard
         </a>
-        <div class="nav-label">Management</div>
-        <a href="/admin-catalog.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-          </svg>
-          Equipment & Labs
-        </a>
-        <a href="/admin-reservations.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <rect x="3" y="4" width="18" height="18" rx="2" />
-            <line x1="16" y1="2" x2="16" y2="6" />
-            <line x1="8" y1="2" x2="8" y2="6" />
-            <line x1="3" y1="10" x2="21" y2="10" />
-          </svg>
-          All Reservations
-        </a>
-        <a href="/admin-issues.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <line x1="12" y1="8" x2="12" y2="12" />
-            <line x1="12" y1="16" x2="12.01" y2="16" />
-          </svg>
-          Issue Tickets
-        </a>
-        <a href="/requests.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-            />
-          </svg>
-          Equipment Requests
-        </a>
-        <a href="/admin-users.html" class="nav-item active">
+        <a href="/manage-users.html" class="nav-item active">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -684,33 +632,7 @@
           </svg>
           Manage Users
         </a>
-        <div class="nav-label">Student View</div>
-        <a href="/catalog.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-          </svg>
-          Equipment Catalog
-        </a>
-        <a href="/report-issue.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
-            />
-            <line x1="12" y1="9" x2="12" y2="13" />
-            <line x1="12" y1="17" x2="12.01" y2="17" />
-          </svg>
-          Report Issue
-        </a>
+
       </nav>
 
       <div class="sidebar-user">
@@ -738,7 +660,7 @@
 
     <div class="main">
       <div class="topbar">
-        <div class="topbar-title">Manage Students</div>
+        <div class="topbar-title">Manage System Users</div>
         <div class="topbar-right">
           <div class="topbar-date" id="topbar-date"></div>
           <button id="theme-btn" class="theme-toggle" title="Toggle theme">
@@ -790,10 +712,9 @@
         <!-- Table -->
         <div class="section-card">
           <div class="section-header">
-            <div class="section-title">Student Accounts</div>
+            <div class="section-title">System User Accounts</div>
             <div class="section-desc">
-              View and manage registered student accounts. Lab Technicians can
-              only manage students.
+              View and manage all registered accounts (Admins, Technicians, and Students).
             </div>
           </div>
 
@@ -898,8 +819,7 @@
 
       // Guards
       if (!token) window.location.href = "/login.html";
-      if (role === "STUDENT") window.location.href = "/student-dashboard.html";
-      if (role === "ADMIN") window.location.href = "/lead-admin-dashboard.html";
+      if (role !== "ADMIN") window.location.href = "/labtech-dashboard.html";
 
       if (username) {
         const initials = username.substring(0, 2).toUpperCase();
@@ -940,7 +860,7 @@
       async function loadUsers() {
         try {
           // Lab tech only sees students
-          const res = await fetch(`${API}/auth/users/students`, { headers });
+          const res = await fetch(`${API}/auth/users`, { headers });
           if (!res.ok) throw new Error("Failed to load students");
           allUsers = await res.json();
           updateStats();
@@ -985,7 +905,7 @@
           <td style="font-weight:600;">${u.username || "—"}</td>
           <td style="color:var(--text2);">${u.email || "—"}</td>
           <td style="color:var(--text2);font-size:12px;">${u.phoneNumber || "—"}</td>
-          <td><span class="role-badge role-student">STUDENT</span></td>
+          <td><span class="role-badge role-${(u.role || "student").toLowerCase()}">${u.role || "STUDENT"}</span></td>
           <td style="color:var(--text2);font-size:12px;">${u.createdAt ? new Date(u.createdAt).toLocaleDateString("en-GB") : "—"}</td>
           <td><span class="status-badge ${u.active !== false ? "status-active" : "status-inactive"}">${u.active !== false ? "Active" : "Inactive"}</span></td>
           <td>

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Manage Users — Lab Management System</title>
+    <title>Manage Users — Lead Admin Portal</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
@@ -438,6 +438,14 @@
         background: #fef9c3;
         color: #854d0e;
       }
+      .role-admin {
+        background: #dcfce7;
+        color: #166534;
+      }
+      .role-technician {
+        background: #e0f2fe;
+        color: #075985;
+      }
       .status-badge {
         font-size: 11px;
         font-weight: 600;
@@ -600,15 +608,15 @@
             </svg>
           </div>
           <div>
-            <div class="brand-name">Laboratory Management System</div>
-            <div class="brand-sub">Lab Technician</div>
+            <div class="brand-name">LabMS</div>
+            <div class="brand-sub">Lead Admin Portal</div>
           </div>
         </div>
       </div>
 
       <nav class="nav-section">
         <div class="nav-label">Overview</div>
-        <a href="/labtech-dashboard.html" class="nav-item">
+        <a href="/lead-admin-dashboard.html" class="nav-item">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -622,50 +630,27 @@
           </svg>
           Dashboard
         </a>
-        <div class="nav-label">Management</div>
-        <a href="/admin-catalog.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-          </svg>
-          Equipment & Labs
-        </a>
-        <a href="/admin-reservations.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <rect x="3" y="4" width="18" height="18" rx="2" />
-            <line x1="16" y1="2" x2="16" y2="6" />
-            <line x1="8" y1="2" x2="8" y2="6" />
-            <line x1="3" y1="10" x2="21" y2="10" />
-          </svg>
-          All Reservations
-        </a>
-        <a href="/admin-issues.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <circle cx="12" cy="12" r="10" />
-            <line x1="12" y1="8" x2="12" y2="12" />
-            <line x1="12" y1="16" x2="12.01" y2="16" />
-          </svg>
-          Issue Tickets
-        </a>
-        <a href="/requests.html" class="nav-item">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
-          </svg>
-          Equipment Requests
-        </a>
-        <a href="/manage-users.html" class="nav-item active">
-          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+        <a href="/admin-manage-users.html" class="nav-item active">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
             <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
             <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 00-3-3.87" />
+            <path d="M16 3.13a4 4 0 010 7.75" />
           </svg>
           Manage Users
         </a>
       </nav>
 
       <div class="sidebar-user">
-        <div class="user-avatar" id="sidebar-avatar">LT</div>
+        <div class="user-avatar" id="sidebar-avatar">LA</div>
         <div>
-          <div class="user-name" id="sidebar-name">Lab Technician</div>
-          <div class="user-role">Lab Technician</div>
+          <div class="user-name" id="sidebar-name">Lead Admin</div>
+          <div class="user-role">System Administrator</div>
         </div>
         <button class="logout-btn" onclick="logout()" title="Logout">
           <svg
@@ -708,7 +693,7 @@
             <div class="notif-dot"></div>
           </div>
           <a href="/profile.html" style="text-decoration: none">
-            <div class="topbar-avatar" id="topbar-avatar">LT</div>
+            <div class="topbar-avatar" id="topbar-avatar">LA</div>
           </a>
         </div>
       </div>
@@ -719,9 +704,9 @@
         <!-- Stats -->
         <div class="stats-grid">
           <div class="stat-card blue">
-            <div class="stat-label">Total Students</div>
+            <div class="stat-label">Total Users</div>
             <div class="stat-value" id="stat-total">—</div>
-            <div class="stat-sub">Registered students</div>
+            <div class="stat-sub">Registered accounts</div>
           </div>
           <div class="stat-card green">
             <div class="stat-label">Active</div>
@@ -801,7 +786,7 @@
               </thead>
               <tbody id="users-tbody">
                 <tr>
-                  <td colspan="8" class="empty-state">Loading students...</td>
+                  <td colspan="8" class="empty-state">Loading users...</td>
                 </tr>
               </tbody>
             </table>
@@ -814,7 +799,7 @@
     <div class="modal-overlay" id="modal-delete">
       <div class="modal">
         <div class="modal-header">
-          <div class="modal-title">Delete Student Account</div>
+          <div class="modal-title">Delete User Account</div>
           <button class="close-btn" onclick="closeModal()">&times;</button>
         </div>
         <p style="font-size: 14px; color: var(--text2); line-height: 1.6">
@@ -838,14 +823,14 @@
     </div>
 
     <script>
-      const API = "http://localhost:8080/api";
+      const API = "/api";
       const token = sessionStorage.getItem("token");
       const username = sessionStorage.getItem("username");
       const role = sessionStorage.getItem("role");
 
       // Guards
       if (!token) window.location.href = "/login.html";
-      if (role !== "TECHNICIAN") window.location.href = "/labtech-dashboard.html";
+      if (role !== "ADMIN") window.location.href = "/login.html";
 
       if (username) {
         const initials = username.substring(0, 2).toUpperCase();
@@ -873,9 +858,11 @@
         el.textContent = msg;
         setTimeout(() => el.classList.remove("show"), 4000);
       }
+
       function closeModal() {
         document.getElementById("modal-delete").classList.remove("active");
       }
+
       function logout() {
         sessionStorage.clear();
         window.location.href = "/login.html";
@@ -885,25 +872,22 @@
 
       async function loadUsers() {
         try {
-          // Lab tech only sees students
           const res = await fetch(`${API}/auth/users`, { headers });
-          if (!res.ok) throw new Error("Failed to load students");
+          if (!res.ok) throw new Error("Failed to load users");
           allUsers = await res.json();
-          updateStats();
+          renderStats();
           renderTable();
         } catch (e) {
-          document.getElementById("users-tbody").innerHTML =
-            `<tr><td colspan="8" class="empty-state" style="color:#ef4444">${e.message}</td></tr>`;
+          showAlert("error", e.message);
         }
       }
 
       function renderStats() {
-        const students = allUsers.filter(u => u.role === "STUDENT" || !u.role);
-        document.getElementById("stat-total").textContent = students.length;
-        document.getElementById("stat-active").textContent = students.filter(
+        document.getElementById("stat-total").textContent = allUsers.length;
+        document.getElementById("stat-active").textContent = allUsers.filter(
           (u) => u.active !== false,
         ).length;
-        document.getElementById("stat-inactive").textContent = students.filter(
+        document.getElementById("stat-inactive").textContent = allUsers.filter(
           (u) => u.active === false,
         ).length;
       }
@@ -915,13 +899,12 @@
           .value.toLowerCase();
         const filtered = allUsers.filter(
           (u) =>
-            ((u.username || "").toLowerCase().includes(search) ||
-            (u.email || "").toLowerCase().includes(search)) &&
-            (u.role === "STUDENT" || !u.role)
+            (u.username || "").toLowerCase().includes(search) ||
+            (u.email || "").toLowerCase().includes(search),
         );
 
         if (!filtered.length) {
-          tbody.innerHTML = `<tr><td colspan="8" class="empty-state">No students found.</td></tr>`;
+          tbody.innerHTML = `<tr><td colspan="8" class="empty-state">No users found.</td></tr>`;
           return;
         }
 
@@ -959,7 +942,7 @@
           });
           if (!res.ok) throw new Error("Delete failed");
           closeModal();
-          showAlert("success", "✓ Student account deleted successfully.");
+          showAlert("success", "✓ User account deleted successfully.");
           loadUsers();
         } catch (e) {
           showAlert("error", e.message);

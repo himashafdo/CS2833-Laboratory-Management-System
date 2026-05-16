@@ -823,7 +823,7 @@
 
       // Guards
       if (!token) window.location.href = "/login.html";
-      if (role !== "TECHNICIAN") window.location.href = "/labtech-dashboard.html";
+      if (role !== "LAB_TECHNICIAN") window.location.href = "/labtech-dashboard.html";
 
       if (username) {
         const initials = username.substring(0, 2).toUpperCase();
@@ -867,7 +867,7 @@
           const res = await fetch(`${API}/auth/users`, { headers });
           if (!res.ok) throw new Error("Failed to load students");
           allUsers = await res.json();
-          updateStats();
+          renderStats();
           renderTable();
         } catch (e) {
           document.getElementById("users-tbody").innerHTML =

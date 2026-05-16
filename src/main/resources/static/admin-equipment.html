@@ -263,7 +263,16 @@
     </div>
     <div class="topbar-right">
       <div class="topbar-date" id="topbarDate"></div>
-      <div class="topbar-avatar">AD</div>
+      <button id="theme-btn" class="theme-toggle" title="Toggle theme">🌙</button>
+      <div class="topbar-icon" title="Notifications">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
+        </svg>
+        <div class="notif-dot"></div>
+      </div>
+      <a href="/profile.html" style="text-decoration: none">
+        <div class="topbar-avatar" id="topbar-avatar">AD</div>
+      </a>
     </div>
   </div>
 
@@ -599,6 +608,8 @@
     sessionStorage.clear();
     window.location.href = "/login.html";
   }
-</script>
-</body>
+    <script src="/calendar.js"></script>
+    <script src="/notifications.js"></script>
+    <script src="/theme.js"></script>
+  </body>
 </html>

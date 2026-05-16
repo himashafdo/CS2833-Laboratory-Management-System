@@ -148,6 +148,31 @@
     .topbar-left { display: flex; align-items: center; gap: 12px; }
     .topbar-title { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
     .topbar-right { display: flex; align-items: center; gap: 12px; }
+    .topbar-icon {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid var(--border);
+      display: flex; align-items: center; justify-content: center;
+      cursor: pointer; background: var(--card-bg); color: var(--text-secondary);
+      position: relative; transition: 0.2s;
+    }
+    .topbar-icon:hover { background: var(--bg-primary); color: #f97316; }
+    .topbar-date {
+      padding: 8px 14px; border: 1px solid var(--border); border-radius: 10px;
+      font-size: 13px; color: var(--text-secondary); background: var(--bg-primary);
+      white-space: nowrap;
+    }
+    .theme-toggle {
+      width: 36px; height: 36px; border-radius: 50%;
+      border: 1px solid var(--border); background: var(--card-bg);
+      color: var(--text-secondary); cursor: pointer;
+      display: flex; align-items: center; justify-content: center; font-size: 16px;
+    }
+    .topbar-avatar {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: linear-gradient(135deg, #1a1a2e, #1e293b);
+      display: flex; align-items: center; justify-content: center;
+      font-size: 13px; font-weight: 700; color: white; cursor: pointer;
+    }
     .topbar-time {
       font-size: .75rem; color: var(--text-muted);
       background: var(--bg-main);
@@ -403,8 +428,18 @@
       <div class="topbar-title">Demand Monitoring</div>
     </div>
     <div class="topbar-right">
-      <span class="topbar-time" id="lastUpdated">Not yet loaded</span>
-      <button class="btn-refresh" onclick="loadDashboard()">↺ Refresh</button>
+      <div class="topbar-date" id="topbar-date"></div>
+      <button class="btn" style="padding: 6px 10px; font-size: 11px;" onclick="loadDashboard()">↺ Refresh</button>
+      <button id="theme-btn" class="theme-toggle" title="Toggle theme">🌙</button>
+      <div class="topbar-icon" title="Notifications">
+        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+          <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
+        </svg>
+        <div class="notif-dot"></div>
+      </div>
+      <a href="/profile.html" style="text-decoration: none">
+        <div class="topbar-avatar" id="topbar-avatar">LA</div>
+      </a>
     </div>
   </header>
 
@@ -707,5 +742,7 @@
   loadDashboard();
   setInterval(loadDashboard, 5*60*1000);
 </script>
+<script src="/notifications.js"></script>
+<script src="/theme.js"></script>
 </body>
 </html>

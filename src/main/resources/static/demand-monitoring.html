@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html lang="en">
+
 <head>
   <meta charset="UTF-8" />
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
@@ -9,26 +10,32 @@
 
   <style>
     :root {
-      --primary-orange:      #F36D1D;
+      --primary-orange: #F36D1D;
       --primary-orange-dark: #DA5810;
-      --primary-orange-light:#FEF0E7;
-      --bg-main:             #F8F9FA;
-      --card-bg:             #FFFFFF;
-      --text-primary:        #212529;
-      --text-muted:          #6C757D;
-      --border:              #E9ECEF;
-      --border-dark:         #DEE2E6;
-      --status-green-bg:     #D1FAE5;
-      --status-green-text:   #065F46;
-      --status-amber-bg:     #FEF3C7;
-      --status-amber-text:   #92400E;
-      --sidebar-w:           240px;
-      --topbar-h:            64px;
-      --radius:              12px;
-      --radius-sm:           8px;
+      --primary-orange-light: #FEF0E7;
+      --bg-main: #F8F9FA;
+      --card-bg: #FFFFFF;
+      --text-primary: #212529;
+      --text-muted: #6C757D;
+      --border: #E9ECEF;
+      --border-dark: #DEE2E6;
+      --status-green-bg: #D1FAE5;
+      --status-green-text: #065F46;
+      --status-amber-bg: #FEF3C7;
+      --status-amber-text: #92400E;
+      --sidebar-w: 240px;
+      --topbar-h: 64px;
+      --radius: 12px;
+      --radius-sm: 8px;
     }
 
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+    *,
+    *::before,
+    *::after {
+      box-sizing: border-box;
+      margin: 0;
+      padding: 0;
+    }
 
     body {
       font-family: 'Inter', 'Segoe UI', sans-serif;
@@ -46,43 +53,50 @@
       display: flex;
       flex-direction: column;
       position: fixed;
-      top: 0; left: 0;
+      top: 0;
+      left: 0;
       z-index: 200;
     }
+
     .sidebar-brand {
       padding: 20px 20px 16px;
-      border-bottom: 1px solid rgba(255,255,255,0.18);
+      border-bottom: 1px solid rgba(255, 255, 255, 0.18);
     }
+
     .sidebar-brand-title {
       font-size: .92rem;
       font-weight: 700;
       color: #fff;
       line-height: 1.3;
     }
+
     .sidebar-brand-sub {
       font-size: .68rem;
-      color: rgba(255,255,255,0.7);
+      color: rgba(255, 255, 255, 0.7);
       margin-top: 2px;
     }
+
     .sidebar-section {
       padding: 16px 12px 8px;
     }
+
     .sidebar-section-label {
       font-size: .63rem;
       font-weight: 600;
       text-transform: uppercase;
       letter-spacing: 1px;
-      color: rgba(255,255,255,0.55);
+      color: rgba(255, 255, 255, 0.55);
       padding: 0 8px;
       margin-bottom: 6px;
     }
+
     .sidebar-item {
       display: flex;
       align-items: center;
       gap: 10px;
       padding: 9px 12px;
       border-radius: var(--radius-sm);
-      color: rgba(255,255,255,0.85);
+      color: rgba(255, 255, 255, 0.85);
       font-size: .84rem;
       font-weight: 500;
       cursor: pointer;
@@ -90,24 +104,64 @@
       transition: background .15s;
       margin-bottom: 2px;
     }
-    .sidebar-item:hover { background: rgba(255,255,255,0.12); color: #fff; }
-    .sidebar-item.active { background: var(--primary-orange-dark); color: #fff; }
-    .sidebar-item svg { width: 16px; height: 16px; flex-shrink: 0; opacity: .85; }
-    .sidebar-item.active svg { opacity: 1; }
+
+    .sidebar-item:hover {
+      background: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+
+    .sidebar-item.active {
+      background: var(--primary-orange-dark);
+      color: #fff;
+    }
+
+    .sidebar-item svg {
+      width: 16px;
+      height: 16px;
+      flex-shrink: 0;
+      opacity: .85;
+    }
+
+    .sidebar-item.active svg {
+      opacity: 1;
+    }
+
     .sidebar-footer {
       margin-top: auto;
       padding: 16px 12px;
-      border-top: 1px solid rgba(255,255,255,0.18);
+      border-top: 1px solid rgba(255, 255, 255, 0.18);
     }
-    .sidebar-user { display: flex; align-items: center; gap: 10px; }
+
+    .sidebar-user {
+      display: flex;
+      align-items: center;
+      gap: 10px;
+    }
+
     .sidebar-avatar {
-      width: 32px; height: 32px; border-radius: 50%;
-      background: rgba(255,255,255,0.25);
-      display: flex; align-items: center; justify-content: center;
-      font-size: .75rem; font-weight: 700; color: #fff;
+      width: 32px;
+      height: 32px;
+      border-radius: 50%;
+      background: rgba(255, 255, 255, 0.25);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: .75rem;
+      font-weight: 700;
+      color: #fff;
     }
-    .sidebar-user-name { font-size: .8rem; font-weight: 600; color: #fff; }
-    .sidebar-user-role { font-size: .68rem; color: rgba(255,255,255,.65); }
+
+    .sidebar-user-name {
+      font-size: .8rem;
+      font-weight: 600;
+      color: #fff;
+    }
+
+    .sidebar-user-role {
+      font-size: .68rem;
+      color: rgba(255, 255, 255, .65);
+    }
+
     .logout-btn {
       margin-left: auto;
       background: none;
@@ -120,6 +174,7 @@
       align-items: center;
       justify-content: center;
     }
+
     .logout-btn:hover {
       color: #fff;
       transform: scale(1.1);
@@ -143,502 +198,780 @@
       display: flex;
       align-items: center;
       justify-content: space-between;
-      position: sticky; top: 0; z-index: 100;
+      position: sticky;
+      top: 0;
+      z-index: 100;
     }
-    .topbar-left { display: flex; align-items: center; gap: 12px; }
-    .topbar-title { font-size: 1rem; font-weight: 600; color: var(--text-primary); }
-    .topbar-right { display: flex; align-items: center; gap: 12px; }
+
+    .topbar-left {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
+    .topbar-title {
+      font-size: 1rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .topbar-right {
+      display: flex;
+      align-items: center;
+      gap: 12px;
+    }
+
     .topbar-icon {
-      width: 36px; height: 36px; border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
       border: 1px solid var(--border);
-      display: flex; align-items: center; justify-content: center;
-      cursor: pointer; background: var(--card-bg); color: var(--text-secondary);
-      position: relative; transition: 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      background: var(--card-bg);
+      color: var(--text-secondary);
+      position: relative;
+      transition: 0.2s;
     }
-    .topbar-icon:hover { background: var(--bg-primary); color: #f97316; }
+
+    .topbar-icon:hover {
+      background: var(--bg-primary);
+      color: #f97316;
+    }
+
     .topbar-date {
-      padding: 8px 14px; border: 1px solid var(--border); border-radius: 10px;
-      font-size: 13px; color: var(--text-secondary); background: var(--bg-primary);
+      padding: 8px 14px;
+      border: 1px solid var(--border);
+      border-radius: 10px;
+      font-size: 13px;
+      color: var(--text-secondary);
+      background: var(--bg-primary);
       white-space: nowrap;
     }
+
     .theme-toggle {
-      width: 36px; height: 36px; border-radius: 50%;
-      border: 1px solid var(--border); background: var(--card-bg);
-      color: var(--text-secondary); cursor: pointer;
-      display: flex; align-items: center; justify-content: center; font-size: 16px;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
+      border: 1px solid var(--border);
+      background: var(--card-bg);
+      color: var(--text-secondary);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 16px;
     }
+
     .topbar-avatar {
-      width: 36px; height: 36px; border-radius: 50%;
+      width: 36px;
+      height: 36px;
+      border-radius: 50%;
       background: linear-gradient(135deg, #1a1a2e, #1e293b);
-      display: flex; align-items: center; justify-content: center;
-      font-size: 13px; font-weight: 700; color: white; cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 13px;
+      font-weight: 700;
+      color: white;
+      cursor: pointer;
     }
+
     .topbar-time {
-      font-size: .75rem; color: var(--text-muted);
+      font-size: .75rem;
+      color: var(--text-muted);
       background: var(--bg-main);
       border: 1px solid var(--border);
-      border-radius: 6px; padding: 5px 12px;
+      border-radius: 6px;
+      padding: 5px 12px;
     }
+
     .btn-refresh {
       background: var(--primary-orange);
-      color: #fff; border: none;
+      color: #fff;
+      border: none;
       border-radius: var(--radius-sm);
       padding: 8px 18px;
       font-family: 'Inter', sans-serif;
-      font-size: .8rem; font-weight: 600;
+      font-size: .8rem;
+      font-weight: 600;
       cursor: pointer;
       transition: background .15s, transform .1s;
     }
-    .btn-refresh:hover  { background: var(--primary-orange-dark); }
-    .btn-refresh:active { transform: scale(.97); }
+
+    .btn-refresh:hover {
+      background: var(--primary-orange-dark);
+    }
+
+    .btn-refresh:active {
+      transform: scale(.97);
+    }
 
     /* ── Page ── */
-    .page { padding: 28px; flex: 1; }
+    .page {
+      padding: 28px;
+      flex: 1;
+    }
+
     .breadcrumb {
-      display: flex; align-items: center; gap: 6px;
-      font-size: .75rem; color: var(--text-muted);
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      font-size: .75rem;
+      color: var(--text-muted);
       margin-bottom: 18px;
     }
-    .breadcrumb span { color: var(--primary-orange); font-weight: 500; }
-    .page-header { margin-bottom: 24px; }
-    .page-header h1 { font-size: 1.4rem; font-weight: 700; color: var(--text-primary); }
-    .page-header p { font-size: .85rem; color: var(--text-muted); margin-top: 4px; }
+
+    .breadcrumb span {
+      color: var(--primary-orange);
+      font-weight: 500;
+    }
+
+    .page-header {
+      margin-bottom: 24px;
+    }
+
+    .page-header h1 {
+      font-size: 1.4rem;
+      font-weight: 700;
+      color: var(--text-primary);
+    }
+
+    .page-header p {
+      font-size: .85rem;
+      color: var(--text-muted);
+      margin-top: 4px;
+    }
 
     /* ── Loading ── */
     #loadingOverlay {
-      position: fixed; inset: 0;
-      background: rgba(248,249,250,0.92);
-      display: flex; flex-direction: column;
-      align-items: center; justify-content: center;
-      gap: 14px; z-index: 999;
+      position: fixed;
+      inset: 0;
+      background: rgba(248, 249, 250, 0.92);
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      gap: 14px;
+      z-index: 999;
       transition: opacity .3s;
     }
-    #loadingOverlay.hidden { opacity: 0; pointer-events: none; }
+
+    #loadingOverlay.hidden {
+      opacity: 0;
+      pointer-events: none;
+    }
+
     .spinner {
-      width: 38px; height: 38px;
+      width: 38px;
+      height: 38px;
       border: 3px solid var(--border-dark);
       border-top-color: var(--primary-orange);
       border-radius: 50%;
       animation: spin .75s linear infinite;
     }
-    @keyframes spin { to { transform: rotate(360deg); } }
-    #loadingOverlay p { font-size: .85rem; color: var(--text-muted); }
+
+    @keyframes spin {
+      to {
+        transform: rotate(360deg);
+      }
+    }
+
+    #loadingOverlay p {
+      font-size: .85rem;
+      color: var(--text-muted);
+    }
 
     /* ── Error banner ── */
     #errorBanner {
       display: none;
-      background: #FEF2F2; border: 1px solid #FECACA;
+      background: #FEF2F2;
+      border: 1px solid #FECACA;
       border-radius: var(--radius-sm);
-      padding: 12px 16px; margin-bottom: 20px;
-      color: #991B1B; font-size: .82rem;
+      padding: 12px 16px;
+      margin-bottom: 20px;
+      color: #991B1B;
+      font-size: .82rem;
     }
 
     /* ── Section label ── */
     .section-label {
-      font-size: .72rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: .8px;
-      color: var(--text-muted); margin-bottom: 14px;
-      display: flex; align-items: center; gap: 8px;
+      font-size: .72rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--text-muted);
+      margin-bottom: 14px;
+      display: flex;
+      align-items: center;
+      gap: 8px;
     }
+
     .section-label::after {
-      content: ''; flex: 1; height: 1px; background: var(--border);
+      content: '';
+      flex: 1;
+      height: 1px;
+      background: var(--border);
     }
 
     /* ── Summary cards ── */
     .cards {
       display: grid;
       grid-template-columns: repeat(auto-fill, minmax(175px, 1fr));
-      gap: 16px; margin-bottom: 32px;
+      gap: 16px;
+      margin-bottom: 32px;
     }
+
     .card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 20px;
-      position: relative; overflow: hidden;
+      position: relative;
+      overflow: hidden;
       transition: box-shadow .2s, transform .2s;
     }
+
     .card:hover {
-      box-shadow: 0 4px 18px rgba(0,0,0,0.07);
+      box-shadow: 0 4px 18px rgba(0, 0, 0, 0.07);
       transform: translateY(-2px);
     }
+
     .card::before {
       content: '';
-      position: absolute; top: 0; left: 0; right: 0;
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
       height: 3px;
       background: var(--card-accent, var(--primary-orange));
       border-radius: var(--radius) var(--radius) 0 0;
     }
+
     .card-icon {
-      width: 36px; height: 36px;
+      width: 36px;
+      height: 36px;
       border-radius: var(--radius-sm);
       background: var(--primary-orange-light);
-      display: flex; align-items: center; justify-content: center;
+      display: flex;
+      align-items: center;
+      justify-content: center;
       margin-bottom: 12px;
     }
-    .card-icon svg { width: 18px; height: 18px; stroke: var(--primary-orange); }
+
+    .card-icon svg {
+      width: 18px;
+      height: 18px;
+      stroke: var(--primary-orange);
+    }
+
     .card-label {
-      font-size: .67rem; font-weight: 600;
-      text-transform: uppercase; letter-spacing: .8px;
-      color: var(--text-muted); margin-bottom: 6px;
+      font-size: .67rem;
+      font-weight: 600;
+      text-transform: uppercase;
+      letter-spacing: .8px;
+      color: var(--text-muted);
+      margin-bottom: 6px;
     }
+
     .card-value {
-      font-size: 1.9rem; font-weight: 700;
-      color: var(--text-primary); line-height: 1;
+      font-size: 1.9rem;
+      font-weight: 700;
+      color: var(--text-primary);
+      line-height: 1;
     }
-    .card-sub { font-size: .73rem; color: var(--text-muted); margin-top: 6px; }
+
+    .card-sub {
+      font-size: .73rem;
+      color: var(--text-muted);
+      margin-top: 6px;
+    }
 
     /* ── Badges ── */
     .badge {
-      display: inline-block; padding: 3px 10px;
-      border-radius: 20px; font-size: .68rem; font-weight: 600;
+      display: inline-block;
+      padding: 3px 10px;
+      border-radius: 20px;
+      font-size: .68rem;
+      font-weight: 600;
     }
-    .badge-green { background: var(--status-green-bg); color: var(--status-green-text); }
-    .badge-amber { background: var(--status-amber-bg); color: var(--status-amber-text); }
+
+    .badge-green {
+      background: var(--status-green-bg);
+      color: var(--status-green-text);
+    }
+
+    .badge-amber {
+      background: var(--status-amber-bg);
+      color: var(--status-amber-text);
+    }
 
     /* ── Charts grid ── */
-    .charts-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
+    .charts-grid {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 20px;
+    }
+
     .chart-card {
       background: var(--card-bg);
       border: 1px solid var(--border);
       border-radius: var(--radius);
       padding: 24px;
     }
-    .chart-card.wide { grid-column: span 2; }
-    .chart-card-header { margin-bottom: 20px; }
-    .chart-title { font-size: .9rem; font-weight: 600; color: var(--text-primary); }
-    .chart-subtitle { font-size: .75rem; color: var(--text-muted); margin-top: 3px; }
-    .chart-wrap { position: relative; height: 260px; }
-    .chart-wrap.tall { height: 295px; }
+
+    .chart-card.wide {
+      grid-column: span 2;
+    }
+
+    .chart-card-header {
+      margin-bottom: 20px;
+    }
+
+    .chart-title {
+      font-size: .9rem;
+      font-weight: 600;
+      color: var(--text-primary);
+    }
+
+    .chart-subtitle {
+      font-size: .75rem;
+      color: var(--text-muted);
+      margin-top: 3px;
+    }
+
+    .chart-wrap {
+      position: relative;
+      height: 260px;
+    }
+
+    .chart-wrap.tall {
+      height: 295px;
+    }
 
     /* ── Heatmap ── */
-    #heatmapContainer { overflow-x: auto; }
+    #heatmapContainer {
+      overflow-x: auto;
+    }
+
     .heatmap-table {
-      border-collapse: separate; border-spacing: 3px;
-      font-size: .62rem; font-family: 'Inter', sans-serif;
+      border-collapse: separate;
+      border-spacing: 3px;
+      font-size: .62rem;
+      font-family: 'Inter', sans-serif;
     }
+
     .heatmap-table th {
-      color: var(--text-muted); text-align: center;
-      padding: 2px 3px; font-weight: 400;
+      color: var(--text-muted);
+      text-align: center;
+      padding: 2px 3px;
+      font-weight: 400;
     }
+
     .heatmap-table td {
-      width: 26px; height: 20px; border-radius: 3px;
-      cursor: default; transition: transform .15s;
+      width: 26px;
+      height: 20px;
+      border-radius: 3px;
+      cursor: default;
+      transition: transform .15s;
     }
-    .heatmap-table td:hover { transform: scale(1.35); z-index: 1; position: relative; }
+
+    .heatmap-table td:hover {
+      transform: scale(1.35);
+      z-index: 1;
+      position: relative;
+    }
+
     .hm-label {
-      color: var(--text-muted); font-size: .65rem;
-      padding-right: 8px; text-align: right; font-weight: 500;
+      color: var(--text-muted);
+      font-size: .65rem;
+      padding-right: 8px;
+      text-align: right;
+      font-weight: 500;
     }
 
     /* ── Lab bars ── */
-    .lab-list { display: flex; flex-direction: column; gap: 16px; }
+    .lab-list {
+      display: flex;
+      flex-direction: column;
+      gap: 16px;
+    }
+
     .lab-row-header {
-      display: flex; justify-content: space-between; align-items: center;
-      font-size: .82rem; margin-bottom: 6px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      font-size: .82rem;
+      margin-bottom: 6px;
     }
-    .lab-name { font-weight: 500; color: var(--text-primary); }
-    .lab-count { font-size: .75rem; color: var(--text-muted); }
+
+    .lab-name {
+      font-weight: 500;
+      color: var(--text-primary);
+    }
+
+    .lab-count {
+      font-size: .75rem;
+      color: var(--text-muted);
+    }
+
     .lab-bar-bg {
-      background: var(--bg-main); border-radius: 6px;
-      height: 8px; overflow: hidden; border: 1px solid var(--border);
+      background: var(--bg-main);
+      border-radius: 6px;
+      height: 8px;
+      overflow: hidden;
+      border: 1px solid var(--border);
     }
+
     .lab-bar-fill {
-      height: 100%; border-radius: 6px;
+      height: 100%;
+      border-radius: 6px;
       background: var(--primary-orange);
-      transition: width 1s cubic-bezier(.4,0,.2,1);
+      transition: width 1s cubic-bezier(.4, 0, .2, 1);
       width: 0%;
     }
 
     @media (max-width: 1024px) {
-      .charts-grid { grid-template-columns: 1fr; }
-      .chart-card.wide { grid-column: span 1; }
+      .charts-grid {
+        grid-template-columns: 1fr;
+      }
+
+      .chart-card.wide {
+        grid-column: span 1;
+      }
     }
+
     @media (max-width: 768px) {
-      .sidebar { transform: translateX(-100%); }
-      .main-wrap { margin-left: 0; }
+      .sidebar {
+        transform: translateX(-100%);
+      }
+
+      .main-wrap {
+        margin-left: 0;
+      }
     }
   </style>
 </head>
+
 <body>
 
-<div id="loadingOverlay">
-  <div class="spinner"></div>
-  <p>Loading analytics…</p>
-</div>
-
-<!-- Sidebar -->
-<aside class="sidebar">
-  <div class="sidebar-brand">
-    <div class="sidebar-brand-title">Lab Management System</div>
-    <div class="sidebar-brand-sub">ENTC · University of Moratuwa</div>
+  <div id="loadingOverlay">
+    <div class="spinner"></div>
+    <p>Loading analytics…</p>
   </div>
 
-  <div class="sidebar-section">
-    <div class="sidebar-section-label">Main Menu</div>
-    <a href="#" class="sidebar-item">
-      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" rx="1"/><rect x="14" y="3" width="7" height="7" rx="1"/><rect x="3" y="14" width="7" height="7" rx="1"/><rect x="14" y="14" width="7" height="7" rx="1"/></svg>
-      Dashboard
-    </a>
-    <a href="#" class="sidebar-item">
-      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"/></svg>
-      Reservations
-    </a>
-    <a href="#" class="sidebar-item">
-      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-      Equipment
-    </a>
-    <a href="#" class="sidebar-item">
-      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-      Labs
-    </a>
-    <a href="#" class="sidebar-item">
-      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z"/></svg>
-      Issue Tickets
-    </a>
-  </div>
+  <!-- Sidebar -->
+  <aside class="sidebar">
+    <div class="sidebar-brand">
+      <div class="sidebar-brand-title">Lab Management System</div>
+      <div class="sidebar-brand-sub">ENTC · University of Moratuwa</div>
+    </div>
 
-  <div class="sidebar-section">
-    <div class="sidebar-section-label">Analytics</div>
-    <a href="demand-monitoring.html" class="sidebar-item active">
-      <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"/></svg>
-      Demand Monitoring
-    </a>
-  </div>
-
-  <div class="sidebar-footer">
-    <div class="sidebar-user">
-      <div class="sidebar-avatar">A</div>
-      <div>
-        <div class="sidebar-user-name">Admin</div>
-        <div class="sidebar-user-role">Lab Administrator</div>
-      </div>
-      <button class="logout-btn" onclick="logout()" title="Logout">
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Main Menu</div>
+      <a href="#" class="sidebar-item">
         <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
-          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-      </button>
-    </div>
-  </div>
-</aside>
-
-<!-- Main -->
-<div class="main-wrap">
-  <header class="topbar">
-    <div class="topbar-left">
-      <div class="topbar-title">Demand Monitoring</div>
-    </div>
-    <div class="topbar-right">
-      <div class="topbar-date" id="topbar-date"></div>
-      <button class="btn" style="padding: 6px 10px; font-size: 11px;" onclick="loadDashboard()">↺ Refresh</button>
-      <button id="theme-btn" class="theme-toggle" title="Toggle theme">🌙</button>
-      <div class="topbar-icon" title="Notifications">
-        <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
+          <rect x="3" y="3" width="7" height="7" rx="1" />
+          <rect x="14" y="3" width="7" height="7" rx="1" />
+          <rect x="3" y="14" width="7" height="7" rx="1" />
+          <rect x="14" y="14" width="7" height="7" rx="1" />
         </svg>
-        <div class="notif-dot"></div>
-      </div>
-      <a href="/profile.html" style="text-decoration: none">
-        <div class="topbar-avatar" id="topbar-avatar">LA</div>
+        Dashboard
+      </a>
+      <a href="#" class="sidebar-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2" />
+        </svg>
+        Reservations
+      </a>
+      <a href="#" class="sidebar-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path
+            d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+        </svg>
+        Equipment
+      </a>
+      <a href="#" class="sidebar-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path
+            d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+        </svg>
+        Labs
+      </a>
+      <a href="/stub.html" class="sidebar-item">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path
+            d="M15 5v2m0 4v2m0 4v2M5 5a2 2 0 00-2 2v3a2 2 0 110 4v3a2 2 0 002 2h14a2 2 0 002-2v-3a2 2 0 110-4V7a2 2 0 00-2-2H5z" />
+        </svg>
+        Issue Tickets
       </a>
     </div>
-  </header>
 
-  <main class="page">
-    <div class="breadcrumb">
-      Admin &rsaquo; Analytics &rsaquo; <span>Demand Monitoring</span>
-    </div>
-    <div class="page-header">
-      <h1>Demand Monitoring</h1>
-      <p>Real-time analytics on equipment usage, lab utilisation, and reservation trends.</p>
-    </div>
-
-    <div id="errorBanner"></div>
-
-    <!-- Summary cards -->
-    <div class="section-label">Overview</div>
-    <div class="cards">
-
-      <div class="card" style="--card-accent:#F36D1D">
-        <div class="card-icon">
-          <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke="currentColor" d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2"/></svg>
-        </div>
-        <div class="card-label">Total Reservations</div>
-        <div class="card-value" id="c-totalRes">—</div>
-        <div class="card-sub">All time</div>
-      </div>
-
-      <div class="card" style="--card-accent:#16a34a">
-        <div class="card-icon" style="background:#D1FAE5">
-          <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke="#16a34a" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z"/></svg>
-        </div>
-        <div class="card-label">Active Now</div>
-        <div class="card-value" id="c-activeRes">—</div>
-        <div class="card-sub"><span class="badge badge-green">Live</span></div>
-      </div>
-
-      <div class="card" style="--card-accent:#7c3aed">
-        <div class="card-icon" style="background:#EDE9FE">
-          <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke="#7c3aed" d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10"/></svg>
-        </div>
-        <div class="card-label">Equipment Items</div>
-        <div class="card-value" id="c-totalEq">—</div>
-        <div class="card-sub" id="c-availEq">— available</div>
-      </div>
-
-      <div class="card" style="--card-accent:#0891b2">
-        <div class="card-icon" style="background:#E0F7FA">
-          <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke="#0891b2" d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4"/></svg>
-        </div>
-        <div class="card-label">Lab Spaces</div>
-        <div class="card-value" id="c-totalLabs">—</div>
-        <div class="card-sub">Department labs</div>
-      </div>
-
-      <div class="card" style="--card-accent:#d97706">
-        <div class="card-icon" style="background:#FEF3C7">
-          <svg fill="none" viewBox="0 0 24 24" stroke-width="2"><path stroke="#d97706" d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z"/></svg>
-        </div>
-        <div class="card-label">Open Tickets</div>
-        <div class="card-value" id="c-openTix">—</div>
-        <div class="card-sub">Awaiting resolution</div>
-      </div>
-
+    <div class="sidebar-section">
+      <div class="sidebar-section-label">Analytics</div>
+      <a href="demand-monitoring.html" class="sidebar-item active">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path
+            d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+        </svg>
+        Demand Monitoring
+      </a>
     </div>
 
-    <!-- Charts -->
-    <div class="section-label">Analytics</div>
-    <div class="charts-grid">
-
-      <div class="chart-card wide">
-        <div class="chart-card-header">
-          <div class="chart-title">Reservation Trends Over Time</div>
-          <div class="chart-subtitle">Monthly reservation count across all equipment and labs</div>
+    <div class="sidebar-footer">
+      <div class="sidebar-user">
+        <div class="sidebar-avatar">A</div>
+        <div>
+          <div class="sidebar-user-name">Admin</div>
+          <div class="sidebar-user-role">Lab Administrator</div>
         </div>
-        <div class="chart-wrap tall"><canvas id="trendChart"></canvas></div>
+        <button class="logout-btn" onclick="logout()" title="Logout">
+          <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+        </button>
       </div>
-
-      <div class="chart-card">
-        <div class="chart-card-header">
-          <div class="chart-title">Most Used Equipment</div>
-          <div class="chart-subtitle">Total reservations per item</div>
-        </div>
-        <div class="chart-wrap"><canvas id="equipChart"></canvas></div>
-      </div>
-
-      <div class="chart-card">
-        <div class="chart-card-header">
-          <div class="chart-title">Lab Utilisation</div>
-          <div class="chart-subtitle">Reservation share by lab space</div>
-        </div>
-        <div class="lab-list" id="labList" style="margin-top:8px;"></div>
-      </div>
-
-      <div class="chart-card wide">
-        <div class="chart-card-header">
-          <div class="chart-title">Peak Usage Hours</div>
-          <div class="chart-subtitle">Reservation density by day and hour — darker = higher demand</div>
-        </div>
-        <div id="heatmapContainer" style="margin-top:4px;"></div>
-      </div>
-
     </div>
-  </main>
-</div>
+  </aside>
 
-<script>
-  const API_BASE = '/api/demand';
-  let trendChartInst = null, equipChartInst = null;
+  <!-- Main -->
+  <div class="main-wrap">
+    <header class="topbar">
+      <div class="topbar-left">
+        <div class="topbar-title">Demand Monitoring</div>
+      </div>
+      <div class="topbar-right">
+        <div class="topbar-date" id="topbar-date"></div>
+        <button class="btn" style="padding: 6px 10px; font-size: 11px;" onclick="loadDashboard()">↺ Refresh</button>
+        <button id="theme-btn" class="theme-toggle" title="Toggle theme">🌙</button>
+        <div class="topbar-icon" title="Notifications">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
+          </svg>
+          <div class="notif-dot"></div>
+        </div>
+        <a href="/profile.html" style="text-decoration: none">
+          <div class="topbar-avatar" id="topbar-avatar">LA</div>
+        </a>
+      </div>
+    </header>
 
-  async function loadDashboard() {
-    showLoading(true); hideError();
-    try {
-      const res = await fetch(`${API_BASE}/dashboard`);
-      if (!res.ok) throw new Error(`Server returned ${res.status}`);
-      renderAll(await res.json());
-      document.getElementById('lastUpdated').textContent =
-        'Updated ' + new Date().toLocaleTimeString();
-    } catch (err) {
-      showError(err.message);
-      renderAll(getDemoData());
-      document.getElementById('lastUpdated').textContent = 'Demo data';
-    } finally { showLoading(false); }
-  }
+    <main class="page">
+      <div class="breadcrumb">
+        Admin &rsaquo; Analytics &rsaquo; <span>Demand Monitoring</span>
+      </div>
+      <div class="page-header">
+        <h1>Demand Monitoring</h1>
+        <p>Real-time analytics on equipment usage, lab utilisation, and reservation trends.</p>
+      </div>
 
-  function renderAll(data) {
-    renderCards(data.summary);
-    renderTrendChart(data.usageTrend);
-    renderEquipChart(data.equipmentUsage);
-    renderLabBars(data.labUsage);
-    renderHeatmap(data.peakHours);
-  }
+      <div id="errorBanner"></div>
 
-  function renderCards(s) {
-    if (!s) return;
-    setText('c-totalRes',  s.totalReservations);
-    setText('c-activeRes', s.activeReservations);
-    setText('c-totalEq',   s.totalEquipment);
-    setText('c-availEq',   `${s.availableEquipment} available`);
-    setText('c-totalLabs', s.totalLabs);
-    setText('c-openTix',   s.openTickets);
-  }
+      <!-- Summary cards -->
+      <div class="section-label">Overview</div>
+      <div class="cards">
 
-  function renderTrendChart(trend) {
-    if (!trend || !trend.length) return;
-    if (trendChartInst) trendChartInst.destroy();
-    trendChartInst = new Chart(document.getElementById('trendChart'), {
-      type: 'line',
-      data: {
-        labels: trend.map(t => t.period),
-        datasets: [{
-          label: 'Reservations',
-          data: trend.map(t => t.reservationCount),
-          fill: true, tension: 0.4,
-          borderColor: '#F36D1D', borderWidth: 2.5,
-          pointBackgroundColor: '#F36D1D',
-          pointBorderColor: '#fff', pointBorderWidth: 2,
-          pointRadius: 5, pointHoverRadius: 7,
-          backgroundColor: ctx => {
-            const g = ctx.chart.ctx.createLinearGradient(0,0,0,280);
-            g.addColorStop(0, 'rgba(243,109,29,0.18)');
-            g.addColorStop(1, 'rgba(243,109,29,0)');
-            return g;
-          }
-        }]
-      },
-      options: lightChartOptions()
-    });
-  }
+        <div class="card" style="--card-accent:#F36D1D">
+          <div class="card-icon">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke="currentColor"
+                d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2" />
+            </svg>
+          </div>
+          <div class="card-label">Total Reservations</div>
+          <div class="card-value" id="c-totalRes">—</div>
+          <div class="card-sub">All time</div>
+        </div>
 
-  function renderEquipChart(usage) {
-    if (!usage || !usage.length) return;
-    if (equipChartInst) equipChartInst.destroy();
-    const top = usage.slice(0, 8);
-    const shades = ['#F36D1D','#DA5810','#F58340','#E06020','#F99060','#C04E0E','#FAA880','#B04010'];
-    equipChartInst = new Chart(document.getElementById('equipChart'), {
-      type: 'bar',
-      data: {
-        labels: top.map(e => shortLabel(e.equipmentName, 22)),
-        datasets: [{
-          label: 'Reservations',
-          data: top.map(e => e.reservationCount),
-          backgroundColor: shades.slice(0, top.length),
-          borderRadius: 6, borderSkipped: false,
-        }]
-      },
-      options: { ...lightChartOptions(), indexAxis: 'y',
-        plugins: { legend: { display: false }, tooltip: lightTooltip() } }
-    });
-  }
+        <div class="card" style="--card-accent:#16a34a">
+          <div class="card-icon" style="background:#D1FAE5">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke="#16a34a" d="M9 12l2 2 4-4m6 2a9 9 0 11-18 0 9 9 0 0118 0z" />
+            </svg>
+          </div>
+          <div class="card-label">Active Now</div>
+          <div class="card-value" id="c-activeRes">—</div>
+          <div class="card-sub"><span class="badge badge-green">Live</span></div>
+        </div>
 
-  function renderLabBars(labs) {
-    if (!labs || !labs.length) return;
-    const container = document.getElementById('labList');
-    container.innerHTML = '';
-    const max = Math.max(...labs.map(l => l.reservationCount), 1);
-    labs.forEach(lab => {
-      const pct = Math.round((lab.reservationCount / max) * 100);
-      const div = document.createElement('div');
-      div.innerHTML = `
+        <div class="card" style="--card-accent:#7c3aed">
+          <div class="card-icon" style="background:#EDE9FE">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke="#7c3aed"
+                d="M19 11H5m14 0a2 2 0 012 2v6a2 2 0 01-2 2H5a2 2 0 01-2-2v-6a2 2 0 012-2m14 0V9a2 2 0 00-2-2M5 11V9a2 2 0 012-2m0 0V5a2 2 0 012-2h6a2 2 0 012 2v2M7 7h10" />
+            </svg>
+          </div>
+          <div class="card-label">Equipment Items</div>
+          <div class="card-value" id="c-totalEq">—</div>
+          <div class="card-sub" id="c-availEq">— available</div>
+        </div>
+
+        <div class="card" style="--card-accent:#0891b2">
+          <div class="card-icon" style="background:#E0F7FA">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke="#0891b2"
+                d="M19 21V5a2 2 0 00-2-2H7a2 2 0 00-2 2v16m14 0h2m-2 0h-5m-9 0H3m2 0h5M9 7h1m-1 4h1m4-4h1m-1 4h1m-5 10v-5a1 1 0 011-1h2a1 1 0 011 1v5m-4 0h4" />
+            </svg>
+          </div>
+          <div class="card-label">Lab Spaces</div>
+          <div class="card-value" id="c-totalLabs">—</div>
+          <div class="card-sub">Department labs</div>
+        </div>
+
+        <div class="card" style="--card-accent:#d97706">
+          <div class="card-icon" style="background:#FEF3C7">
+            <svg fill="none" viewBox="0 0 24 24" stroke-width="2">
+              <path stroke="#d97706"
+                d="M12 9v2m0 4h.01m-6.938 4h13.856c1.54 0 2.502-1.667 1.732-3L13.732 4c-.77-1.333-2.694-1.333-3.464 0L3.34 16c-.77 1.333.192 3 1.732 3z" />
+            </svg>
+          </div>
+          <div class="card-label">Open Tickets</div>
+          <div class="card-value" id="c-openTix">—</div>
+          <div class="card-sub">Awaiting resolution</div>
+        </div>
+
+      </div>
+
+      <!-- Charts -->
+      <div class="section-label">Analytics</div>
+      <div class="charts-grid">
+
+        <div class="chart-card wide">
+          <div class="chart-card-header">
+            <div class="chart-title">Reservation Trends Over Time</div>
+            <div class="chart-subtitle">Monthly reservation count across all equipment and labs</div>
+          </div>
+          <div class="chart-wrap tall"><canvas id="trendChart"></canvas></div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div class="chart-title">Most Used Equipment</div>
+            <div class="chart-subtitle">Total reservations per item</div>
+          </div>
+          <div class="chart-wrap"><canvas id="equipChart"></canvas></div>
+        </div>
+
+        <div class="chart-card">
+          <div class="chart-card-header">
+            <div class="chart-title">Lab Utilisation</div>
+            <div class="chart-subtitle">Reservation share by lab space</div>
+          </div>
+          <div class="lab-list" id="labList" style="margin-top:8px;"></div>
+        </div>
+
+        <div class="chart-card wide">
+          <div class="chart-card-header">
+            <div class="chart-title">Peak Usage Hours</div>
+            <div class="chart-subtitle">Reservation density by day and hour — darker = higher demand</div>
+          </div>
+          <div id="heatmapContainer" style="margin-top:4px;"></div>
+        </div>
+
+      </div>
+    </main>
+  </div>
+
+  <script>
+    const API_BASE = '/api/demand';
+    let trendChartInst = null, equipChartInst = null;
+
+    async function loadDashboard() {
+      showLoading(true); hideError();
+      try {
+        const res = await fetch(`${API_BASE}/dashboard`);
+        if (!res.ok) throw new Error(`Server returned ${res.status}`);
+        renderAll(await res.json());
+        document.getElementById('lastUpdated').textContent =
+          'Updated ' + new Date().toLocaleTimeString();
+      } catch (err) {
+        showError(err.message);
+        renderAll(getDemoData());
+        document.getElementById('lastUpdated').textContent = 'Demo data';
+      } finally { showLoading(false); }
+    }
+
+    function renderAll(data) {
+      renderCards(data.summary);
+      renderTrendChart(data.usageTrend);
+      renderEquipChart(data.equipmentUsage);
+      renderLabBars(data.labUsage);
+      renderHeatmap(data.peakHours);
+    }
+
+    function renderCards(s) {
+      if (!s) return;
+      setText('c-totalRes', s.totalReservations);
+      setText('c-activeRes', s.activeReservations);
+      setText('c-totalEq', s.totalEquipment);
+      setText('c-availEq', `${s.availableEquipment} available`);
+      setText('c-totalLabs', s.totalLabs);
+      setText('c-openTix', s.openTickets);
+    }
+
+    function renderTrendChart(trend) {
+      if (!trend || !trend.length) return;
+      if (trendChartInst) trendChartInst.destroy();
+      trendChartInst = new Chart(document.getElementById('trendChart'), {
+        type: 'line',
+        data: {
+          labels: trend.map(t => t.period),
+          datasets: [{
+            label: 'Reservations',
+            data: trend.map(t => t.reservationCount),
+            fill: true, tension: 0.4,
+            borderColor: '#F36D1D', borderWidth: 2.5,
+            pointBackgroundColor: '#F36D1D',
+            pointBorderColor: '#fff', pointBorderWidth: 2,
+            pointRadius: 5, pointHoverRadius: 7,
+            backgroundColor: ctx => {
+              const g = ctx.chart.ctx.createLinearGradient(0, 0, 0, 280);
+              g.addColorStop(0, 'rgba(243,109,29,0.18)');
+              g.addColorStop(1, 'rgba(243,109,29,0)');
+              return g;
+            }
+          }]
+        },
+        options: lightChartOptions()
+      });
+    }
+
+    function renderEquipChart(usage) {
+      if (!usage || !usage.length) return;
+      if (equipChartInst) equipChartInst.destroy();
+      const top = usage.slice(0, 8);
+      const shades = ['#F36D1D', '#DA5810', '#F58340', '#E06020', '#F99060', '#C04E0E', '#FAA880', '#B04010'];
+      equipChartInst = new Chart(document.getElementById('equipChart'), {
+        type: 'bar',
+        data: {
+          labels: top.map(e => shortLabel(e.equipmentName, 22)),
+          datasets: [{
+            label: 'Reservations',
+            data: top.map(e => e.reservationCount),
+            backgroundColor: shades.slice(0, top.length),
+            borderRadius: 6, borderSkipped: false,
+          }]
+        },
+        options: {
+          ...lightChartOptions(), indexAxis: 'y',
+          plugins: { legend: { display: false }, tooltip: lightTooltip() }
+        }
+      });
+    }
+
+    function renderLabBars(labs) {
+      if (!labs || !labs.length) return;
+      const container = document.getElementById('labList');
+      container.innerHTML = '';
+      const max = Math.max(...labs.map(l => l.reservationCount), 1);
+      labs.forEach(lab => {
+        const pct = Math.round((lab.reservationCount / max) * 100);
+        const div = document.createElement('div');
+        div.innerHTML = `
         <div class="lab-row-header">
           <span class="lab-name">${lab.labName}</span>
           <span class="lab-count">${lab.reservationCount} reservations</span>
@@ -646,103 +979,108 @@
         <div class="lab-bar-bg">
           <div class="lab-bar-fill" style="width:0%" data-pct="${pct}%"></div>
         </div>`;
-      container.appendChild(div);
-    });
-    requestAnimationFrame(() => {
-      document.querySelectorAll('.lab-bar-fill').forEach(el => { el.style.width = el.dataset.pct; });
-    });
-  }
-
-  function renderHeatmap(peaks) {
-    const DAYS  = ['Sun','Mon','Tue','Wed','Thu','Fri','Sat'];
-    const HOURS = Array.from({length:24}, (_,i) =>
-      i===0?'12a':i<12?`${i}a`:i===12?'12p':`${i-12}p`);
-    const grid = Array.from({length:7}, () => new Array(24).fill(0));
-    let maxVal = 1;
-    if (peaks && peaks.length) peaks.forEach(p => {
-      const d = (p.dayOfWeek-1+7)%7, h = p.hour;
-      if (d>=0&&d<7&&h>=0&&h<24) { grid[d][h]=p.count; if(p.count>maxVal) maxVal=p.count; }
-    });
-    const container = document.getElementById('heatmapContainer');
-    container.innerHTML = '';
-    const table = document.createElement('table');
-    table.className = 'heatmap-table';
-    const thead = table.createTHead(), hr = thead.insertRow();
-    hr.insertCell().className = 'hm-label';
-    HOURS.forEach(h => { const th=document.createElement('th'); th.textContent=h; hr.appendChild(th); });
-    const tbody = table.createTBody();
-    DAYS.forEach((day,di) => {
-      const row=tbody.insertRow(), lc=row.insertCell();
-      lc.className='hm-label'; lc.textContent=day;
-      HOURS.forEach((_,hi) => {
-        const cell=row.insertCell(), val=grid[di][hi];
-        cell.style.backgroundColor = heatColor(val/maxVal);
-        cell.title=`${day} ${HOURS[hi]}: ${val} reservations`;
+        container.appendChild(div);
       });
-    });
-    container.appendChild(table);
-  }
-
-  function heatColor(t) {
-    if (t===0) return '#F8F9FA';
-    const stops=[[0,[254,232,210]],[.25,[253,186,140]],[.5,[243,109,29]],[.75,[218,88,16]],[1,[154,52,4]]];
-    for (let i=1;i<stops.length;i++) {
-      if (t<=stops[i][0]) {
-        const r=(t-stops[i-1][0])/(stops[i][0]-stops[i-1][0]);
-        const a=stops[i-1][1],b=stops[i][1];
-        return `rgb(${Math.round(a[0]+(b[0]-a[0])*r)},${Math.round(a[1]+(b[1]-a[1])*r)},${Math.round(a[2]+(b[2]-a[2])*r)})`;
-      }
+      requestAnimationFrame(() => {
+        document.querySelectorAll('.lab-bar-fill').forEach(el => { el.style.width = el.dataset.pct; });
+      });
     }
-    return 'rgb(154,52,4)';
-  }
 
-  function lightChartOptions() {
-    return {
-      responsive: true, maintainAspectRatio: false,
-      plugins: { legend:{display:false}, tooltip: lightTooltip() },
-      scales: {
-        x: { grid:{color:'#F1F3F5',drawTicks:false}, ticks:{color:'#6C757D',font:{size:11,family:'Inter'}}, border:{color:'#E9ECEF'} },
-        y: { grid:{color:'#F1F3F5',drawTicks:false}, ticks:{color:'#6C757D',font:{size:11,family:'Inter'}}, border:{color:'#E9ECEF'} }
+    function renderHeatmap(peaks) {
+      const DAYS = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+      const HOURS = Array.from({ length: 24 }, (_, i) =>
+        i === 0 ? '12a' : i < 12 ? `${i}a` : i === 12 ? '12p' : `${i - 12}p`);
+      const grid = Array.from({ length: 7 }, () => new Array(24).fill(0));
+      let maxVal = 1;
+      if (peaks && peaks.length) peaks.forEach(p => {
+        const d = (p.dayOfWeek - 1 + 7) % 7, h = p.hour;
+        if (d >= 0 && d < 7 && h >= 0 && h < 24) { grid[d][h] = p.count; if (p.count > maxVal) maxVal = p.count; }
+      });
+      const container = document.getElementById('heatmapContainer');
+      container.innerHTML = '';
+      const table = document.createElement('table');
+      table.className = 'heatmap-table';
+      const thead = table.createTHead(), hr = thead.insertRow();
+      hr.insertCell().className = 'hm-label';
+      HOURS.forEach(h => { const th = document.createElement('th'); th.textContent = h; hr.appendChild(th); });
+      const tbody = table.createTBody();
+      DAYS.forEach((day, di) => {
+        const row = tbody.insertRow(), lc = row.insertCell();
+        lc.className = 'hm-label'; lc.textContent = day;
+        HOURS.forEach((_, hi) => {
+          const cell = row.insertCell(), val = grid[di][hi];
+          cell.style.backgroundColor = heatColor(val / maxVal);
+          cell.title = `${day} ${HOURS[hi]}: ${val} reservations`;
+        });
+      });
+      container.appendChild(table);
+    }
+
+    function heatColor(t) {
+      if (t === 0) return '#F8F9FA';
+      const stops = [[0, [254, 232, 210]], [.25, [253, 186, 140]], [.5, [243, 109, 29]], [.75, [218, 88, 16]], [1, [154, 52, 4]]];
+      for (let i = 1; i < stops.length; i++) {
+        if (t <= stops[i][0]) {
+          const r = (t - stops[i - 1][0]) / (stops[i][0] - stops[i - 1][0]);
+          const a = stops[i - 1][1], b = stops[i][1];
+          return `rgb(${Math.round(a[0] + (b[0] - a[0]) * r)},${Math.round(a[1] + (b[1] - a[1]) * r)},${Math.round(a[2] + (b[2] - a[2]) * r)})`;
+        }
       }
-    };
-  }
-  function lightTooltip() {
-    return { backgroundColor:'#212529', borderColor:'#343A40', borderWidth:1,
-             titleColor:'#F8F9FA', bodyColor:'#ADB5BD', padding:10, cornerRadius:8 };
-  }
-  function setText(id, val) { const el=document.getElementById(id); if(el) el.textContent=val??'—'; }
-  function shortLabel(str,max) { return str&&str.length>max?str.slice(0,max)+'…':str; }
-  function showLoading(v) { document.getElementById('loadingOverlay').classList.toggle('hidden',!v); }
-  function showError(msg) { const el=document.getElementById('errorBanner'); el.style.display='block'; el.textContent=`⚠ Could not reach backend (${msg}). Showing demo data.`; }
-  function hideError() { document.getElementById('errorBanner').style.display='none'; }
+      return 'rgb(154,52,4)';
+    }
 
-  function getDemoData() {
-    return {
-      summary: { totalReservations:248, activeReservations:14, totalEquipment:8, availableEquipment:5, totalLabs:4, openTickets:3 },
-      usageTrend: [{period:'2026-01',reservationCount:18},{period:'2026-02',reservationCount:27},{period:'2026-03',reservationCount:35},{period:'2026-04',reservationCount:52},{period:'2026-05',reservationCount:41}],
-      equipmentUsage: [
-        {equipmentName:'Oscilloscope DSO-X 1204G',reservationCount:72},{equipmentName:'Digital Multimeter',reservationCount:65},
-        {equipmentName:'DC Power Supply 30V/5A',reservationCount:48},{equipmentName:'Raspberry Pi 4 Kit',reservationCount:34},
-        {equipmentName:'USRP B210 SDR Kit',reservationCount:19},{equipmentName:'DE0-Nano FPGA Board',reservationCount:17},
-        {equipmentName:'AC Power Supply',reservationCount:12},{equipmentName:'Analog Multimeter',reservationCount:8}
-      ],
-      peakHours: (() => { const rows=[];
-        for(let d=1;d<=7;d++) for(let h=0;h<24;h++) {
-          const wd=d>=2&&d<=6, pk=h>=9&&h<=17, mid=d>=3&&d<=5;
-          rows.push({dayOfWeek:d,hour:h,count:wd&&pk?Math.round(Math.random()*(mid?12:6)+(mid?4:1)):0});
-        } return rows; })(),
-      labUsage: [{labName:'Telecom Lab',reservationCount:88},{labName:'Digital Lab',reservationCount:72},{labName:'Analog Lab',reservationCount:55},{labName:'Computer Lab',reservationCount:33}]
-    };
-  }
+    function lightChartOptions() {
+      return {
+        responsive: true, maintainAspectRatio: false,
+        plugins: { legend: { display: false }, tooltip: lightTooltip() },
+        scales: {
+          x: { grid: { color: '#F1F3F5', drawTicks: false }, ticks: { color: '#6C757D', font: { size: 11, family: 'Inter' } }, border: { color: '#E9ECEF' } },
+          y: { grid: { color: '#F1F3F5', drawTicks: false }, ticks: { color: '#6C757D', font: { size: 11, family: 'Inter' } }, border: { color: '#E9ECEF' } }
+        }
+      };
+    }
+    function lightTooltip() {
+      return {
+        backgroundColor: '#212529', borderColor: '#343A40', borderWidth: 1,
+        titleColor: '#F8F9FA', bodyColor: '#ADB5BD', padding: 10, cornerRadius: 8
+      };
+    }
+    function setText(id, val) { const el = document.getElementById(id); if (el) el.textContent = val ?? '—'; }
+    function shortLabel(str, max) { return str && str.length > max ? str.slice(0, max) + '…' : str; }
+    function showLoading(v) { document.getElementById('loadingOverlay').classList.toggle('hidden', !v); }
+    function showError(msg) { const el = document.getElementById('errorBanner'); el.style.display = 'block'; el.textContent = `⚠ Could not reach backend (${msg}). Showing demo data.`; }
+    function hideError() { document.getElementById('errorBanner').style.display = 'none'; }
 
-  function logout() {
-    sessionStorage.clear();
-    window.location.href = "/login.html";
-  }
-  loadDashboard();
-  setInterval(loadDashboard, 5*60*1000);
-</script>
-<script src="/notifications.js"></script>
-<script src="/theme.js"></script>
+    function getDemoData() {
+      return {
+        summary: { totalReservations: 248, activeReservations: 14, totalEquipment: 8, availableEquipment: 5, totalLabs: 4, openTickets: 3 },
+        usageTrend: [{ period: '2026-01', reservationCount: 18 }, { period: '2026-02', reservationCount: 27 }, { period: '2026-03', reservationCount: 35 }, { period: '2026-04', reservationCount: 52 }, { period: '2026-05', reservationCount: 41 }],
+        equipmentUsage: [
+          { equipmentName: 'Oscilloscope DSO-X 1204G', reservationCount: 72 }, { equipmentName: 'Digital Multimeter', reservationCount: 65 },
+          { equipmentName: 'DC Power Supply 30V/5A', reservationCount: 48 }, { equipmentName: 'Raspberry Pi 4 Kit', reservationCount: 34 },
+          { equipmentName: 'USRP B210 SDR Kit', reservationCount: 19 }, { equipmentName: 'DE0-Nano FPGA Board', reservationCount: 17 },
+          { equipmentName: 'AC Power Supply', reservationCount: 12 }, { equipmentName: 'Analog Multimeter', reservationCount: 8 }
+        ],
+        peakHours: (() => {
+          const rows = [];
+          for (let d = 1; d <= 7; d++) for (let h = 0; h < 24; h++) {
+            const wd = d >= 2 && d <= 6, pk = h >= 9 && h <= 17, mid = d >= 3 && d <= 5;
+            rows.push({ dayOfWeek: d, hour: h, count: wd && pk ? Math.round(Math.random() * (mid ? 12 : 6) + (mid ? 4 : 1)) : 0 });
+          } return rows;
+        })(),
+        labUsage: [{ labName: 'Telecom Lab', reservationCount: 88 }, { labName: 'Digital Lab', reservationCount: 72 }, { labName: 'Analog Lab', reservationCount: 55 }, { labName: 'Computer Lab', reservationCount: 33 }]
+      };
+    }
+
+    function logout() {
+      sessionStorage.clear();
+      window.location.href = "/login.html";
+    }
+    loadDashboard();
+    setInterval(loadDashboard, 5 * 60 * 1000);
+  </script>
+  <script src="/notifications.js"></script>
+  <script src="/theme.js"></script>
 </body>
+
 </html>

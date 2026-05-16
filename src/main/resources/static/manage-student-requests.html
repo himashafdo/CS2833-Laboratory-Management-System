@@ -1,0 +1,667 @@
+<!doctype html>
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Manage Student Requests — Lab Technician</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --orange: #f97316;
+        --orange2: #ea6c0a;
+        --orange3: #fb923c;
+        --text: #1a1a2e;
+        --text2: #64748b;
+        --text3: #94a3b8;
+        --border: #e2e8f0;
+        --white: #ffffff;
+        --bg: #f8fafc;
+        --font: "Plus Jakarta Sans", sans-serif;
+      }
+      [data-theme="dark"] {
+        --text: #f1f5f9;
+        --text2: #cbd5e1;
+        --border: #334155;
+        --white: #1e293b;
+        --bg: #0f172a;
+      }
+      body {
+        font-family: var(--font);
+        background: var(--bg);
+        min-height: 100vh;
+        display: flex;
+        color: var(--text);
+      }
+
+      /* SIDEBAR */
+      .sidebar {
+        width: 240px;
+        min-height: 100vh;
+        flex-shrink: 0;
+        background: linear-gradient(180deg, #1a1a2e 0%, #0f172a 100%);
+        display: flex;
+        flex-direction: column;
+        padding: 24px 0;
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 100;
+      }
+      .sidebar-brand {
+        padding: 0 20px 28px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        margin-bottom: 16px;
+      }
+      .brand-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .brand-icon {
+        width: 38px;
+        height: 38px;
+        background: rgba(249, 115, 22, 0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .brand-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: white;
+        line-height: 1.2;
+      }
+      .brand-sub {
+        font-size: 10px;
+        color: rgba(249, 115, 22, 0.8);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-top: 2px;
+      }
+      .nav-section {
+        padding: 0 12px;
+        flex: 1;
+      }
+      .nav-label {
+        margin: 16px 0 6px 12px;
+        font-size: 10px;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        margin-bottom: 4px;
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+      }
+      .nav-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .nav-item.active {
+        background: rgba(249, 115, 22, 0.15);
+        color: #fb923c;
+        font-weight: 600;
+        border-left: 3px solid var(--orange);
+      }
+      .nav-item svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+      }
+      .sidebar-user {
+        margin: 16px 12px 0;
+        padding: 12px;
+        border-radius: 12px;
+        background: rgba(249, 115, 22, 0.1);
+        border: 1px solid rgba(249, 115, 22, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--orange), var(--orange2));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+        color: white;
+        flex-shrink: 0;
+      }
+      .user-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: white;
+      }
+      .user-role {
+        font-size: 11px;
+        color: rgba(249, 115, 22, 0.8);
+      }
+      .logout-btn {
+        margin-left: auto;
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        padding: 4px;
+        transition: 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logout-btn:hover {
+        color: white;
+        transform: scale(1.1);
+      }
+
+      /* MAIN */
+      .main {
+        margin-left: 240px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      .topbar {
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+        padding: 16px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+      .topbar-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .search-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 16px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--bg);
+        width: 220px;
+      }
+      .search-box input {
+        border: none;
+        outline: none;
+        font-family: var(--font);
+        font-size: 13px;
+        color: var(--text);
+        background: transparent;
+        width: 100%;
+      }
+      .search-box input::placeholder {
+        color: var(--text3);
+      }
+      .topbar-date {
+        padding: 8px 14px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        font-size: 13px;
+        color: var(--text2);
+        background: var(--bg);
+        white-space: nowrap;
+      }
+      .theme-toggle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: var(--white);
+        color: var(--text2);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+      }
+      .topbar-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        background: var(--white);
+        color: var(--text2);
+        position: relative;
+      }
+      .notif-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--orange);
+        border-radius: 50%;
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        border: 2px solid var(--white);
+      }
+      .topbar-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #1a1a2e, #1e3a5f);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+        color: white;
+        cursor: pointer;
+      }
+
+      /* CONTENT */
+      .content {
+        padding: 28px 32px;
+        flex: 1;
+      }
+
+      /* STATS */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 28px;
+      }
+      .stat-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px;
+        border-top: 3px solid transparent;
+      }
+      .stat-card.blue {
+        border-top-color: #3b82f6;
+      }
+      .stat-card.amber {
+        border-top-color: #f59e0b;
+      }
+      .stat-card.green {
+        border-top-color: #22c55e;
+      }
+      .stat-card.red {
+        border-top-color: #ef4444;
+      }
+      .stat-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text2);
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .stat-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1;
+        margin-bottom: 4px;
+      }
+
+      /* SECTION CARD */
+      .section-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 20px;
+      }
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+      .section-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+      }
+
+      /* TABLE */
+      .table-wrap {
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        white-space: nowrap;
+      }
+      th {
+        text-align: left;
+        padding: 12px 16px;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text2);
+        border-bottom: 2px solid var(--border);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      td {
+        padding: 14px 16px;
+        font-size: 13px;
+        color: var(--text);
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+      }
+
+      /* BADGES */
+      .badge {
+        padding: 4px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+        display: inline-block;
+        text-transform: uppercase;
+      }
+      .badge-pending { background: #fef9c3; color: #854d0e; }
+      .badge-approved { background: #dcfce7; color: #15803d; }
+      .badge-rejected { background: #fee2e2; color: #991b1b; }
+
+      /* BUTTONS */
+      .btn {
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-weight: 600;
+        font-size: 12px;
+        cursor: pointer;
+        border: none;
+        font-family: var(--font);
+        transition: 0.2s;
+      }
+      .btn-approve {
+        background: #dcfce7;
+        color: #15803d;
+        border: 1px solid #bbf7d0;
+      }
+      .btn-approve:hover { background: #bbf7d0; }
+      .btn-reject {
+        background: #fee2e2;
+        color: #991b1b;
+        border: 1px solid #fecaca;
+        margin-left: 4px;
+      }
+      .btn-reject:hover { background: #fecaca; }
+
+      /* MODAL */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        backdrop-filter: blur(4px);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 200;
+      }
+      .modal-overlay.active { display: flex; }
+      .modal {
+        background: var(--white);
+        border-radius: 16px;
+        width: 100%;
+        max-width: 460px;
+        padding: 28px;
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
+      }
+      .form-group { margin-bottom: 16px; }
+      .form-label { display: block; font-size: 12px; font-weight: 600; margin-bottom: 6px; text-transform: uppercase; }
+      .form-control { width: 100%; padding: 10px; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 13px; }
+      
+      .alert { padding: 10px 14px; border-radius: 8px; font-size: 13px; margin-bottom: 16px; display: none; }
+      .alert.show { display: block; }
+      .alert.success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+    </style>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-row">
+          <div class="brand-icon">
+            <svg viewBox="0 0 32 32" fill="none" stroke="#f97316" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="16" x2="12" y2="16" /><line x1="12" y1="9" x2="12" y2="23" />
+              <line x1="12" y1="10.5" x2="26" y2="5" /><line x1="12" y1="21.5" x2="26" y2="27" />
+              <polygon points="22,24.5 26,27 23.5,22.5" fill="#f97316" stroke="none" />
+            </svg>
+          </div>
+          <div>
+            <div class="brand-name">LabMS</div>
+            <div class="brand-sub">Lab Technician</div>
+          </div>
+        </div>
+      </div>
+
+      <nav class="nav-section">
+        <div class="nav-label">Management</div>
+        <a href="/labtech-dashboard.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" />
+          </svg>
+          Dashboard
+        </a>
+        <a href="/manage-student-requests.html" class="nav-item active">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" />
+          </svg>
+          Student Requests
+        </a>
+        <a href="/requests.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+          </svg>
+          Procurement Requests
+        </a>
+      </nav>
+
+      <div class="sidebar-user">
+        <div class="user-avatar" id="sidebar-avatar">LT</div>
+        <div>
+          <div class="user-name" id="sidebar-name">Lab Tech</div>
+          <div class="user-role">Lab Technician</div>
+        </div>
+        <button class="logout-btn" onclick="logout()" title="Logout">
+          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" /><polyline points="16 17 21 12 16 7" /><line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+        </button>
+      </div>
+    </aside>
+
+    <div class="main">
+      <div class="topbar">
+        <div class="topbar-title">Manage Student Requests</div>
+        <div class="topbar-right">
+          <div class="topbar-date" id="topbar-date"></div>
+          <div class="topbar-icon"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" /></svg><div class="notif-dot"></div></div>
+          <div class="topbar-avatar" id="topbar-avatar">LT</div>
+        </div>
+      </div>
+
+      <div class="content">
+        <div id="main-alert" class="alert"></div>
+
+        <div class="stats-grid">
+          <div class="stat-card blue"><div class="stat-label">Pending Reviews</div><div class="stat-value" id="stat-pending">0</div></div>
+          <div class="stat-card green"><div class="stat-label">Approved Today</div><div class="stat-value" id="stat-approved">0</div></div>
+        </div>
+
+        <div class="section-card">
+          <div class="section-header"><div class="section-title">Incoming Student Equipment Requests</div></div>
+          <div class="table-wrap">
+            <table>
+              <thead>
+                <tr>
+                  <th>Student</th>
+                  <th>Item</th>
+                  <th>Qty</th>
+                  <th>Urgency</th>
+                  <th>Reason</th>
+                  <th>Date</th>
+                  <th>Status</th>
+                  <th>Actions</th>
+                </tr>
+              </thead>
+              <tbody id="requests-tbody">
+                <tr><td colspan="8" class="empty-state">Loading student requests...</td></tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- ACTION MODAL -->
+    <div class="modal-overlay" id="modal-action">
+      <div class="modal">
+        <div class="modal-header">
+          <div class="modal-title" id="modal-title">Review Request</div>
+          <button class="close-btn" onclick="closeModal('modal-action')">&times;</button>
+        </div>
+        <div id="request-details" style="font-size:13px; margin-bottom:20px; color:var(--text2);"></div>
+        <div class="form-group">
+          <label class="form-label">Note to Student</label>
+          <textarea id="action-note" class="form-control" placeholder="e.g. Please collect from Lab B after 2 PM..."></textarea>
+        </div>
+        <div style="display:flex; justify-content:flex-end; gap:10px;">
+          <button class="btn" style="background:var(--bg); border:1px solid var(--border);" onclick="closeModal('modal-action')">Cancel</button>
+          <button class="btn btn-approve" id="btn-confirm-approve">Approve</button>
+          <button class="btn btn-reject" id="btn-confirm-reject">Reject</button>
+        </div>
+      </div>
+    </div>
+
+    <script>
+      const API = "/api";
+      const token = sessionStorage.getItem("token");
+      const role = sessionStorage.getItem("role");
+
+      if (!token || role !== "LAB_TECHNICIAN") window.location.href = "/login.html";
+
+      const headers = { "Content-Type": "application/json", Authorization: "Bearer " + token };
+
+      async function loadRequests() {
+        try {
+          // In a real app, this would be an endpoint specifically for labtechs to see student requests
+          // For now, we fetch all requests and filter for student submitters
+          const res = await fetch(`${API}/requests`, { headers });
+          const all = await res.json();
+          // Assuming we filter by role of submitter (Student)
+          const studentRequests = all.filter(r => r.user?.role === 'STUDENT' || r.submittedByRole === 'STUDENT');
+          
+          document.getElementById('stat-pending').textContent = studentRequests.filter(r => r.status === 'PENDING').length;
+          document.getElementById('stat-approved').textContent = studentRequests.filter(r => r.status === 'APPROVED').length;
+
+          renderTable(studentRequests);
+        } catch (e) {
+          console.error(e);
+        }
+      }
+
+      function renderTable(list) {
+        const tbody = document.getElementById("requests-tbody");
+        if (!list.length) {
+          tbody.innerHTML = '<tr><td colspan="8" class="empty-state">No student requests found.</td></tr>';
+          return;
+        }
+        tbody.innerHTML = list.map(r => `
+          <tr>
+            <td style="font-weight:600;">${r.user?.username || r.submittedBy || 'Student'}</td>
+            <td style="font-weight:600;">${r.itemName}</td>
+            <td>${r.quantity}</td>
+            <td><span class="badge badge-${(r.urgencyLevel || 'MEDIUM').toLowerCase()}">${r.urgencyLevel || 'MEDIUM'}</span></td>
+            <td style="font-size:12px; color:var(--text2); max-width:200px; white-space:normal;">${r.description || '—'}</td>
+            <td style="font-size:12px; color:var(--text2);">${new Date(r.createdAt).toLocaleDateString()}</td>
+            <td><span class="badge badge-${(r.status || 'PENDING').toLowerCase()}">${r.status || 'PENDING'}</span></td>
+            <td>
+              ${r.status === 'PENDING' ? 
+                `<button class="btn btn-approve" onclick="openActionModal(${JSON.stringify(r).replace(/"/g, '&quot;')})">Review</button>` : 
+                '<span style="color:var(--text3); font-size:12px;">Processed</span>'}
+            </td>
+          </tr>
+        `).join("");
+      }
+
+      let currentRequest = null;
+      function openActionModal(r) {
+        currentRequest = r;
+        document.getElementById('request-details').innerHTML = `
+          <p><strong>Item:</strong> ${r.itemName} (${r.quantity})</p>
+          <p><strong>Student:</strong> ${r.user?.username || r.submittedBy}</p>
+        `;
+        document.getElementById('modal-action').classList.add('active');
+        
+        document.getElementById('btn-confirm-approve').onclick = () => takeAction('APPROVED');
+        document.getElementById('btn-confirm-reject').onclick = () => takeAction('REJECTED');
+      }
+
+      async function takeAction(status) {
+        const note = document.getElementById('action-note').value;
+        const endpoint = status === 'APPROVED' ? 'approve' : 'reject';
+        try {
+          const res = await fetch(`${API}/requests/${currentRequest.id}/${endpoint}`, {
+            method: 'PUT',
+            headers,
+            body: JSON.stringify({ adminNote: note })
+          });
+          if (res.ok) {
+            closeModal('modal-action');
+            loadRequests();
+            document.getElementById('main-alert').textContent = `Request ${status.toLowerCase()} successfully.`;
+            document.getElementById('main-alert').className = 'alert success show';
+            setTimeout(() => document.getElementById('main-alert').className = 'alert', 3000);
+          }
+        } catch (e) { console.error(e); }
+      }
+
+      function closeModal(id) { document.getElementById(id).classList.remove('active'); }
+      function logout() { sessionStorage.clear(); window.location.href = "/login.html"; }
+
+      document.getElementById('topbar-date').textContent = new Date().toLocaleDateString('en-GB', { weekday: 'short', day: 'numeric', month: 'long', year: 'numeric' });
+      loadRequests();
+    </script>
+    <script src="/notifications.js"></script>
+    <script src="/theme.js"></script>
+  </body>
+</html>

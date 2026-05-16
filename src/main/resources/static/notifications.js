@@ -170,10 +170,22 @@
   // ── BUILD NOTIFICATIONS FROM DATA ────────────────────
   function buildNotifications() {
     let allNotifs = [];
+    const currentUsername = sessionStorage.getItem("username");
+    let role = sessionStorage.getItem("role");
+    if (!role) {
+      try {
+        role = JSON.parse(atob(sessionStorage.getItem("token").split('.')[1])).role;
+      } catch(e) {}
+    }
 
     if (reservations && reservations.length > 0) {
       const resNotifs = reservations
-        .filter((r) => r.status !== "CANCELLED")
+        .filter((r) => {
+          const isMine = r.user?.username === currentUsername;
+          if (isMine) return r.status !== "CANCELLED";
+          if (role === "LAB_TECHNICIAN" || role === "ADMIN") return r.status === "PENDING";
+          return false;
+        })
         .map((r) => {
           const name = r.equipment ? r.equipment.name : r.lab ? r.lab.labName : "Unknown";
           const type = r.equipment ? "equipment" : "lab";
@@ -181,21 +193,24 @@
           const dateStr = start.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
           const timeStr = start.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
           const isUnread = !seenIds.includes("res_" + r.id) && !seenIds.includes(r.id);
+          const isMine = r.user?.username === currentUsername;
 
           let msg = "";
           let iconClass = "";
           let iconSvg = "";
 
           if (r.status === "PENDING") {
-            msg = `<span>${name}</span> booking is pending approval`;
+            msg = isMine 
+              ? `Your <span>${name}</span> booking is pending approval`
+              : `New <span>${name}</span> booking from <span>${r.user?.username || 'student'}</span>`;
             iconClass = "pending";
             iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
           } else if (r.status === "APPROVED") {
-            msg = `<span>${name}</span> booking confirmed for ${dateStr}`;
+            msg = `Your <span>${name}</span> booking confirmed for ${dateStr}`;
             iconClass = "approved";
             iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`;
           } else if (r.status === "COMPLETED") {
-            msg = `<span>${name}</span> reservation completed on ${dateStr}`;
+            msg = `Your <span>${name}</span> reservation completed on ${dateStr}`;
             iconClass = type;
             iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`;
           }
@@ -215,18 +230,12 @@
     }
 
     if (requests && requests.length > 0) {
-      let role = sessionStorage.getItem("role");
-      if (!role) {
-        try {
-          role = JSON.parse(atob(sessionStorage.getItem("token").split('.')[1])).role;
-        } catch(e) {}
-      }
       const reqNotifs = requests
         .filter((r) => {
-          if (role === "LAB_TECHNICIAN" || role === "ADMIN") {
-            return r.status === "PENDING";
-          }
-          return r.status === "APPROVED" || r.status === "REJECTED";
+          const isMine = r.user?.username === currentUsername;
+          if (isMine) return true;
+          if (role === "LAB_TECHNICIAN" || role === "ADMIN") return r.status === "PENDING";
+          return false;
         })
         .map((r) => {
           const name = r.itemName;
@@ -234,27 +243,31 @@
           const dateStr = start.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
           const timeStr = start.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
           const isUnread = !seenIds.includes("req_" + r.id);
+          const isMine = r.user?.username === currentUsername;
 
           let msg = "";
           let iconClass = "";
           let iconSvg = "";
 
-          if (role === "LAB_TECHNICIAN" || role === "ADMIN") {
+          if (isMine) {
             if (r.status === "PENDING") {
-              msg = `New request for <span>${name}</span> is pending review`;
+              msg = `Your request for <span>${name}</span> is pending review`;
               iconClass = "pending";
               iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
-            }
-          } else {
-            if (r.status === "APPROVED") {
-              msg = `Request for <span>${name}</span> was approved`;
+            } else if (r.status === "APPROVED") {
+              msg = `Your request for <span>${name}</span> was approved`;
               iconClass = "approved";
               iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`;
             } else if (r.status === "REJECTED") {
-              msg = `Request for <span>${name}</span> was rejected`;
+              msg = `Your request for <span>${name}</span> was rejected`;
               iconClass = "cancelled";
               iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
             }
+          } else {
+            const reqType = role === "ADMIN" ? "procurement" : "equipment";
+            msg = `New ${reqType} request: <span>${name}</span> from <span>${r.user?.username || 'student'}</span>`;
+            iconClass = "pending";
+            iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
           }
 
           return {

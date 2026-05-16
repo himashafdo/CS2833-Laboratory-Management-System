@@ -1328,7 +1328,9 @@
       }
 
       function updateStats() {
-        const r = state.requests;
+        // Lead Admin only cares about requests from Lab Technicians (Procurement)
+        const r = state.requests.filter(x => x.submittedByRole === 'LAB_TECHNICIAN');
+        
         document.getElementById("stat-total").textContent = r.length;
         document.getElementById("stat-pending").textContent = r.filter(
           (x) => x.status === "PENDING",
@@ -1344,13 +1346,14 @@
       function renderOverviewChart() {
         const ctx = document.getElementById("overviewChart").getContext("2d");
         if (overviewChartInstance) overviewChartInstance.destroy();
-        const pending = state.requests.filter(
+        const procurement = state.requests.filter(x => x.submittedByRole === 'LAB_TECHNICIAN');
+        const pending = procurement.filter(
           (x) => x.status === "PENDING",
         ).length;
-        const approved = state.requests.filter(
+        const approved = procurement.filter(
           (x) => x.status === "APPROVED",
         ).length;
-        const rejected = state.requests.filter(
+        const rejected = procurement.filter(
           (x) => x.status === "REJECTED",
         ).length;
         overviewChartInstance = new Chart(ctx, {
@@ -1382,6 +1385,7 @@
       function renderActivity() {
         const list = document.getElementById("activity-list");
         const recent = [...state.requests]
+          .filter(x => x.submittedByRole === 'LAB_TECHNICIAN')
           .sort(
             (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0),
           )
@@ -1420,7 +1424,9 @@
         const statusF = document.getElementById("filter-proc-status").value;
         const urgencyF = document.getElementById("filter-proc-urgency").value;
 
-        let filtered = state.requests.filter((r) => {
+        let filtered = state.requests
+          .filter(x => x.submittedByRole === 'LAB_TECHNICIAN')
+          .filter((r) => {
           const matchSearch =
             (r.itemName || "").toLowerCase().includes(search) ||
             (r.submittedBy || r.user?.username || "")

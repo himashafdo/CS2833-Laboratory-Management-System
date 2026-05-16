@@ -17,6 +17,7 @@ Primary: Lab operations & equipment management.
 - Maintain equipment & resolve issues
 - Create procurement requests
 - Lab notices & updates
+- review student requests
 - Dashboard: labtech-dashboard.html
 
 ## 3. Student (STUDENT)
@@ -26,7 +27,9 @@ Primary: Use lab resources.
 - Make reservations
 - Track personal bookings
 - Report issues
+- requests equipements
 - Dashboard: student-dashboard.html
+
 
 ## Rules
 - Users only see role-specific UI

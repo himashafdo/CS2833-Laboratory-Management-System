@@ -587,8 +587,8 @@
           // For now, we fetch all requests and filter for student submitters
           const res = await fetch(`${API}/requests`, { headers });
           const all = await res.json();
-          // Assuming we filter by role of submitter (Student)
-          const studentRequests = all.filter(r => r.user?.role === 'STUDENT' || r.submittedByRole === 'STUDENT');
+          // Filter by submitter role — flat DTO field from backend
+          const studentRequests = all.filter(r => r.submittedByRole === 'STUDENT');
           
           document.getElementById('stat-pending').textContent = studentRequests.filter(r => r.status === 'PENDING').length;
           document.getElementById('stat-approved').textContent = studentRequests.filter(r => r.status === 'APPROVED').length;
@@ -607,7 +607,7 @@
         }
         tbody.innerHTML = list.map(r => `
           <tr>
-            <td style="font-weight:600;">${r.user?.username || r.submittedBy || 'Student'}</td>
+            <td style="font-weight:600;">${r.submittedBy || 'Student'}</td>
             <td style="font-weight:600;">${r.itemName}</td>
             <td>${r.quantity}</td>
             <td><span class="badge badge-${(r.urgencyLevel || 'MEDIUM').toLowerCase()}">${r.urgencyLevel || 'MEDIUM'}</span></td>
@@ -628,7 +628,7 @@
         currentRequest = r;
         document.getElementById('request-details').innerHTML = `
           <p><strong>Item:</strong> ${r.itemName} (${r.quantity})</p>
-          <p><strong>Student:</strong> ${r.user?.username || r.submittedBy}</p>
+          <p><strong>Student:</strong> ${r.submittedBy}</p>
         `;
         document.getElementById('modal-action').classList.add('active');
         

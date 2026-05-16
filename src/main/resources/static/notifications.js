@@ -232,9 +232,19 @@
     if (requests && requests.length > 0) {
       const reqNotifs = requests
         .filter((r) => {
-          const isMine = r.user?.username === currentUsername;
+          const isMine = r.submittedBy === currentUsername;
           if (isMine) return true;
-          if (role === "LAB_TECHNICIAN" || role === "ADMIN") return r.status === "PENDING";
+          
+          // Target filtering using flat DTO field
+          const submitterRole = r.submittedByRole;
+          if (role === "LAB_TECHNICIAN") {
+            // Lab Tech sees pending requests from Students
+            return r.status === "PENDING" && submitterRole === "STUDENT";
+          }
+          if (role === "ADMIN") {
+            // Admin sees pending procurement from Lab Techs
+            return r.status === "PENDING" && submitterRole === "LAB_TECHNICIAN";
+          }
           return false;
         })
         .map((r) => {
@@ -243,29 +253,31 @@
           const dateStr = start.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
           const timeStr = start.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
           const isUnread = !seenIds.includes("req_" + r.id);
-          const isMine = r.user?.username === currentUsername;
+          const isMine = r.submittedBy === currentUsername;
 
           let msg = "";
           let iconClass = "";
           let iconSvg = "";
 
           if (isMine) {
+            const reviewerRole = role === "STUDENT" ? "Lab Tech" : "Admin";
             if (r.status === "PENDING") {
               msg = `Your request for <span>${name}</span> is pending review`;
               iconClass = "pending";
               iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
             } else if (r.status === "APPROVED") {
-              msg = `Your request for <span>${name}</span> was approved`;
+              msg = `Your request for <span>${name}</span> was approved by ${reviewerRole}`;
               iconClass = "approved";
               iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg>`;
             } else if (r.status === "REJECTED") {
-              msg = `Your request for <span>${name}</span> was rejected`;
+              msg = `Your request for <span>${name}</span> was rejected by ${reviewerRole}`;
               iconClass = "cancelled";
               iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="15" y1="9" x2="9" y2="15"/><line x1="9" y1="9" x2="15" y2="15"/></svg>`;
             }
           } else {
-            const reqType = role === "ADMIN" ? "procurement" : "equipment";
-            msg = `New ${reqType} request: <span>${name}</span> from <span>${r.user?.username || 'student'}</span>`;
+            const submitterName = r.submittedBy || 'someone';
+            const reqLabel = role === "ADMIN" ? "procurement" : "equipment";
+            msg = `New ${reqLabel} request: <span>${name}</span> from <span>${submitterName}</span>`;
             iconClass = "pending";
             iconSvg = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>`;
           }

@@ -10,6 +10,7 @@ public class EquipmentRequestDTO {
     private String status;
     private String adminNote;
     private String submittedBy;
+    private String submittedByRole;
     private String createdAt;
 
     public Long getId() { return id; }
@@ -35,6 +36,9 @@ public class EquipmentRequestDTO {
 
     public String getSubmittedBy() { return submittedBy; }
     public void setSubmittedBy(String submittedBy) { this.submittedBy = submittedBy; }
+
+    public String getSubmittedByRole() { return submittedByRole; }
+    public void setSubmittedByRole(String submittedByRole) { this.submittedByRole = submittedByRole; }
 
     public String getCreatedAt() { return createdAt; }
     public void setCreatedAt(String createdAt) { this.createdAt = createdAt; }

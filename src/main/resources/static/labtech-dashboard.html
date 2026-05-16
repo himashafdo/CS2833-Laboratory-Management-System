@@ -1252,7 +1252,11 @@
           const reservations = r1.ok ? await r1.json() : [];
           const issues = r2.ok ? await r2.json() : [];
           const equipment = r3.ok ? await r3.json() : [];
-          const requests = r4.ok ? await r4.json() : [];
+          const allRequests = r4.ok ? await r4.json() : [];
+
+          // Separate incoming (from students) and outgoing (to admin)
+          const studentRequests = allRequests.filter(r => r.submittedByRole === 'STUDENT');
+          const myProcurement = allRequests.filter(r => r.submittedBy === username);
 
           const pendingRes = reservations.filter((r) => r.status === "PENDING");
           const openIssues = issues.filter(
@@ -1261,23 +1265,27 @@
           const maintenance = equipment.filter(
             (e) => e.status === "MAINTENANCE",
           );
-          const pendingReqs = requests.filter((r) => r.status === "PENDING");
+          
+          const pendingStudentReqs = studentRequests.filter((r) => r.status === "PENDING");
+          const activeProcurement = myProcurement.filter((r) => r.status === "PENDING");
 
           document.getElementById("stat-res").textContent = reservations.length;
-          document.getElementById("stat-issues").textContent =
-            openIssues.length;
-          document.getElementById("stat-maintenance").textContent =
-            maintenance.length;
-          document.getElementById("stat-reqs").textContent = pendingReqs.length;
+          document.getElementById("stat-issues").textContent = openIssues.length;
+          document.getElementById("stat-maintenance").textContent = maintenance.length;
+          
+          // Show pending student requests as the primary request stat for lab techs
+          document.getElementById("stat-reqs").textContent = pendingStudentReqs.length;
+          
           document.getElementById("pending-count").textContent =
-            pendingRes.length + openIssues.length + pendingReqs.length;
+            pendingRes.length + openIssues.length + pendingStudentReqs.length;
+            
           document.getElementById("welcome-sub").textContent =
             pendingRes.length +
             " pending reservations · " +
             openIssues.length +
             " open issues · " +
-            pendingReqs.length +
-            " equipment requests awaiting approval.";
+            pendingStudentReqs.length +
+            " student requests awaiting review.";
 
           const eqList = document.getElementById("eq-list");
           if (!equipment.length) {

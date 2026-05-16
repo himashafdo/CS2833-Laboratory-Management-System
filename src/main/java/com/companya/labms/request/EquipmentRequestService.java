@@ -157,6 +157,7 @@ public class EquipmentRequestService {
         dto.setStatus(r.getStatus() != null ? r.getStatus().name() : "PENDING");
         dto.setAdminNote(r.getAdminNote());
         dto.setSubmittedBy(r.getUser() != null ? r.getUser().getUsername() : "");
+        dto.setSubmittedByRole(r.getUser() != null ? r.getUser().getRole().name() : "");
         dto.setCreatedAt(r.getCreatedAt() != null ? r.getCreatedAt().toString() : "");
         return dto;
     }

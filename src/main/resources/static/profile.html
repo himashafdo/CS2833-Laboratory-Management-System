@@ -555,72 +555,8 @@
           <div><div class="brand-name">Laboratory Management System</div></div>
         </div>
       </div>
-      <nav class="nav-section">
-        <a href="/student-dashboard.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <rect x="3" y="3" width="7" height="7" />
-            <rect x="14" y="3" width="7" height="7" />
-            <rect x="3" y="14" width="7" height="7" />
-            <rect x="14" y="14" width="7" height="7" />
-          </svg>
-          Dashboard
-        </a>
-        <a href="/catalog.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-          </svg>
-          Equipment & Lab Spaces
-        </a>
-        <a href="/my-reservations.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <rect x="3" y="4" width="18" height="18" rx="2" />
-            <line x1="16" y1="2" x2="16" y2="6" />
-            <line x1="8" y1="2" x2="8" y2="6" />
-            <line x1="3" y1="10" x2="21" y2="10" />
-          </svg>
-          My Reservations
-        </a>
-        <a href="/report-issue.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <line x1="12" y1="8" x2="12" y2="12" />
-            <line x1="12" y1="16" x2="12.01" y2="16" />
-          </svg>
-          Report Issue
-        </a>
-        <a href="/requests.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-            />
-          </svg>
-          Equipment Requests
-        </a>
+      <nav class="nav-section" id="sidebar-nav">
+        <!-- Dynamic content -->
       </nav>
       <div class="sidebar-user">
         <div class="user-avatar" id="sidebar-avatar">--</div>
@@ -921,23 +857,24 @@
             headers: { Authorization: "Bearer " + token },
           });
           const user = await res.json();
-
           const initials = user.username.substring(0, 2).toUpperCase();
 
           // Sidebar
           document.getElementById("sidebar-avatar").textContent = initials;
           document.getElementById("sidebar-name").textContent = user.username;
           document.getElementById("sidebar-role").textContent =
-            user.role === "LAB_TECHNICIAN" ? "Lab Technician" : "Student";
+            user.role === "LAB_TECHNICIAN" ? "Lab Technician" : user.role === "ADMIN" ? "Administrator" : "Student";
           document.getElementById("topbar-avatar").textContent = initials;
+          
+          renderSidebar(user.role);
 
           // Header
           document.getElementById("header-avatar").textContent = initials;
           document.getElementById("header-name").textContent = user.username;
           document.getElementById("header-email").textContent = user.email;
           document.getElementById("header-role").innerHTML = `
-        <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
-        ${user.role === "LAB_TECHNICIAN" ? "Lab Technician" : user.role === "ADMIN" ? "Administrator" : "Student"}`;
+            <svg width="12" height="12" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20 21v-2a4 4 0 00-4-4H8a4 4 0 00-4 4v2"/><circle cx="12" cy="7" r="4"/></svg>
+            ${user.role === "LAB_TECHNICIAN" ? "Lab Technician" : user.role === "ADMIN" ? "Administrator" : "Student"}`;
 
           // Form fields
           document.getElementById("field-username").value = user.username;
@@ -951,6 +888,81 @@
                 : "Student";
         } catch (e) {
           console.error("Failed to load profile", e);
+        }
+      }
+
+      function renderSidebar(role) {
+        const nav = document.getElementById("sidebar-nav");
+        if (role === "STUDENT") {
+          nav.innerHTML = `
+            <div class="nav-label">Main</div>
+            <a href="/student-dashboard.html" class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /></svg>
+              Dashboard
+            </a>
+            <a href="/catalog.html" class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
+              Equipment & Lab Spaces
+            </a>
+            <a href="/my-reservations.html" class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+              My Reservations
+            </a>
+            <a href="/student-requests.html" class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+              Equipment Requests
+            </a>
+            <a href="/report-issue.html" class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
+              Report Issue
+            </a>
+          `;
+        } else if (role === "LAB_TECHNICIAN") {
+          nav.innerHTML = `
+            <div class="nav-label">Overview</div>
+            <a href="/labtech-dashboard.html" class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /></svg>
+              Dashboard
+            </a>
+            <div class="nav-label">Management</div>
+            <a href="/admin-catalog.html" class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg>
+              Equipment & Labs
+            </a>
+            <a href="/admin-reservations.html" class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2" /><line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" /></svg>
+              All Reservations
+            </a>
+            <a href="/manage-student-requests.html" class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
+              Student Requests
+            </a>
+            <a href="/requests.html" class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" /></svg>
+              Procurement Requests
+            </a>
+            <a href="/manage-users.html" class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
+              Manage Users
+            </a>
+            <a href="/stub.html" class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" /></svg>
+              Issue Tickets
+            </a>
+          `;
+        } else if (role === "ADMIN") {
+          nav.innerHTML = `
+            <div class="nav-label">Overview</div>
+            <a href="/lead-admin-dashboard.html" class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" /><rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" /></svg>
+              Dashboard
+            </a>
+            <div class="nav-label">Management</div>
+            <a href="/admin-manage-users.html" class="nav-item">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" /><circle cx="9" cy="7" r="4" /></svg>
+              Manage Users
+            </a>
+          `;
         }
       }
 

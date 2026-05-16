@@ -759,7 +759,8 @@
               <select id="reg-role" onchange="handleRoleChange(this.value)">
                 <option value="" disabled selected>Select Role</option>
                 <option value="STUDENT">Student</option>
-                <option value="LAB_TECHNICIAN">Lab Technician / Admin</option>
+                <option value="LAB_TECHNICIAN">Lab Technician</option>
+                <option value="ADMIN">Admin</option>
               </select>
             </div>
             <div class="field">
@@ -881,6 +882,9 @@
         } else if (role === "STUDENT") {
           label.textContent = "University ID";
           input.placeholder = "Enter your University ID";
+        } else if (role === "ADMIN") {
+          label.textContent = "Staff ID";
+          input.placeholder = "Enter your Staff ID";
         } else {
           label.textContent = "University / National ID";
           input.placeholder = "e.g. 210123A";
@@ -910,7 +914,9 @@
             "Login successful! Redirecting...",
           );
           setTimeout(() => {
-            if (data.role === "LAB_TECHNICIAN" || data.role === "ADMIN") {
+            if (data.role === "ADMIN") {
+              window.location.href = "/lead-admin-dashboard.html";
+            } else if (data.role === "LAB_TECHNICIAN") {
               window.location.href = "/admin-dashboard.html";
             } else {
               window.location.href = "/student-dashboard.html";

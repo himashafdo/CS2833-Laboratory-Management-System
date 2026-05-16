@@ -4,8 +4,8 @@ import com.companya.labms.shared.Role;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.*;
+import java.util.List;
 import java.util.Map;
-
 @RestController
 @RequestMapping("/api/auth")
 @CrossOrigin(origins = "*")
@@ -94,6 +94,27 @@ public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
         }
     }
 
+    @GetMapping("/users")
+    public ResponseEntity<?> getAllUsers() {
+        try {
+            List<User> users = userRepository.findAll();
+            users.forEach(u -> u.setPassword(null));
+            return ResponseEntity.ok(users);
+        } catch (Exception e) {
+            return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+        }
+    }
+    @GetMapping("/users/students")
+public ResponseEntity<?> getStudents() {
+    try {
+        List<User> users = userRepository.findByRole(Role.STUDENT);
+        users.forEach(u -> u.setPassword(null));
+        return ResponseEntity.ok(users);
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+    }
+}
+
     @PostMapping("/forgot-password")
     public ResponseEntity<?> forgotPassword(@RequestBody Map<String, String> body) {
         try {
@@ -113,4 +134,13 @@ public ResponseEntity<?> login(@RequestBody Map<String, String> body) {
             return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
         }
     }
+    @DeleteMapping("/users/{id}")
+public ResponseEntity<?> deleteUser(@PathVariable Long id) {
+    try {
+        userRepository.deleteById(id);
+        return ResponseEntity.ok(Map.of("message", "User deleted successfully"));
+    } catch (Exception e) {
+        return ResponseEntity.badRequest().body(Map.of("error", e.getMessage()));
+    }
+}
 }

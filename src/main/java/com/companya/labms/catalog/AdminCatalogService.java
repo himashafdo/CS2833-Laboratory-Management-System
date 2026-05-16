@@ -69,19 +69,20 @@ public class AdminCatalogService {
         return equipmentTypeRepository.save(existing);
     }
 
-    public void deleteEquipment(Long id) {
-    if (!equipmentRepository.existsById(id)) {
-        throw new RuntimeException("Equipment not found with ID: " + id);
+    public void deleteEquipmentType(Long id) {
+        if (!equipmentTypeRepository.existsById(id)) {
+            throw new RuntimeException("Equipment type not found with ID: " + id);
+        }
+        // Null out equipmentType for any equipment using it
+        equipmentRepository.findAll().stream()
+            .filter(e -> e.getEquipmentType() != null && e.getEquipmentType().getId().equals(id))
+            .forEach(e -> {
+                e.setEquipmentType(null);
+                equipmentRepository.save(e);
+            });
+            
+        equipmentTypeRepository.deleteById(id);
     }
-    // Null out equipment on any reservations first
-    reservationRepository.findByEquipmentId(id).forEach(r -> {
-        r.setEquipment(null);
-        reservationRepository.save(r);
-    });
-    // Remove lab assignments
-    labEquipmentRepository.deleteAll(labEquipmentRepository.findByEquipmentId(id));
-    equipmentRepository.deleteById(id);
-}
 
     // ══════════════════════════════════════════
     // EQUIPMENT
@@ -170,6 +171,12 @@ if (dto.getEquipmentCode() != null) existing.setEquipmentCode(dto.getEquipmentCo
         if (!equipmentRepository.existsById(id)) {
             throw new RuntimeException("Equipment not found with ID: " + id);
         }
+        // Null out equipment on any reservations first
+        reservationRepository.findByEquipmentId(id).forEach(r -> {
+            r.setEquipment(null);
+            reservationRepository.save(r);
+        });
+        // Remove lab assignments
         List<LabEquipment> assignments = labEquipmentRepository.findByEquipmentId(id);
         labEquipmentRepository.deleteAll(assignments);
         equipmentRepository.deleteById(id);

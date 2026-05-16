@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="en" data-theme="light">
 
 <head>
     <meta charset="UTF-8">
@@ -37,6 +37,18 @@
             --transition: all 0.3s ease;
         }
 
+        [data-theme="dark"] {
+            --text: #f1f5f9;
+            --text2: #cbd5e1;
+            --text3: #94a3b8;
+            --border: #334155;
+            --white: #1e293b;
+            --bg: #0f172a;
+            --navy: #1a1a2e;
+            --navy2: #0f172a;
+            --navy3: #1e293b;
+        }
+
         body {
             font-family: var(--font);
             background: var(--bg);
@@ -50,7 +62,6 @@
             width: 240px;
             min-height: 100vh;
             flex-shrink: 0;
-            background: linear-gradient(180deg, #f97316 0%, #c2410c 100%);
             display: flex;
             flex-direction: column;
             padding: 24px 0;
@@ -59,6 +70,14 @@
             top: 0;
             bottom: 0;
             z-index: 100;
+        }
+
+        .sidebar.student-only {
+            background: linear-gradient(180deg, #f97316 0%, #c2410c 100%);
+        }
+
+        .sidebar.admin-only {
+            background: linear-gradient(180deg, #1a1a2e 0%, #0f172a 100%);
         }
 
         .sidebar-brand {
@@ -95,6 +114,24 @@
             line-height: 1.2;
         }
 
+        .brand-sub {
+            font-size: 10px;
+            color: rgba(249, 115, 22, 0.8);
+            font-weight: 600;
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+            margin-top: 2px;
+        }
+
+        .nav-label {
+            margin: 16px 0 6px 12px;
+            font-size: 10px;
+            font-weight: 700;
+            color: rgba(255, 255, 255, 0.3);
+            text-transform: uppercase;
+            letter-spacing: 0.08em;
+        }
+
         .nav-section {
             padding: 0 12px;
             flex: 1;
@@ -107,7 +144,6 @@
             padding: 10px 12px;
             border-radius: 10px;
             margin-bottom: 4px;
-            color: rgba(255, 255, 255, 0.8);
             font-size: 13px;
             font-weight: 500;
             cursor: pointer;
@@ -115,15 +151,35 @@
             text-decoration: none;
         }
 
-        .nav-item:hover {
+        .sidebar.student-only .nav-item {
+            color: rgba(255, 255, 255, 0.8);
+        }
+
+        .sidebar.student-only .nav-item:hover {
             background: rgba(255, 255, 255, 0.15);
             color: white;
         }
 
-        .nav-item.active {
+        .sidebar.student-only .nav-item.active {
             background: rgba(255, 255, 255, 0.25);
             color: white;
             font-weight: 600;
+        }
+
+        .sidebar.admin-only .nav-item {
+            color: rgba(255, 255, 255, 0.55);
+        }
+
+        .sidebar.admin-only .nav-item:hover {
+            background: rgba(255, 255, 255, 0.08);
+            color: rgba(255, 255, 255, 0.9);
+        }
+
+        .sidebar.admin-only .nav-item.active {
+            background: rgba(249, 115, 22, 0.15);
+            color: #fb923c;
+            font-weight: 600;
+            border-left: 3px solid var(--orange);
         }
 
         .nav-item svg {
@@ -136,17 +192,20 @@
             margin: 16px 12px 0;
             padding: 12px;
             border-radius: 12px;
+        }
+        .sidebar.student-only .sidebar-user {
             background: rgba(0, 0, 0, 0.15);
-            display: flex;
-            align-items: center;
-            gap: 10px;
+        }
+
+        .sidebar.admin-only .sidebar-user {
+            background: rgba(249, 115, 22, 0.1);
+            border: 1px solid rgba(249, 115, 22, 0.2);
         }
 
         .user-avatar {
             width: 36px;
             height: 36px;
             border-radius: 50%;
-            background: rgba(255, 255, 255, 0.3);
             display: flex;
             align-items: center;
             justify-content: center;
@@ -154,6 +213,14 @@
             font-weight: 700;
             color: white;
             flex-shrink: 0;
+        }
+
+        .sidebar.student-only .user-avatar {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .sidebar.admin-only .user-avatar {
+            background: linear-gradient(135deg, var(--orange), var(--orange2));
         }
 
         .user-name {
@@ -239,6 +306,26 @@
             color: var(--text2);
             background: var(--bg);
             white-space: nowrap;
+        }
+
+        .theme-toggle {
+            width: 36px;
+            height: 36px;
+            border-radius: 50%;
+            border: 1px solid var(--border);
+            background: var(--white);
+            color: var(--text2);
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 16px;
+            transition: all 0.2s;
+        }
+
+        .theme-toggle:hover {
+            background: var(--bg);
+            transform: scale(1.05);
         }
 
         .topbar-icon {
@@ -419,7 +506,7 @@
         }
 
         tr:hover td {
-            background-color: #fafafa;
+            background-color: var(--bg);
         }
 
         .badge {
@@ -645,7 +732,7 @@
 <body data-role="STUDENT">
 
     <!-- ── SIDEBAR ── -->
-    <aside class="sidebar">
+    <aside class="sidebar student-only">
         <div class="sidebar-brand">
             <div class="brand-row">
                 <div class="brand-icon">
@@ -718,6 +805,99 @@
         </div>
     </aside>
 
+    <aside class="sidebar admin-only">
+        <div class="sidebar-brand">
+            <div class="brand-row">
+                <div class="brand-icon">
+                    <svg viewBox="0 0 32 32" fill="none" stroke="#f97316" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+                        <line x1="4" y1="16" x2="12" y2="16" />
+                        <line x1="12" y1="9" x2="12" y2="23" />
+                        <line x1="12" y1="10.5" x2="26" y2="5" />
+                        <line x1="12" y1="21.5" x2="26" y2="27" />
+                        <polygon points="22,24.5 26,27 23.5,22.5" fill="#f97316" stroke="none" />
+                        <line x1="26" y1="5" x2="26" y2="2" />
+                        <line x1="26" y1="27" x2="26" y2="30" />
+                    </svg>
+                </div>
+                <div>
+                    <div class="brand-name">Laboratory Management System</div>
+                    <div class="brand-sub">Lab Technician</div>
+                </div>
+            </div>
+        </div>
+        <nav class="nav-section">
+            <div class="nav-label">Overview</div>
+            <a href="/admin-dashboard.html" class="nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="3" width="7" height="7" />
+                    <rect x="14" y="3" width="7" height="7" />
+                    <rect x="3" y="14" width="7" height="7" />
+                    <rect x="14" y="14" width="7" height="7" />
+                </svg>Dashboard
+            </a>
+            <div class="nav-label">Management</div>
+            <a href="/admin-catalog.html" class="nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                </svg>Equipment & Labs
+            </a>
+            <a href="/admin-reservations.html" class="nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <rect x="3" y="4" width="18" height="18" rx="2" />
+                    <line x1="16" y1="2" x2="16" y2="6" />
+                    <line x1="8" y1="2" x2="8" y2="6" />
+                    <line x1="3" y1="10" x2="21" y2="10" />
+                </svg>All Reservations
+            </a>
+            <a href="/admin-issues.html" class="nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <circle cx="12" cy="12" r="10" />
+                    <line x1="12" y1="8" x2="12" y2="12" />
+                    <line x1="12" y1="16" x2="12.01" y2="16" />
+                </svg>Issue Tickets
+            </a>
+            <a href="/requests.html" class="nav-item active">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2" />
+                </svg>Equipment Requests
+            </a>
+            <a href="/admin-users.html" class="nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+                    <circle cx="9" cy="7" r="4" />
+                    <path d="M23 21v-2a4 4 0 00-3-3.87" />
+                    <path d="M16 3.13a4 4 0 010 7.75" />
+                </svg>Manage Users
+            </a>
+            <div class="nav-label">Student View</div>
+            <a href="/catalog.html" class="nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                </svg>Equipment Catalog
+            </a>
+            <a href="/report-issue.html" class="nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z" />
+                    <line x1="12" y1="9" x2="12" y2="13" />
+                    <line x1="12" y1="17" x2="12.01" y2="17" />
+                </svg>Report Issue
+            </a>
+            <div class="nav-label">Analytics</div>
+            <a href="/admin-dashboard.html#demand-section" class="nav-item">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z" />
+                </svg>Demand Monitoring
+            </a>
+        </nav>
+        <div class="sidebar-user">
+            <div class="user-avatar" id="admin-sidebar-avatar">LT</div>
+            <div>
+                <div class="user-name" id="admin-sidebar-name">Lab Technician</div>
+                <div class="user-role" id="admin-sidebar-role">Lab Technician</div>
+            </div>
+        </div>
+    </aside>
+
     <!-- ── MAIN ── -->
     <div class="main">
         <div class="topbar">
@@ -731,6 +911,9 @@
                     <input type="text" id="search-input" onkeyup="filterRequests()" placeholder="Search requests..." />
                 </div>
                 <div class="topbar-date" id="topbar-date"></div>
+                <button id="theme-btn" class="theme-toggle" type="button" title="Toggle theme">
+                    🌙
+                </button>
                 <div class="topbar-icon">
                     <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
                         <path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0" />
@@ -966,12 +1149,17 @@
                 const username = payload.sub || sessionStorage.getItem('username') || 'User';
 
                 document.body.setAttribute('data-role', currentUserRole);
-                document.getElementById('sidebar-name').textContent = username;
+                if (document.getElementById('sidebar-name')) document.getElementById('sidebar-name').textContent = username;
+                if (document.getElementById('admin-sidebar-name')) document.getElementById('admin-sidebar-name').textContent = username;
+                
                 let displayRole = currentUserRole.split('_').map(word => word.charAt(0).toUpperCase() + word.slice(1).toLowerCase()).join(' ');
-                document.getElementById('sidebar-role').textContent = displayRole;
+                if (document.getElementById('sidebar-role')) document.getElementById('sidebar-role').textContent = displayRole;
+                if (document.getElementById('admin-sidebar-role')) document.getElementById('admin-sidebar-role').textContent = displayRole;
+                
                 const initials = username.substring(0, 2).toUpperCase();
-                document.getElementById('sidebar-avatar').textContent = initials;
-                document.getElementById('topbar-avatar').textContent = initials;
+                if (document.getElementById('sidebar-avatar')) document.getElementById('sidebar-avatar').textContent = initials;
+                if (document.getElementById('admin-sidebar-avatar')) document.getElementById('admin-sidebar-avatar').textContent = initials;
+                if (document.getElementById('topbar-avatar')) document.getElementById('topbar-avatar').textContent = initials;
 
                 loadRequestsBasedOnRole();
                 if (currentUserRole !== 'STUDENT') {
@@ -1304,6 +1492,7 @@
             window.location.href = '/index.html';
         }
     </script>
+    <script src="/theme.js"></script>
 </body>
 
 </html>

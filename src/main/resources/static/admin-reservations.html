@@ -168,9 +168,13 @@
         cursor: pointer;
         padding: 4px;
         transition: 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
       }
       .logout-btn:hover {
         color: white;
+        transform: scale(1.1);
       }
 
       .main {
@@ -804,10 +808,7 @@
         </div>
         <button
           class="logout-btn"
-          onclick="
-            sessionStorage.clear();
-            window.location.href = '/login.html';
-          "
+          onclick="logout()"
           title="Logout"
         >
           <svg
@@ -1327,6 +1328,10 @@
       }
 
       loadReservations();
+      function logout() {
+        sessionStorage.clear();
+        window.location.href = "/login.html";
+      }
     </script>
   </body>
 </html>

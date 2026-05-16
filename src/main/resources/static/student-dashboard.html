@@ -151,6 +151,22 @@
         font-size: 11px;
         color: rgba(255, 255, 255, 0.7);
       }
+      .logout-btn {
+        margin-left: auto;
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        padding: 4px;
+        transition: 0.2s;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .logout-btn:hover {
+        color: white;
+        transform: scale(1.1);
+      }
 
       /* ── MAIN ── */
       .main {
@@ -714,6 +730,20 @@
           <div class="user-name" id="sidebar-name">Loading...</div>
           <div class="user-role" id="sidebar-role">Student</div>
         </div>
+        <button class="logout-btn" onclick="logout()" title="Logout">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+        </button>
       </div>
     </aside>
 
@@ -1111,6 +1141,10 @@
         setTimeout(() => el.classList.remove("show"), 4000);
       }
 
+      function logout() {
+        sessionStorage.clear();
+        window.location.href = "/login.html";
+      }
       loadDashboard();
     </script>
     <script src="/calendar.js"></script>

@@ -108,6 +108,22 @@
     }
     .sidebar-user-name { font-size: .8rem; font-weight: 600; color: #fff; }
     .sidebar-user-role { font-size: .68rem; color: rgba(255,255,255,.65); }
+    .logout-btn {
+      margin-left: auto;
+      background: none;
+      border: none;
+      color: rgba(255, 255, 255, 0.5);
+      cursor: pointer;
+      padding: 4px;
+      transition: 0.2s;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    .logout-btn:hover {
+      color: #fff;
+      transform: scale(1.1);
+    }
 
     /* ── Main layout ── */
     .main-wrap {
@@ -372,6 +388,10 @@
         <div class="sidebar-user-name">Admin</div>
         <div class="sidebar-user-role">Lab Administrator</div>
       </div>
+      <button class="logout-btn" onclick="logout()" title="Logout">
+        <svg fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2">
+          <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
+      </button>
     </div>
   </div>
 </aside>
@@ -680,6 +700,10 @@
     };
   }
 
+  function logout() {
+    sessionStorage.clear();
+    window.location.href = "/login.html";
+  }
   loadDashboard();
   setInterval(loadDashboard, 5*60*1000);
 </script>

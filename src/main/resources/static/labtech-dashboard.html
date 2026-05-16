@@ -770,7 +770,7 @@
           >
             🌙
           </button>
-          <div class="topbar-icon">
+          <div class="topbar-icon" title="Notifications">
             <svg
               width="16"
               height="16"
@@ -1341,7 +1341,7 @@
               title: "Issue: " + i.title,
               date: new Date(i.createdAt || Date.now()),
             })),
-            ...requests.slice(0, 3).map((r) => ({
+            ...studentRequests.slice(0, 3).map((r) => ({
               type: "Request",
               color: "#f59e0b",
               title: "Request: " + r.itemName,

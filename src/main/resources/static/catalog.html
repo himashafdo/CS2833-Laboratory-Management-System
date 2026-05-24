@@ -3,838 +3,513 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Resources & Lab Catalog — LabMS</title>
-    <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
-      rel="stylesheet"
-    />
-    <script src="/logo.js"></script>
+    <title>Equipment Catalog — Lab Management System</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
     <style>
-      *,
-      *::before,
-      *::after {
-        box-sizing: border-box;
-        margin: 0;
-        padding: 0;
-      }
+      *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
       :root {
-        --orange: #f97316;
-        --orange2: #ea6c0a;
-        --orange3: #fb923c;
-        --sidebar: #f97316;
-        --sidebar-dark: #c2410c;
-        --text: #1a1a2e;
-        --text2: #64748b;
-        --text3: #94a3b8;
-        --border: #e2e8f0;
-        --white: #ffffff;
-        --bg: #f8fafc;
+        --orange: #f97316; --orange2: #ea6c0a; --orange3: #fb923c;
+        --text: #1a1a2e; --text2: #64748b; --text3: #94a3b8;
+        --border: #e2e8f0; --white: #ffffff; --bg: #f8fafc;
+        --green: #22c55e; --red: #ef4444;
+        --blue: #3b82f6; --blue-bg: #eff6ff; --blue-border: #bfdbfe;
+        --amber: #f59e0b; --amber-bg: #fffbeb; --amber-border: #fde68a;
+        --purple: #8b5cf6; --purple-bg: #f5f3ff; --purple-border: #ddd6fe;
         --font: "Plus Jakarta Sans", sans-serif;
-        --success: #22c55e;
-        --warning: #f59e0b;
-        --danger: #ef4444;
-        --info: #3b82f6;
       }
-      body {
-        font-family: var(--font);
-        background: var(--bg);
-        min-height: 100vh;
-        display: flex;
+      [data-theme="dark"] {
+        --text: #f1f5f9; --text2: #cbd5e1; --text3: #94a3b8;
+        --border: #334155; --white: #1e293b; --bg: #0f172a;
+        --blue-bg: #1e3a5f; --amber-bg: #3d2e08; --purple-bg: #2d1f5e;
       }
+      body { font-family: var(--font); background: var(--bg); min-height: 100vh; display: flex; }
 
-      /* ── SIDEBAR ── */
+      /* SIDEBAR */
       .sidebar {
-        width: 240px;
-        min-height: 100vh;
-        flex-shrink: 0;
-        background: linear-gradient(
-          180deg,
-          var(--sidebar) 0%,
-          var(--sidebar-dark) 100%
-        );
-        display: flex;
-        flex-direction: column;
-        padding: 24px 0;
-        position: fixed;
-        left: 0;
-        top: 0;
-        bottom: 0;
-        z-index: 100;
+        width: 240px; min-height: 100vh; flex-shrink: 0;
+        background: linear-gradient(180deg, #f97316 0%, #c2410c 100%);
+        display: flex; flex-direction: column; padding: 24px 0;
+        position: fixed; left: 0; top: 0; bottom: 0; z-index: 100;
       }
-      .sidebar-brand {
-        padding: 0 20px 28px;
-        border-bottom: 1px solid rgba(255, 255, 255, 0.15);
-        margin-bottom: 16px;
-      }
-      .brand-row {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-      }
+      .sidebar-brand { padding: 0 20px 28px; border-bottom: 1px solid rgba(255,255,255,0.15); margin-bottom: 16px; }
+      .brand-row { display: flex; align-items: center; gap: 10px; }
       .brand-icon {
-        width: 38px;
-        height: 38px;
-        background: rgba(255, 255, 255, 0.2);
-        border-radius: 10px;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        width: 38px; height: 38px; background: rgba(255,255,255,0.2);
+        border-radius: 10px; display: flex; align-items: center; justify-content: center;
       }
-      .brand-icon svg {
-        width: 20px;
-        height: 20px;
-      }
-      .brand-name {
-        font-size: 14px;
-        font-weight: 700;
-        color: white;
-        line-height: 1.2;
-      }
-      .brand-sub {
-        font-size: 11px;
-        color: rgba(255, 255, 255, 0.7);
-      }
-
-      .nav-section {
-        padding: 0 12px;
-        flex: 1;
-      }
+      .brand-icon svg { width: 20px; height: 20px; }
+      .brand-name { font-size: 14px; font-weight: 700; color: white; line-height: 1.2; }
+      .nav-section { padding: 0 12px; flex: 1; }
       .nav-item {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        padding: 10px 12px;
-        border-radius: 10px;
-        margin-bottom: 4px;
-        color: rgba(255, 255, 255, 0.8);
-        font-size: 13px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
+        display: flex; align-items: center; gap: 10px; padding: 10px 12px;
+        border-radius: 10px; margin-bottom: 4px; color: rgba(255,255,255,0.8);
+        font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s;
         text-decoration: none;
       }
-      .nav-item:hover {
-        background: rgba(255, 255, 255, 0.15);
-        color: white;
-      }
-      .nav-item.active {
-        background: rgba(255, 255, 255, 0.25);
-        color: white;
-        font-weight: 600;
-      }
-      .nav-item svg {
-        width: 16px;
-        height: 16px;
-        flex-shrink: 0;
-      }
-      .nav-dot {
-        width: 6px;
-        height: 6px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.6);
-        flex-shrink: 0;
-      }
-
+      .nav-item:hover { background: rgba(255,255,255,0.15); color: white; }
+      .nav-item.active { background: rgba(255,255,255,0.25); color: white; font-weight: 600; }
+      .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
       .sidebar-user {
-        margin: 16px 12px 0;
-        padding: 12px;
-        border-radius: 12px;
-        background: rgba(0, 0, 0, 0.15);
-        display: flex;
-        align-items: center;
-        gap: 10px;
+        margin: 16px 12px 0; padding: 12px; border-radius: 12px;
+        background: rgba(0,0,0,0.15); display: flex; align-items: center; gap: 10px;
       }
       .user-avatar {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        background: rgba(255, 255, 255, 0.3);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 13px;
-        font-weight: 700;
-        color: white;
-        flex-shrink: 0;
+        width: 36px; height: 36px; border-radius: 50%;
+        background: rgba(255,255,255,0.3); display: flex; align-items: center;
+        justify-content: center; font-size: 13px; font-weight: 700; color: white; flex-shrink: 0;
       }
-      .user-name {
-        font-size: 13px;
-        font-weight: 600;
-        color: white;
-      }
-      .user-role {
-        font-size: 11px;
-        color: rgba(255, 255, 255, 0.7);
-      }
+      .user-name { font-size: 13px; font-weight: 600; color: white; }
+      .user-role { font-size: 11px; color: rgba(255,255,255,0.7); }
 
-      /* ── MAIN CONTENT ── */
-      .main {
-        margin-left: 240px;
-        flex: 1;
-        display: flex;
-        flex-direction: column;
-        min-height: 100vh;
-      }
+      /* MAIN */
+      .main { margin-left: 240px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
 
-      /* ── TOP BAR ── */
+      /* TOPBAR */
       .topbar {
-        background: var(--white);
-        border-bottom: 1px solid var(--border);
-        padding: 16px 32px;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
-        position: sticky;
-        top: 0;
-        z-index: 50;
+        background: var(--white); border-bottom: 1px solid var(--border);
+        padding: 16px 32px; display: flex; align-items: center;
+        justify-content: space-between; position: sticky; top: 0; z-index: 50;
       }
-      .topbar-title {
-        font-size: 20px;
-        font-weight: 700;
-        color: var(--text);
+      .topbar-title { font-size: 20px; font-weight: 700; color: var(--text); }
+      .topbar-right { display: flex; align-items: center; gap: 12px; }
+      .search-box {
+        display: flex; align-items: center; gap: 8px; padding: 9px 16px;
+        border: 1px solid var(--border); border-radius: 10px;
+        background: var(--bg); width: 220px;
       }
-      .topbar-right {
-        display: flex;
-        align-items: center;
-        gap: 12px;
+      .search-box input {
+        border: none; outline: none; font-family: var(--font);
+        font-size: 13px; color: var(--text); background: transparent; width: 100%;
       }
+      .search-box input::placeholder { color: var(--text3); }
+      .search-box svg { color: var(--text3); flex-shrink: 0; }
       .topbar-date {
-        padding: 8px 16px;
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        font-size: 13px;
-        color: var(--text2);
-        background: var(--bg);
+        padding: 8px 14px; border: 1px solid var(--border); border-radius: 10px;
+        font-size: 13px; color: var(--text2); background: var(--bg); white-space: nowrap;
       }
-      .topbar-notif {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
-        border: 1px solid var(--border);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        cursor: pointer;
-        background: var(--white);
-        color: var(--text2);
+      .topbar-icon {
+        width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
+        display: flex; align-items: center; justify-content: center;
+        cursor: pointer; background: var(--white); color: var(--text2); position: relative;
+      }
+      .theme-toggle {
+        width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border);
+        background: var(--white); color: var(--text2); cursor: pointer;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 16px; transition: all 0.2s;
+      }
+      .theme-toggle:hover { background: var(--bg); transform: scale(1.05); }
+      .notif-dot {
+        width: 8px; height: 8px; background: var(--orange); border-radius: 50%;
+        position: absolute; top: 6px; right: 6px; border: 2px solid var(--white);
       }
       .topbar-avatar {
-        width: 36px;
-        height: 36px;
-        border-radius: 50%;
+        width: 36px; height: 36px; border-radius: 50%;
         background: linear-gradient(135deg, var(--orange), var(--orange3));
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        font-size: 13px;
-        font-weight: 700;
-        color: white;
+        display: flex; align-items: center; justify-content: center;
+        font-size: 13px; font-weight: 700; color: white; cursor: pointer;
       }
 
-      /* ── PAGE CONTENT ── */
-      .content {
-        padding: 28px 32px;
-        flex: 1;
-      }
+      /* CONTENT */
+      .content { padding: 28px 32px; flex: 1; }
 
-      /* ── SEARCH & FILTERS ── */
-      .search-bar {
-        background: var(--white);
-        border: 1px solid var(--border);
-        border-radius: 12px;
-        padding: 10px 16px;
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        width: 300px;
-      }
-      .search-bar input {
-        border: none;
-        outline: none;
-        font-family: var(--font);
-        font-size: 13px;
-        color: var(--text);
-        width: 100%;
-        background: transparent;
-      }
-      .search-bar input::placeholder {
-        color: var(--text3);
-      }
-      .search-bar svg {
-        color: var(--text3);
-        flex-shrink: 0;
-      }
-
-      .filter-row {
-        display: flex;
-        align-items: center;
-        gap: 10px;
-        margin: 20px 0 24px;
-        flex-wrap: wrap;
-      }
-      .filter-btn {
-        padding: 7px 16px;
-        border-radius: 20px;
-        font-family: var(--font);
-        font-size: 13px;
-        font-weight: 500;
-        cursor: pointer;
-        transition: all 0.2s;
-        border: 1.5px solid var(--border);
-        background: var(--white);
-        color: var(--text2);
-      }
-      .filter-btn:hover {
-        border-color: var(--orange);
-        color: var(--orange);
-      }
-      .filter-btn.active {
-        background: var(--orange);
-        border-color: var(--orange);
-        color: white;
-      }
-      .sort-btn {
-        margin-left: auto;
-        padding: 7px 16px;
-        border-radius: 10px;
-        border: 1.5px solid var(--border);
-        background: var(--white);
-        font-family: var(--font);
-        font-size: 13px;
-        color: var(--text2);
-        cursor: pointer;
-      }
-
-      /* ── TABS ── */
-      .tabs {
-        display: flex;
-        gap: 0;
-        border-bottom: 2px solid var(--border);
-        margin-bottom: 24px;
-      }
-      .tab {
-        padding: 10px 20px;
-        font-size: 13px;
-        font-weight: 500;
-        cursor: pointer;
-        color: var(--text2);
-        border-bottom: 2px solid transparent;
-        margin-bottom: -2px;
-        transition: all 0.2s;
-      }
-      .tab:hover {
-        color: var(--orange);
-      }
-      .tab.active {
-        color: var(--orange);
-        border-bottom-color: var(--orange);
-        font-weight: 600;
-      }
-
-      /* ── EQUIPMENT GRID ── */
-      .section-title {
-        font-size: 16px;
-        font-weight: 700;
-        color: var(--text);
-        margin-bottom: 16px;
-      }
-      .equipment-grid {
-        display: grid;
-        grid-template-columns: repeat(3, 1fr);
-        gap: 16px;
-        margin-bottom: 32px;
-      }
-
-      .equipment-card {
-        background: var(--white);
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 18px;
-        transition: all 0.2s;
-        cursor: pointer;
-      }
-      .equipment-card:hover {
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        transform: translateY(-2px);
-        border-color: #d1d5db;
-      }
-
-      .card-top {
-        display: flex;
-        align-items: flex-start;
-        gap: 12px;
-        margin-bottom: 14px;
-      }
-      .card-icon {
-        width: 44px;
-        height: 44px;
-        border-radius: 10px;
-        background: var(--bg);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-        border: 1px solid var(--border);
-      }
-      .card-icon svg {
-        width: 22px;
-        height: 22px;
-        color: var(--text2);
-      }
-      .card-info {
-        flex: 1;
-        min-width: 0;
-      }
-      .card-name {
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--text);
-        margin-bottom: 2px;
-        white-space: nowrap;
-        overflow: hidden;
-        text-overflow: ellipsis;
-      }
-      .card-category {
-        font-size: 12px;
-        color: var(--text2);
-      }
-
-      .status-badge {
-        font-size: 11px;
-        font-weight: 600;
-        padding: 3px 10px;
-        border-radius: 20px;
-        flex-shrink: 0;
-      }
-      .status-available {
-        background: #dcfce7;
-        color: #15803d;
-      }
-      .status-inuse {
-        background: #fef9c3;
-        color: #854d0e;
-      }
-      .status-maintenance {
-        background: #fee2e2;
-        color: #991b1b;
-      }
-      .status-unavailable {
-        background: #f1f5f9;
-        color: #64748b;
-      }
-
-      .card-meta {
-        display: flex;
-        align-items: center;
-        gap: 6px;
-        font-size: 12px;
-        color: var(--text2);
-        margin-bottom: 6px;
-      }
-      .card-meta svg {
-        width: 13px;
-        height: 13px;
-      }
-
-      .card-actions {
-        display: flex;
-        gap: 8px;
-        margin-top: 14px;
-      }
-      .btn-book {
-        flex: 1;
-        padding: 9px;
-        border-radius: 8px;
-        font-family: var(--font);
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-        border: none;
-      }
-      .btn-book-orange {
-        background: var(--orange);
-        color: white;
-      }
-      .btn-book-orange:hover {
-        background: var(--orange2);
-      }
-      .btn-book-dark {
-        background: var(--text);
-        color: white;
-      }
-      .btn-book-dark:hover {
-        background: #2d2d2d;
-      }
-      .btn-book-disabled {
-        background: #f1f5f9;
-        color: var(--text3);
-        cursor: not-allowed;
-      }
-
-      /* ── LAB ROOMS LIST ── */
-      .lab-list {
-        display: flex;
-        flex-direction: column;
-        gap: 12px;
-      }
-      .lab-card {
-        background: var(--white);
-        border: 1px solid var(--border);
-        border-radius: 14px;
-        padding: 18px 24px;
-        display: flex;
-        align-items: center;
-        gap: 16px;
-        transition: all 0.2s;
-        cursor: pointer;
-      }
-      .lab-card:hover {
-        box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
-        border-color: #d1d5db;
-      }
-      .lab-icon {
-        width: 48px;
-        height: 48px;
-        border-radius: 12px;
-        background: var(--bg);
-        border: 1px solid var(--border);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        flex-shrink: 0;
-      }
-      .lab-icon svg {
-        width: 24px;
-        height: 24px;
-        color: var(--text2);
-      }
-      .lab-info {
-        flex: 1;
-      }
-      .lab-name {
-        font-size: 15px;
-        font-weight: 600;
-        color: var(--text);
-        margin-bottom: 3px;
-      }
-      .lab-location {
-        font-size: 13px;
-        color: var(--text2);
-        margin-bottom: 4px;
-      }
-      .lab-equipment-tags {
-        display: flex;
-        gap: 6px;
-        flex-wrap: wrap;
-      }
-      .lab-tag {
-        font-size: 11px;
-        color: var(--text3);
-        padding: 2px 8px;
-        background: var(--bg);
-        border-radius: 4px;
-        border: 1px solid var(--border);
-      }
-      .lab-right {
-        display: flex;
-        align-items: center;
-        gap: 12px;
-      }
-      .btn-reserve {
-        padding: 9px 20px;
-        border-radius: 8px;
-        font-family: var(--font);
-        font-size: 13px;
-        font-weight: 600;
-        cursor: pointer;
-        transition: all 0.2s;
-        border: none;
-        background: var(--text);
-        color: white;
-      }
-      .btn-reserve:hover {
-        background: #2d2d2d;
-      }
-      .btn-reserve-disabled {
-        background: #f1f5f9;
-        color: var(--text3);
-        cursor: not-allowed;
-      }
-
-      /* ── LOADING / EMPTY ── */
-      .loading {
-        text-align: center;
-        padding: 60px;
-        color: var(--text3);
-        font-size: 14px;
-      }
-      .spinner-wrap {
-        display: flex;
-        justify-content: center;
-        margin-bottom: 12px;
-      }
-      .spinner {
-        width: 32px;
-        height: 32px;
-        border: 3px solid var(--border);
-        border-top-color: var(--orange);
-        border-radius: 50%;
-        animation: spin 0.8s linear infinite;
-      }
-      @keyframes spin {
-        to {
-          transform: rotate(360deg);
-        }
-      }
-
-      /* ── MODAL ── */
-      .modal-overlay {
-        position: fixed;
-        inset: 0;
-        background: rgba(0, 0, 0, 0.5);
-        display: none;
-        align-items: center;
-        justify-content: center;
-        z-index: 200;
-      }
-      .modal-overlay.show {
-        display: flex;
-      }
-      .modal {
-        background: var(--white);
-        border-radius: 20px;
-        padding: 32px;
-        width: 100%;
-        max-width: 440px;
-        margin: 20px;
-        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.2);
-      }
-      .modal-title {
-        font-size: 18px;
-        font-weight: 700;
-        color: var(--text);
-        margin-bottom: 6px;
-      }
-      .modal-sub {
-        font-size: 13px;
-        color: var(--text2);
-        margin-bottom: 24px;
-      }
-      .modal-field {
-        display: flex;
-        flex-direction: column;
-        gap: 6px;
-        margin-bottom: 16px;
-      }
-      .modal-field label {
-        font-size: 11px;
-        font-weight: 600;
-        color: var(--text);
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-      }
-      .modal-field input,
-      .modal-field select {
-        padding: 10px 14px;
-        border: 1.5px solid var(--border);
-        border-radius: 10px;
-        font-family: var(--font);
-        font-size: 14px;
-        color: var(--text);
-        outline: none;
-        transition: border-color 0.2s;
-        background: var(--bg);
-      }
-      .modal-field input:focus,
-      .modal-field select:focus {
-        border-color: var(--orange);
-        background: var(--white);
-      }
-      .modal-row {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 12px;
-      }
-      .modal-actions {
-        display: flex;
-        gap: 10px;
-        margin-top: 8px;
-      }
-      .btn-cancel {
-        flex: 1;
-        padding: 12px;
-        border-radius: 10px;
-        border: 1.5px solid var(--border);
-        background: var(--white);
-        font-family: var(--font);
-        font-size: 14px;
-        font-weight: 600;
-        color: var(--text2);
-        cursor: pointer;
-      }
-      .btn-confirm {
-        flex: 1;
-        padding: 12px;
-        border-radius: 10px;
-        border: none;
-        background: linear-gradient(135deg, var(--orange), var(--orange2));
-        font-family: var(--font);
-        font-size: 14px;
-        font-weight: 600;
-        color: white;
-        cursor: pointer;
-        box-shadow: 0 4px 12px rgba(249, 115, 22, 0.3);
-      }
-      .btn-confirm:hover {
-        opacity: 0.9;
-      }
+      /* ALERT */
       .alert {
-        padding: 10px 14px;
-        border-radius: 8px;
-        font-size: 13px;
-        margin-bottom: 16px;
-        display: none;
+        padding: 10px 14px; border-radius: 8px; font-size: 13px;
+        margin-bottom: 16px; display: none;
       }
-      .alert.show {
-        display: block;
+      .alert.show { display: block; }
+      .alert.success { background: #f0fdf4; border: 1px solid #bbf7d0; color: #166534; }
+      .alert.error { background: #fff1f2; border: 1px solid #fecdd3; color: #be123c; }
+
+      /* PAGE HEADER */
+      .page-header {
+        display: flex; align-items: center; justify-content: space-between;
+        margin-bottom: 24px; flex-wrap: wrap; gap: 16px;
       }
-      .alert.success {
-        background: #f0fdf4;
-        border: 1px solid #bbf7d0;
-        color: #166534;
+      .page-header h1 { font-size: 22px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+      .page-header p { font-size: 13px; color: var(--text2); }
+
+      /* TABS */
+      .tabs-row {
+        display: flex; gap: 4px; background: var(--white);
+        border: 1px solid var(--border); border-radius: 12px;
+        padding: 6px; margin-bottom: 24px; width: fit-content;
       }
-      .alert.error {
-        background: #fff1f2;
-        border: 1px solid #fecdd3;
-        color: #be123c;
+      .tab-btn {
+        display: flex; align-items: center; gap: 8px;
+        padding: 9px 18px; border-radius: 8px; border: none;
+        font-family: var(--font); font-size: 13px; font-weight: 600;
+        cursor: pointer; transition: all 0.2s;
+        color: var(--text2); background: transparent;
+      }
+      .tab-btn:hover { color: var(--text); background: var(--bg); }
+      .tab-btn.active {
+        background: linear-gradient(135deg, var(--orange) 0%, var(--orange2) 100%);
+        color: white; box-shadow: 0 2px 8px rgba(249,115,22,0.25);
+      }
+      .tab-btn svg { width: 15px; height: 15px; flex-shrink: 0; }
+      .tab-badge {
+        font-size: 10px; font-weight: 700; padding: 2px 6px;
+        border-radius: 999px; background: rgba(255,255,255,0.25);
+        color: inherit; min-width: 20px; text-align: center;
+      }
+      .tab-btn:not(.active) .tab-badge {
+        background: var(--bg); color: var(--text3); border: 1px solid var(--border);
       }
 
-      @media (max-width: 1024px) {
-        .equipment-grid {
-          grid-template-columns: repeat(2, 1fr);
-        }
+      /* CONTROLS */
+      .controls {
+        background: var(--white); border: 1px solid var(--border);
+        border-radius: 14px; padding: 16px 20px;
+        display: flex; gap: 16px; align-items: center;
+        margin-bottom: 24px; flex-wrap: wrap;
       }
-      @media (max-width: 768px) {
-        .sidebar {
-          display: none;
-        }
-        .main {
-          margin-left: 0;
-        }
-        .equipment-grid {
-          grid-template-columns: 1fr;
-        }
-        .content {
-          padding: 20px 16px;
-        }
+      .controls .search-row {
+        flex: 1; min-width: 240px; display: flex; align-items: center; gap: 10px;
+        padding: 9px 14px; border: 1px solid var(--border);
+        border-radius: 10px; background: var(--bg);
+      }
+      .controls .search-row input {
+        flex: 1; border: none; outline: none; background: transparent;
+        font: inherit; font-size: 14px; color: var(--text);
+      }
+      .controls .search-row svg { color: var(--text3); flex-shrink: 0; }
+      .controls .filter-select {
+        padding: 9px 14px; border: 1px solid var(--border); border-radius: 10px;
+        background: var(--bg); font-family: var(--font); font-size: 13px;
+        color: var(--text); outline: none; cursor: pointer;
+      }
+      .controls .count { font-size: 13px; color: var(--text2); font-weight: 500; white-space: nowrap; }
+
+      /* EQUIPMENT GRID */
+      .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(280px, 1fr)); gap: 18px; }
+      .card {
+        background: var(--white); border: 1px solid var(--border);
+        border-radius: 16px; padding: 22px; display: flex; flex-direction: column;
+        transition: all 0.2s; border-top: 3px solid transparent;
+      }
+      .card:hover { border-top-color: var(--orange); box-shadow: 0 4px 16px rgba(15,23,42,0.06); transform: translateY(-2px); }
+      .card-icon {
+        width: 48px; height: 48px; border-radius: 12px; background: #fff7ed;
+        color: var(--orange); display: grid; place-items: center; margin-bottom: 14px;
+      }
+      .card-icon svg { width: 22px; height: 22px; }
+      .card h3 { font-size: 15px; font-weight: 700; color: var(--text); line-height: 1.3; margin-bottom: 6px; }
+      .card .desc {
+        font-size: 12px; color: var(--text2); line-height: 1.5;
+        margin-bottom: 16px; flex: 1;
+        display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+      }
+      .card-stats { display: flex; gap: 8px; margin-bottom: 14px; }
+      .card-stat { flex: 1; background: var(--bg); border-radius: 10px; padding: 10px 12px; }
+      .card-stat .num { font-size: 18px; font-weight: 700; color: var(--text); line-height: 1; }
+      .card-stat .lbl { font-size: 10px; color: var(--text2); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+      .card-stat.avail .num { color: var(--green); }
+      .btn-book {
+        width: 100%; border: none; cursor: pointer;
+        background: linear-gradient(135deg, var(--orange) 0%, var(--orange2) 100%);
+        color: white; padding: 11px 16px; border-radius: 10px;
+        font-family: var(--font); font-weight: 600; font-size: 13px; transition: all 0.2s;
+      }
+      .btn-book:hover { transform: scale(1.02); box-shadow: 0 4px 12px rgba(249,115,22,0.25); }
+      .btn-book:disabled { background: var(--border); color: var(--text3); cursor: not-allowed; transform: none; box-shadow: none; }
+
+      /* LAB CARDS */
+      .lab-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(320px, 1fr)); gap: 20px; }
+      .lab-card {
+        background: var(--white); border: 1px solid var(--border);
+        border-radius: 18px; overflow: hidden;
+        transition: all 0.25s; position: relative;
+      }
+      .lab-card:hover { box-shadow: 0 8px 28px rgba(15,23,42,0.1); transform: translateY(-3px); }
+      .lab-card-header {
+        padding: 22px 22px 18px;
+        border-bottom: 1px solid var(--border);
+        position: relative;
+      }
+      .lab-card-header::before {
+        content: '';
+        position: absolute; top: 0; left: 0; right: 0; height: 4px;
+        background: linear-gradient(90deg, var(--orange) 0%, var(--orange3) 100%);
+      }
+      .lab-card-header.status-maintenance::before { background: linear-gradient(90deg, var(--amber) 0%, #fbbf24 100%); }
+      .lab-card-header.status-in_use::before { background: linear-gradient(90deg, var(--blue) 0%, #60a5fa 100%); }
+      .lab-card-header.status-unavailable::before { background: linear-gradient(90deg, var(--red) 0%, #f87171 100%); }
+      .lab-header-row { display: flex; align-items: flex-start; justify-content: space-between; gap: 12px; margin-bottom: 10px; }
+      .lab-icon-wrap {
+        width: 46px; height: 46px; border-radius: 12px; flex-shrink: 0;
+        display: grid; place-items: center;
+        background: #fff7ed; color: var(--orange);
+      }
+      .lab-icon-wrap svg { width: 22px; height: 22px; }
+      .lab-status-badge {
+        padding: 4px 10px; border-radius: 999px;
+        font-size: 10px; font-weight: 700; letter-spacing: 0.06em;
+        text-transform: uppercase;
+      }
+      .badge-available { background: #dcfce7; color: #15803d; }
+      .badge-in_use    { background: #dbeafe; color: #1d4ed8; }
+      .badge-maintenance { background: #fef3c7; color: #92400e; }
+      .badge-unavailable { background: #fee2e2; color: #b91c1c; }
+      .lab-name { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+      .lab-location { font-size: 12px; color: var(--text2); display: flex; align-items: center; gap: 4px; }
+      .lab-location svg { width: 12px; height: 12px; }
+      .lab-card-body { padding: 18px 22px; }
+      .lab-stats-row { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 16px; }
+      .lab-stat {
+        background: var(--bg); border-radius: 10px; padding: 12px 10px; text-align: center;
+      }
+      .lab-stat .s-num { font-size: 20px; font-weight: 700; color: var(--text); line-height: 1; }
+      .lab-stat .s-lbl { font-size: 10px; color: var(--text2); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.05em; font-weight: 600; }
+      .lab-stat.s-avail .s-num { color: var(--green); }
+      .lab-stat.s-total .s-num { color: var(--orange); }
+      .lab-equip-preview { margin-bottom: 16px; }
+      .lab-equip-label { font-size: 11px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 8px; }
+      .equip-chips { display: flex; flex-wrap: wrap; gap: 6px; }
+      .equip-chip {
+        font-size: 11px; font-weight: 600; padding: 4px 10px; border-radius: 8px;
+        background: var(--bg); border: 1px solid var(--border);
+        color: var(--text2); white-space: nowrap;
+      }
+      .equip-chip.more {
+        background: #fff7ed; border-color: #fed7aa; color: var(--orange2);
+      }
+      .btn-view-lab {
+        width: 100%; border: 1.5px solid var(--orange); cursor: pointer;
+        background: transparent; color: var(--orange);
+        padding: 10px 16px; border-radius: 10px;
+        font-family: var(--font); font-weight: 600; font-size: 13px; transition: all 0.2s;
+      }
+      .btn-view-lab:hover {
+        background: linear-gradient(135deg, var(--orange) 0%, var(--orange2) 100%);
+        color: white; transform: scale(1.01);
+        box-shadow: 0 4px 12px rgba(249,115,22,0.2);
+      }
+      .btn-view-lab:disabled {
+        border-color: var(--border); color: var(--text3);
+        cursor: not-allowed; background: transparent;
+      }
+
+      /* EMPTY / SKELETON */
+      .empty-state {
+        text-align: center; padding: 40px 20px; color: var(--text3); font-size: 13px;
+        background: var(--white); border: 1px dashed var(--border);
+        border-radius: 14px; grid-column: 1 / -1;
+      }
+      .empty-icon { font-size: 32px; margin-bottom: 8px; }
+      .skeleton {
+        background: var(--white); border: 1px solid var(--border);
+        border-radius: 16px; height: 260px;
+        animation: pulse 1.5s ease-in-out infinite;
+      }
+      .lab-skeleton { height: 320px; }
+      @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.55} }
+
+      /* MODAL */
+      .modal-bg {
+        position: fixed; inset: 0; background: rgba(15,23,42,0.55);
+        backdrop-filter: blur(4px); display: none; align-items: center;
+        justify-content: center; z-index: 200; padding: 20px;
+      }
+      .modal-bg.show { display: flex; }
+      .modal {
+        background: var(--white); border-radius: 18px; width: 100%; max-width: 520px;
+        box-shadow: 0 16px 48px rgba(15,23,42,0.2); overflow: hidden;
+        animation: slideUp 0.25s cubic-bezier(0.16,1,0.3,1);
+      }
+      @keyframes slideUp { from{transform:translateY(16px);opacity:0} to{transform:translateY(0);opacity:1} }
+      .modal-head { padding: 22px 26px 0; border-bottom: 1px solid var(--border); }
+      .modal-head h2 { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+      .modal-head .sub { font-size: 12px; color: var(--text2); margin-bottom: 18px; }
+      .steps { display: flex; gap: 8px; padding-bottom: 16px; }
+      .step { flex: 1; display: flex; align-items: center; gap: 8px; font-size: 12px; font-weight: 600; color: var(--text3); }
+      .step .num {
+        width: 24px; height: 24px; border-radius: 50%; background: var(--bg);
+        color: var(--text3); display: grid; place-items: center; font-size: 11px; font-weight: 700;
+        flex-shrink: 0; border: 1px solid var(--border); transition: all 0.2s;
+      }
+      .step.active { color: var(--text); }
+      .step.active .num { background: var(--orange); color: white; border-color: var(--orange); }
+      .step.done { color: var(--green); }
+      .step.done .num { background: var(--green); color: white; border-color: var(--green); }
+      .modal-body { padding: 22px 26px; }
+      .field { margin-bottom: 14px; }
+      .field label { display: block; font-size: 12px; font-weight: 600; color: var(--text); margin-bottom: 6px; }
+      .field input {
+        width: 100%; border: 1px solid var(--border); border-radius: 10px;
+        padding: 10px 14px; font-family: var(--font); font-size: 14px;
+        color: var(--text); background: var(--white); outline: none; transition: all 0.15s;
+      }
+      .field input:focus { border-color: var(--orange); box-shadow: 0 0 0 3px rgba(249,115,22,0.12); }
+      .field .hint { font-size: 11px; color: var(--text2); margin-top: 4px; }
+      .picker-list { display: flex; flex-direction: column; gap: 8px; max-height: 280px; overflow-y: auto; }
+      .picker-item {
+        border: 1px solid var(--border); border-radius: 10px; padding: 12px 14px;
+        cursor: pointer; display: flex; align-items: center; justify-content: space-between;
+        gap: 10px; background: var(--white); transition: all 0.15s;
+      }
+      .picker-item:hover { border-color: var(--orange3); background: #fff7ed; }
+      .picker-item.selected { border-color: var(--orange); background: #fff7ed; box-shadow: 0 0 0 3px rgba(249,115,22,0.1); }
+      .picker-item .pname { font-weight: 600; font-size: 13px; color: var(--text); }
+      .picker-item .pmeta { font-size: 11px; color: var(--text2); margin-top: 2px; }
+      .picker-item .badge { font-size: 10px; font-weight: 700; padding: 4px 9px; border-radius: 999px; background: #dcfce7; color: #15803d; text-transform: uppercase; letter-spacing: 0.05em; }
+      .picker-item.selected .badge { background: var(--orange); color: white; }
+      .unit-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(130px, 1fr)); gap: 8px; max-height: 280px; overflow-y: auto; padding: 2px; }
+      .unit-pill {
+        border: 1px solid var(--border); border-radius: 10px; padding: 10px 12px;
+        cursor: pointer; text-align: center; font-family: var(--font); font-weight: 600;
+        font-size: 12px; color: var(--text); background: var(--white); transition: all 0.15s;
+        letter-spacing: 0.02em;
+      }
+      .unit-pill:hover { border-color: var(--orange3); background: #fff7ed; }
+      .unit-pill.selected { border-color: var(--orange); background: var(--orange); color: white; }
+      .modal-foot {
+        padding: 14px 26px; border-top: 1px solid var(--border);
+        display: flex; justify-content: space-between; gap: 10px; background: var(--bg);
+      }
+      .btn-ghost, .btn-primary {
+        border: none; cursor: pointer; padding: 9px 18px; border-radius: 10px;
+        font-family: var(--font); font-weight: 600; font-size: 13px; transition: all 0.2s;
+      }
+      .btn-ghost { background: var(--white); color: var(--text2); border: 1px solid var(--border); }
+      .btn-ghost:hover { color: var(--text); border-color: var(--text3); }
+      .btn-primary { background: linear-gradient(135deg, var(--orange) 0%, var(--orange2) 100%); color: white; }
+      .btn-primary:hover { transform: scale(1.02); }
+      .btn-primary:disabled { background: var(--border); color: var(--text3); cursor: not-allowed; transform: none; }
+
+      /* LAB DETAIL MODAL */
+      .lab-modal { max-width: 560px; }
+      .lab-modal-banner {
+        height: 100px;
+        background: linear-gradient(135deg, #f97316 0%, #c2410c 100%);
+        position: relative; display: flex; align-items: flex-end; padding: 16px 24px;
+      }
+      .lab-modal-banner.banner-maintenance { background: linear-gradient(135deg, var(--amber) 0%, #d97706 100%); }
+      .lab-modal-banner.banner-in_use { background: linear-gradient(135deg, var(--blue) 0%, #1d4ed8 100%); }
+      .lab-modal-banner.banner-unavailable { background: linear-gradient(135deg, var(--red) 0%, #b91c1c 100%); }
+      .lab-modal-title { font-size: 20px; font-weight: 700; color: white; }
+      .lab-modal-loc { font-size: 12px; color: rgba(255,255,255,0.8); }
+      .lab-modal-close {
+        position: absolute; top: 12px; right: 12px;
+        width: 28px; height: 28px; border-radius: 50%;
+        background: rgba(255,255,255,0.2); border: none; cursor: pointer;
+        color: white; font-size: 16px; display: grid; place-items: center;
+        transition: background 0.15s;
+      }
+      .lab-modal-close:hover { background: rgba(255,255,255,0.35); }
+      .lab-modal-body { padding: 20px 24px; }
+      .lab-modal-stats { display: grid; grid-template-columns: repeat(3, 1fr); gap: 10px; margin-bottom: 20px; }
+      .lms { background: var(--bg); border-radius: 10px; padding: 12px; text-align: center; }
+      .lms .n { font-size: 22px; font-weight: 700; color: var(--text); }
+      .lms .l { font-size: 10px; font-weight: 600; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; margin-top: 3px; }
+      .lms.a .n { color: var(--green); }
+      .lms.t .n { color: var(--orange); }
+      .lab-modal-equip-title { font-size: 12px; font-weight: 700; color: var(--text2); text-transform: uppercase; letter-spacing: 0.06em; margin-bottom: 12px; }
+      .equip-type-row {
+        display: flex; align-items: center; justify-content: space-between;
+        padding: 10px 12px; background: var(--bg); border-radius: 10px;
+        margin-bottom: 6px; gap: 12px;
+      }
+      .etr-name { font-size: 13px; font-weight: 600; color: var(--text); flex: 1; }
+      .etr-counts { display: flex; gap: 8px; flex-shrink: 0; }
+      .etr-avail { font-size: 11px; font-weight: 700; color: var(--green); background: #dcfce7; padding: 3px 8px; border-radius: 999px; }
+      .etr-total { font-size: 11px; font-weight: 600; color: var(--text2); }
+      .lab-modal-foot { padding: 14px 24px; border-top: 1px solid var(--border); background: var(--bg); }
+      .btn-book-lab {
+        width: 100%; border: none; cursor: pointer;
+        background: linear-gradient(135deg, var(--orange) 0%, var(--orange2) 100%);
+        color: white; padding: 11px 16px; border-radius: 10px;
+        font-family: var(--font); font-weight: 600; font-size: 13px; transition: all 0.2s;
+      }
+      .btn-book-lab:hover { transform: scale(1.01); box-shadow: 0 4px 12px rgba(249,115,22,0.25); }
+
+      /* WORKSTATION BOOKING MODAL */
+      .ws-modal { max-width: 440px; }
+      .ws-modal-head {
+        padding: 22px 26px 18px; border-bottom: 1px solid var(--border);
+        display: flex; align-items: flex-start; justify-content: space-between; gap: 12px;
+      }
+      .ws-modal-head h2 { font-size: 18px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+      .ws-modal-head .sub { font-size: 12px; color: var(--text2); }
+      .ws-modal-close {
+        width: 28px; height: 28px; border-radius: 50%; background: var(--bg);
+        border: 1px solid var(--border); cursor: pointer; color: var(--text2);
+        font-size: 16px; display: grid; place-items: center; flex-shrink: 0; transition: all 0.15s;
+      }
+      .ws-modal-close:hover { background: var(--border); color: var(--text); }
+      .ws-modal-body { padding: 22px 26px; }
+      .ws-counter {
+        display: flex; align-items: center; justify-content: center;
+        gap: 20px; margin: 8px 0 20px;
+      }
+      .ws-btn {
+        width: 40px; height: 40px; border-radius: 50%; border: 1.5px solid var(--border);
+        background: var(--white); color: var(--text); font-size: 20px; font-weight: 600;
+        cursor: pointer; display: grid; place-items: center; transition: all 0.15s;
+        font-family: var(--font);
+      }
+      .ws-btn:hover:not(:disabled) { border-color: var(--orange); color: var(--orange); background: #fff7ed; }
+      .ws-btn:disabled { color: var(--text3); cursor: not-allowed; }
+      .ws-num {
+        font-size: 44px; font-weight: 700; color: var(--orange);
+        min-width: 60px; text-align: center; line-height: 1;
+      }
+      .ws-label { font-size: 12px; color: var(--text2); text-align: center; margin-top: 4px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.06em; }
+      .ws-info-row {
+        display: flex; align-items: center; gap: 10px; padding: 12px 14px;
+        background: #fff7ed; border: 1px solid #fed7aa; border-radius: 10px;
+        margin-bottom: 16px; font-size: 12px; color: var(--orange2);
+      }
+      .ws-info-row svg { width: 16px; height: 16px; flex-shrink: 0; }
+
+      @media(max-width:900px){ .grid{grid-template-columns:repeat(2,1fr)} .lab-grid{grid-template-columns:1fr} }
+      @media(max-width:768px){
+        .sidebar{display:none} .main{margin-left:0}
+        .content{padding:20px 16px} .grid,.lab-grid{grid-template-columns:1fr}
       }
     </style>
   </head>
   <body>
-    <!-- ── SIDEBAR ── -->
+    <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-brand">
         <div class="brand-row">
           <div class="brand-icon">
-            <svg
-              viewBox="0 0 32 32"
-              fill="none"
-              stroke="white"
-              stroke-width="1.8"
-              stroke-linecap="round"
-              stroke-linejoin="round"
-            >
-              <line x1="4" y1="16" x2="12" y2="16" />
-              <line x1="12" y1="9" x2="12" y2="23" />
-              <line x1="12" y1="10.5" x2="26" y2="5" />
-              <line x1="12" y1="21.5" x2="26" y2="27" />
-              <polygon
-                points="22,24.5 26,27 23.5,22.5"
-                fill="white"
-                stroke="none"
-              />
-              <line x1="26" y1="5" x2="26" y2="2" />
-              <line x1="26" y1="27" x2="26" y2="30" />
+            <svg viewBox="0 0 32 32" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
+              <line x1="4" y1="16" x2="12" y2="16"/>
+              <line x1="12" y1="9" x2="12" y2="23"/>
+              <line x1="12" y1="10.5" x2="26" y2="5"/>
+              <line x1="12" y1="21.5" x2="26" y2="27"/>
+              <polygon points="22,24.5 26,27 23.5,22.5" fill="white" stroke="none"/>
+              <line x1="26" y1="5" x2="26" y2="2"/>
+              <line x1="26" y1="27" x2="26" y2="30"/>
             </svg>
           </div>
-          <div>
-            <div class="brand-name">LabMS</div>
-            <div class="brand-sub">UoM · ENTC Dept</div>
-          </div>
+          <div><div class="brand-name">Laboratory Management System</div></div>
         </div>
       </div>
-
       <nav class="nav-section">
         <a href="/student-dashboard.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <rect x="3" y="3" width="7" height="7" />
-            <rect x="14" y="3" width="7" height="7" />
-            <rect x="3" y="14" width="7" height="7" />
-            <rect x="14" y="14" width="7" height="7" />
-          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
           Dashboard
         </a>
         <a href="/catalog.html" class="nav-item active">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-          </svg>
-          Resources & Labs
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
+          Equipment & Lab Spaces
         </a>
-        <a href="/reservations.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <rect x="3" y="4" width="18" height="18" rx="2" />
-            <line x1="16" y1="2" x2="16" y2="6" />
-            <line x1="8" y1="2" x2="8" y2="6" />
-            <line x1="3" y1="10" x2="21" y2="10" />
-          </svg>
+        <a href="/my-reservations.html" class="nav-item">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
           My Reservations
         </a>
+        
         <a href="/report-issue.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <circle cx="12" cy="12" r="10" />
-            <line x1="12" y1="8" x2="12" y2="12" />
-            <line x1="12" y1="16" x2="12.01" y2="16" />
-          </svg>
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
           Report Issue
         </a>
-        <a href="/requests.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-            />
-          </svg>
-          Equipment Requests
-        </a>
       </nav>
-
       <div class="sidebar-user">
-        <div class="user-avatar" id="sidebar-avatar">MS</div>
+        <div class="user-avatar" id="sidebar-avatar">--</div>
         <div>
           <div class="user-name" id="sidebar-name">Loading...</div>
           <div class="user-role" id="sidebar-role">Student</div>
@@ -842,548 +517,217 @@
       </div>
     </aside>
 
-    <!-- ── MAIN ── -->
+    <!-- MAIN -->
     <div class="main">
-      <!-- Topbar -->
       <div class="topbar">
-        <div class="topbar-title">Resources & Lab Catalog</div>
+        <div class="topbar-title">Equipment & Lab Spaces</div>
         <div class="topbar-right">
-          <div class="topbar-date" id="topbar-date"></div>
-          <div class="topbar-notif">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <path
-                d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"
-              />
-            </svg>
+          <div class="search-box">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+            <input id="topbar-search" type="text" placeholder="Search equipment, labs..." />
           </div>
-          <div class="topbar-avatar" id="topbar-avatar">MS</div>
+          <div class="topbar-date" id="topbar-date"></div>
+          <button id="theme-btn" class="theme-toggle" type="button" title="Toggle theme">🌙</button>
+          <div class="topbar-icon">
+            <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"/></svg>
+            <div class="notif-dot"></div>
+          </div>
+          <a href="/profile.html" style="text-decoration:none">
+            <div class="topbar-avatar" id="topbar-avatar">--</div>
+          </a>
         </div>
       </div>
 
-      <!-- Content -->
       <div class="content">
-        <!-- Search + Filters -->
-        <div
-          style="display: flex; align-items: center; gap: 12px; flex-wrap: wrap"
-        >
-          <div class="search-bar">
-            <svg
-              width="16"
-              height="16"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <circle cx="11" cy="11" r="8" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-            <input
-              type="text"
-              id="search-input"
-              placeholder="Search by name, category..."
-            />
-          </div>
-          <div class="filter-row" style="margin: 0; flex: 1">
-            <button class="filter-btn active" onclick="setFilter('all', this)">
-              All
-            </button>
-            <button class="filter-btn" onclick="setFilter('equipment', this)">
-              Equipment
-            </button>
-            <button class="filter-btn" onclick="setFilter('labs', this)">
-              Lab Rooms
-            </button>
-            <button class="filter-btn" onclick="setFilter('available', this)">
-              Available Now
-            </button>
-            <select class="sort-btn" id="sort-select" onchange="sortItems()">
-              <option value="name">Sort: Name</option>
-              <option value="availability">Sort: Availability</option>
-              <option value="quantity">Sort: Quantity</option>
-            </select>
-          </div>
-        </div>
-
-        <!-- Tabs -->
-        <div class="tabs" style="margin-top: 20px">
-          <div class="tab active" id="tab-all" onclick="switchTab('all')">
-            All Resources (<span id="count-all">0</span>)
-          </div>
-          <div class="tab" id="tab-equipment" onclick="switchTab('equipment')">
-            Equipment (<span id="count-equipment">0</span>)
-          </div>
-          <div class="tab" id="tab-labs" onclick="switchTab('labs')">
-            Lab Rooms (<span id="count-labs">0</span>)
-          </div>
-        </div>
-
-        <!-- Alert -->
         <div id="main-alert" class="alert"></div>
 
-        <!-- Equipment Section -->
-        <div id="equipment-section">
-          <div class="section-title">Equipment</div>
-          <div class="equipment-grid" id="equipment-grid">
-            <div class="loading">
-              <div class="spinner-wrap"><div class="spinner"></div></div>
-              Loading equipment...
-            </div>
+        <div class="page-header">
+          <div>
+            <h1>Catalog</h1>
+            <p>Browse equipment types & lab spaces. Reserve what you need.</p>
           </div>
         </div>
 
-        <!-- Labs Section -->
-        <div id="labs-section">
-          <div class="section-title">Lab Rooms</div>
-          <div class="lab-list" id="labs-list">
-            <div class="loading">
-              <div class="spinner-wrap"><div class="spinner"></div></div>
-              Loading labs...
-            </div>
+        <!-- TABS -->
+        <div class="tabs-row">
+          <button class="tab-btn active" id="tab-equipment" onclick="switchTab('equipment')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="2"/><path d="M7 20h10M9 16v4M15 16v4"/></svg>
+            Equipment
+            <span class="tab-badge" id="equip-badge">—</span>
+          </button>
+          <button class="tab-btn" id="tab-labs" onclick="switchTab('labs')">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 21h18M5 21V7l7-4 7 4v14M9 21V11h6v10"/></svg>
+            Lab Spaces
+            <span class="tab-badge" id="labs-badge">—</span>
+          </button>
+        </div>
+
+        <!-- EQUIPMENT PANEL -->
+        <div id="panel-equipment">
+          <div class="controls">
+            <label class="search-row">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="equip-search" type="text" placeholder="Filter by name (oscilloscope, multimeter, FPGA...)" autocomplete="off" />
+            </label>
+            <span class="count" id="equip-count">— types</span>
+          </div>
+          <div id="equip-grid" class="grid">
+            <div class="skeleton"></div><div class="skeleton"></div>
+            <div class="skeleton"></div><div class="skeleton"></div>
+          </div>
+        </div>
+
+        <!-- LABS PANEL -->
+        <div id="panel-labs" style="display:none">
+          <div class="controls">
+            <label class="search-row">
+              <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
+              <input id="lab-search" type="text" placeholder="Search by lab name or location..." autocomplete="off" />
+            </label>
+            <select class="filter-select" id="lab-filter" onchange="renderLabs()">
+              <option value="">All statuses</option>
+              <option value="AVAILABLE">Available</option>
+              <option value="IN_USE">In Use</option>
+              <option value="MAINTENANCE">Maintenance</option>
+            </select>
+            <span class="count" id="labs-count">— labs</span>
+          </div>
+          <div id="labs-grid" class="lab-grid">
+            <div class="skeleton lab-skeleton"></div><div class="skeleton lab-skeleton"></div>
+            <div class="skeleton lab-skeleton"></div>
           </div>
         </div>
       </div>
     </div>
 
-    <!-- ── BOOKING MODAL ── -->
-    <div class="modal-overlay" id="booking-modal">
+    <!-- EQUIPMENT BOOKING MODAL -->
+    <div class="modal-bg" id="modal">
       <div class="modal">
-        <div class="modal-title" id="modal-title">Book Equipment</div>
-        <div class="modal-sub" id="modal-sub">Select your time slot</div>
-        <div id="modal-alert" class="alert"></div>
-        <div class="modal-field">
-          <label>Date</label>
-          <input type="date" id="booking-date" />
-        </div>
-        <div class="modal-row">
-          <div class="modal-field">
-            <label>Start Time</label>
-            <input type="time" id="booking-start" />
-          </div>
-          <div class="modal-field">
-            <label>End Time</label>
-            <input type="time" id="booking-end" />
+        <div class="modal-head">
+          <h2 id="mTitle">Book Equipment</h2>
+          <p class="sub" id="mSub">Select a lab to see available units.</p>
+          <div class="steps">
+            <div class="step" id="step1"><span class="num">1</span> Lab</div>
+            <div class="step" id="step2"><span class="num">2</span> Unit</div>
+            <div class="step" id="step3"><span class="num">3</span> Time</div>
           </div>
         </div>
-        <div class="modal-field" id="lab-select-wrap" style="display: none">
-          <label>Select Lab</label>
-          <select id="booking-lab">
-            <option value="">-- Select Lab --</option>
-          </select>
+        <div class="modal-body">
+          <div id="paneLab"><div class="picker-list" id="labList"></div></div>
+          <div id="paneUnit" style="display:none"><div class="unit-grid" id="unitList"></div></div>
+          <div id="paneTime" style="display:none">
+            <div class="field"><label>Date</label><input id="bDate" type="date" /></div>
+            <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+              <div class="field"><label>Start time</label><input id="bStart" type="time" value="09:00" /></div>
+              <div class="field"><label>End time</label><input id="bEnd" type="time" value="11:00" /></div>
+            </div>
+            <div class="field">
+              <label>Workstations needed</label>
+              <input id="bWork" type="number" min="1" value="1" />
+              <div class="hint">Max 3 workstations per user per lab.</div>
+            </div>
+          </div>
         </div>
-        <div class="modal-field" id="quantity-wrap" style="display: none">
-          <label>Number of Workstations (max 3)</label>
-          <input
-            type="number"
-            id="booking-quantity"
-            min="1"
-            max="3"
-            value="1"
-          />
+        <div class="modal-foot">
+          <button class="btn-ghost" id="btnBack" onclick="closeModal()">Cancel</button>
+          <button class="btn-primary" id="btnNext" onclick="nextStep()" disabled>Next</button>
         </div>
-        <div class="modal-actions">
-          <button class="btn-cancel" onclick="closeModal()">Cancel</button>
-          <button
-            class="btn-confirm"
-            id="confirm-btn"
-            onclick="confirmBooking()"
-          >
-            Confirm Booking
-          </button>
+      </div>
+    </div>
+
+    <!-- LAB DETAIL MODAL -->
+    <div class="modal-bg" id="lab-modal">
+      <div class="modal lab-modal">
+        <div class="lab-modal-banner" id="lm-banner">
+          <button class="lab-modal-close" onclick="closeLabModal()">✕</button>
+          <div>
+            <div class="lab-modal-title" id="lm-name">Lab Name</div>
+            <div class="lab-modal-loc" id="lm-loc">Location</div>
+          </div>
+        </div>
+        <div class="lab-modal-body">
+          <div class="lab-modal-stats">
+            <div class="lms a"><div class="n" id="lm-avail">0</div><div class="l">Available</div></div>
+            <div class="lms t"><div class="n" id="lm-total">0</div><div class="l">Total Units</div></div>
+            <div class="lms"><div class="n" id="lm-types">0</div><div class="l">Equip Types</div></div>
+          </div>
+          <div class="lab-modal-equip-title">Equipment in this lab</div>
+          <div id="lm-equip-list"></div>
+        </div>
+        <div class="lab-modal-foot">
+          <div style="display:flex;gap:10px;">
+            <button class="btn-book-lab" id="lm-ws-btn" onclick="openWsModal()" style="flex:1;background:transparent;border:1.5px solid var(--orange);color:var(--orange);">
+              <svg width="13" height="13" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="display:inline;vertical-align:-1px;margin-right:5px"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/></svg>
+              Book Workstation
+            </button>
+            <button class="btn-book-lab" id="lm-book-btn" onclick="closeLabAndBook()" style="flex:1;">
+              Browse Equipment →
+            </button>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- WORKSTATION BOOKING MODAL -->
+    <div class="modal-bg" id="ws-modal">
+      <div class="modal ws-modal">
+        <div class="ws-modal-head">
+          <div>
+            <h2>Book Workstation</h2>
+            <p class="sub" id="ws-lab-name">Lab name</p>
+          </div>
+          <button class="ws-modal-close" onclick="closeWsModal()">✕</button>
+        </div>
+        <div class="ws-modal-body">
+          <div class="ws-info-row">
+            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
+            Max 2 workstations per booking. Lab-only reservation — no equipment attached.
+          </div>
+          <div class="field">
+            <label>Workstations</label>
+            <div class="ws-counter">
+              <button class="ws-btn" id="ws-minus" onclick="changeWs(-1)">−</button>
+              <div>
+                <div class="ws-num" id="ws-num">1</div>
+                <div class="ws-label">workstation(s)</div>
+              </div>
+              <button class="ws-btn" id="ws-plus" onclick="changeWs(1)">+</button>
+            </div>
+          </div>
+          <div class="field">
+            <label>Date</label>
+            <input id="ws-date" type="date" />
+          </div>
+          <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px">
+            <div class="field"><label>Start time</label><input id="ws-start" type="time" value="09:00" /></div>
+            <div class="field"><label>End time</label><input id="ws-end" type="time" value="11:00" /></div>
+          </div>
+        </div>
+        <div class="modal-foot">
+          <button class="btn-ghost" onclick="closeWsModal()">Cancel</button>
+          <button class="btn-primary" id="ws-confirm-btn" onclick="submitWsBooking()">Confirm Booking</button>
         </div>
       </div>
     </div>
 
     <script>
       const API = "http://localhost:8080/api";
-      let allEquipment = [];
-      let allLabs = [];
-      let currentFilter = "all";
-      let currentTab = "all";
-      let selectedItem = null;
-      let selectedType = null;
-
-      // ── AUTH CHECK ──
       const token = sessionStorage.getItem("token");
       const username = sessionStorage.getItem("username");
       const role = sessionStorage.getItem("role");
-
       if (!token) window.location.href = "/";
 
-      // ── SET USER INFO ──
       if (username) {
         const initials = username.substring(0, 2).toUpperCase();
         document.getElementById("sidebar-avatar").textContent = initials;
         document.getElementById("topbar-avatar").textContent = initials;
         document.getElementById("sidebar-name").textContent = username;
-        document.getElementById("sidebar-role").textContent =
-          role === "LAB_TECHNICIAN" ? "Lab Technician" : "Student";
       }
-
-      // ── DATE ──
-      const now = new Date();
-      document.getElementById("topbar-date").textContent =
-        now.toLocaleDateString("en-GB", {
-          weekday: "short",
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        });
-
-      // ── SET MIN DATE FOR BOOKING ──
-      document.getElementById("booking-date").min = new Date()
-        .toISOString()
-        .split("T")[0];
-
-      // ── FETCH DATA ──
-      async function fetchAll() {
-        try {
-          const [eqRes, labRes] = await Promise.all([
-            fetch(`${API}/catalog/equipment`, {
-              headers: { Authorization: "Bearer " + token },
-            }),
-            fetch(`${API}/catalog/labs`, {
-              headers: { Authorization: "Bearer " + token },
-            }),
-          ]);
-          allEquipment = await eqRes.json();
-          allLabs = await labRes.json();
-          updateCounts();
-          renderEquipment(allEquipment);
-          renderLabs(allLabs);
-          populateLabSelect();
-        } catch (e) {
-          document.getElementById("equipment-grid").innerHTML =
-            '<div class="loading">Failed to load equipment.</div>';
-          document.getElementById("labs-list").innerHTML =
-            '<div class="loading">Failed to load labs.</div>';
-        }
-      }
-
-      function updateCounts() {
-        document.getElementById("count-all").textContent =
-          allEquipment.length + allLabs.length;
-        document.getElementById("count-equipment").textContent =
-          allEquipment.length;
-        document.getElementById("count-labs").textContent = allLabs.length;
-      }
-
-      // ── EQUIPMENT ICON ──
-      function getEquipmentIcon(name) {
-        const n = name.toLowerCase();
-        if (n.includes("oscilloscope"))
-          return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M6 9l3 3 3-6 3 5 2-2"/><line x1="8" y1="21" x2="16" y2="21"/><line x1="12" y1="17" x2="12" y2="21"/></svg>`;
-        if (n.includes("power supply") || n.includes("ac") || n.includes("dc"))
-          return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="7" width="18" height="13" rx="2"/><path d="M8 7V5a2 2 0 014 0v2M12 12v3M10 13.5h4"/></svg>`;
-        if (n.includes("multimeter"))
-          return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="5" y="3" width="14" height="18" rx="2"/><circle cx="12" cy="10" r="3"/><line x1="9" y1="17" x2="15" y2="17"/><line x1="9" y1="19.5" x2="15" y2="19.5"/></svg>`;
-        if (n.includes("fpga") || n.includes("board") || n.includes("de0"))
-          return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="2" y="6" width="20" height="12" rx="2"/><rect x="6" y="9" width="4" height="6" rx="1"/><rect x="14" y="9" width="4" height="6" rx="1"/><line x1="10" y1="12" x2="14" y2="12"/></svg>`;
-        if (n.includes("sdr") || n.includes("usrp") || n.includes("radio"))
-          return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M5 12.55a11 11 0 0114.08 0M1.42 9a16 16 0 0121.16 0M8.53 16.11a6 6 0 016.95 0M12 20h.01"/></svg>`;
-        if (n.includes("raspberry") || n.includes("pi"))
-          return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="4" y="4" width="16" height="16" rx="2"/><rect x="9" y="9" width="6" height="6" rx="1"/><line x1="9" y1="2" x2="9" y2="4"/><line x1="15" y1="2" x2="15" y2="4"/><line x1="9" y1="20" x2="9" y2="22"/><line x1="15" y1="20" x2="15" y2="22"/></svg>`;
-        if (n.includes("function generator") || n.includes("signal generator"))
-          return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M2 12h4l3-7 4 14 3-7 4 0"/></svg>`;
-
-        if (n.includes("soldering") || n.includes("solder"))
-          return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M12 19l7-7-3-3-7 7v3h3z"/><path d="M18 13l1.5-1.5a2.121 2.121 0 000-3L18 7"/><line x1="5" y1="19" x2="9" y2="19"/><line x1="5" y1="17" x2="5" y2="21"/></svg>`;
-        return `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="3" y1="15" x2="21" y2="15"/><line x1="9" y1="3" x2="9" y2="21"/><line x1="15" y1="3" x2="15" y2="21"/></svg>`;
-      }
-
-      function getStatusBadge(status) {
-        const map = {
-          AVAILABLE: ["Available", "status-available"],
-          RESERVED: ["In Use", "status-inuse"],
-          MAINTENANCE: ["Maintenance", "status-maintenance"],
-          UNAVAILABLE: ["Unavailable", "status-unavailable"],
-        };
-        const [label, cls] = map[status] || ["Unknown", "status-unavailable"];
-        return `<span class="status-badge ${cls}">${label}</span>`;
-      }
-
-      // ── RENDER EQUIPMENT ──
-      function renderEquipment(items) {
-        const grid = document.getElementById("equipment-grid");
-        if (!items.length) {
-          grid.innerHTML = '<div class="loading">No equipment found.</div>';
-          return;
-        }
-        grid.innerHTML = items
-          .map((eq) => {
-            const isAvailable = eq.status === "AVAILABLE";
-            const btnClass = isAvailable
-              ? "btn-book-orange"
-              : "btn-book-disabled";
-            const btnText = isAvailable
-              ? "Book Now"
-              : eq.status === "MAINTENANCE"
-                ? "Maintenance"
-                : "Unavailable";
-            const category = eq.description
-              ? eq.description.split("—")[0].trim()
-              : "Equipment";
-            return `
-        <div class="equipment-card" onclick="openBookingModal(${eq.id}, '${eq.name.replace(/'/g, "\\'")}', 'equipment', ${isAvailable})">
-          <div class="card-top">
-            <div class="card-icon">${getEquipmentIcon(eq.name)}</div>
-            <div class="card-info">
-              <div class="card-name">${eq.name}</div>
-              <div class="card-category">${category}</div>
-            </div>
-            ${getStatusBadge(eq.status)}
-          </div>
-          <div class="card-meta">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 10c0 7-9 13-9 13s-9-6-9-13a9 9 0 0118 0z"/><circle cx="12" cy="10" r="3"/></svg>
-            Multiple Labs
-          </div>
-          <div class="card-meta">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M20.59 13.41l-7.17 7.17a2 2 0 01-2.83 0L2 12V2h10l8.59 8.59a2 2 0 010 2.82z"/><line x1="7" y1="7" x2="7.01" y2="7"/></svg>
-            Qty: ${eq.quantity || "N/A"}
-          </div>
-          <div class="card-actions">
-            <button class="btn-book ${btnClass}" onclick="event.stopPropagation(); openBookingModal(${eq.id}, '${eq.name.replace(/'/g, "\\'")}', 'equipment', ${isAvailable})" ${!isAvailable ? "disabled" : ""}>${btnText}</button>
-          </div>
-        </div>`;
-          })
-          .join("");
-      }
-
-      // ── RENDER LABS ──
-      function renderLabs(labs) {
-        const list = document.getElementById("labs-list");
-        if (!labs.length) {
-          list.innerHTML = '<div class="loading">No labs found.</div>';
-          return;
-        }
-        list.innerHTML = labs
-          .map((lab) => {
-            const isAvailable = lab.status === "AVAILABLE";
-            const btnClass = isAvailable ? "" : "btn-reserve-disabled";
-            const btnText = isAvailable ? "Reserve Room" : "Fully Booked";
-            return `
-        <div class="lab-card">
-          <div class="lab-icon">
-            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/><polyline points="9 22 9 12 15 12 15 22"/></svg>
-          </div>
-          <div class="lab-info">
-            <div class="lab-name">${lab.labName}</div>
-            <div class="lab-location">${lab.location}</div>
-          </div>
-          <div class="lab-right">
-            ${getStatusBadge(lab.status)}
-            <button class="btn-reserve ${btnClass}" onclick="openBookingModal(${lab.id}, '${lab.labName.replace(/'/g, "\\'")}', 'lab', ${isAvailable})" ${!isAvailable ? "disabled" : ""}>${btnText}</button>
-          </div>
-        </div>`;
-          })
-          .join("");
-      }
-
-      // ── FILTER ──
-      function setFilter(filter, btn) {
-        currentFilter = filter;
-        document
-          .querySelectorAll(".filter-btn")
-          .forEach((b) => b.classList.remove("active"));
-        btn.classList.add("active");
-        applyFilters();
-      }
-
-      function applyFilters() {
-        const search = document
-          .getElementById("search-input")
-          .value.toLowerCase();
-        let filteredEq = allEquipment.filter(
-          (e) =>
-            e.name.toLowerCase().includes(search) ||
-            (e.description || "").toLowerCase().includes(search),
-        );
-        let filteredLabs = allLabs.filter(
-          (l) =>
-            l.labName.toLowerCase().includes(search) ||
-            (l.location || "").toLowerCase().includes(search),
-        );
-        if (currentFilter === "available") {
-          filteredEq = filteredEq.filter((e) => e.status === "AVAILABLE");
-          filteredLabs = filteredLabs.filter((l) => l.status === "AVAILABLE");
-        }
-        const showEq = currentFilter !== "labs";
-        const showLabs = currentFilter !== "equipment";
-        document.getElementById("equipment-section").style.display = showEq
-          ? ""
-          : "none";
-        document.getElementById("labs-section").style.display = showLabs
-          ? ""
-          : "none";
-        if (showEq) renderEquipment(filteredEq);
-        if (showLabs) renderLabs(filteredLabs);
-      }
-
-      function switchTab(tab) {
-        currentTab = tab;
-        document
-          .querySelectorAll(".tab")
-          .forEach((t) => t.classList.remove("active"));
-        document.getElementById("tab-" + tab).classList.add("active");
-        if (tab === "all") {
-          currentFilter = "all";
-        } else if (tab === "equipment") {
-          currentFilter = "equipment";
-        } else {
-          currentFilter = "labs";
-        }
-        applyFilters();
-      }
-
-      function sortItems() {
-        const sort = document.getElementById("sort-select").value;
-        if (sort === "name") {
-          allEquipment.sort((a, b) => a.name.localeCompare(b.name));
-          allLabs.sort((a, b) => a.labName.localeCompare(b.labName));
-        } else if (sort === "availability") {
-          allEquipment.sort((a, b) => (a.status === "AVAILABLE" ? -1 : 1));
-          allLabs.sort((a, b) => (a.status === "AVAILABLE" ? -1 : 1));
-        } else if (sort === "quantity") {
-          allEquipment.sort((a, b) => (b.quantity || 0) - (a.quantity || 0));
-        }
-        applyFilters();
-      }
-
-      document
-        .getElementById("search-input")
-        .addEventListener("input", applyFilters);
-
-      // ── BOOKING MODAL ──
-      function populateLabSelect() {
-        const sel = document.getElementById("booking-lab");
-        allLabs.forEach((lab) => {
-          const opt = document.createElement("option");
-          opt.value = lab.id;
-          opt.textContent = lab.labName;
-          sel.appendChild(opt);
-        });
-      }
-
-      async function openBookingModal(id, name, type, isAvailable) {
-        if (!isAvailable) return;
-        selectedItem = id;
-        selectedType = type;
-        document.getElementById("modal-title").textContent =
-          type === "lab" ? `Reserve ${name}` : `Book ${name}`;
-        document.getElementById("modal-sub").textContent =
-          type === "lab"
-            ? "Select your reservation time slot"
-            : "Select time slot and lab";
-        document.getElementById("modal-alert").classList.remove("show");
-
-        if (type === "equipment") {
-          document.getElementById("lab-select-wrap").style.display = "";
-          // Fetch only labs that have this equipment
-          const sel = document.getElementById("booking-lab");
-          sel.innerHTML = '<option value="">-- Select Lab --</option>';
-          const res = await fetch(`${API}/catalog/equipment/${id}/labs`, {
-            headers: { Authorization: "Bearer " + token },
-          });
-          const labs = await res.json();
-          labs.forEach((lab) => {
-            const opt = document.createElement("option");
-            opt.value = lab.id;
-            opt.textContent = lab.labName;
-            sel.appendChild(opt);
-          });
-        } else {
-          document.getElementById("lab-select-wrap").style.display = "none";
-        }
-        document.getElementById("quantity-wrap").style.display =
-          type === "lab" ? "" : "none";
-
-        document.getElementById("booking-modal").classList.add("show");
-      }
-
-      function closeModal() {
-        document.getElementById("booking-modal").classList.remove("show");
-        selectedItem = null;
-        selectedType = null;
-      }
-
-      function showModalAlert(type, msg) {
-        const el = document.getElementById("modal-alert");
-        el.className = `alert ${type} show`;
-        el.textContent = msg;
-      }
-
-      async function confirmBooking() {
-        const date = document.getElementById("booking-date").value;
-        const start = document.getElementById("booking-start").value;
-        const end = document.getElementById("booking-end").value;
-        const labId = document.getElementById("booking-lab").value;
-
-        if (!date || !start || !end)
-          return showModalAlert("error", "Please fill in all fields");
-        if (start >= end)
-          return showModalAlert("error", "End time must be after start time");
-        if (selectedType === "lab") {
-          const qty = parseInt(
-            document.getElementById("booking-quantity").value,
-          );
-          if (!qty || qty < 1 || qty > 3)
-            return showModalAlert(
-              "error",
-              "You can reserve between 1 and 3 workstations only",
-            );
-          body.quantity = qty;
-        }
-        if (selectedType === "equipment" && !labId)
-          return showModalAlert("error", "Please select a lab");
-
-        const body = {
-          startTime: `${date}T${start}:00`,
-          endTime: `${date}T${end}:00`,
-        };
-
-        if (selectedType === "equipment") {
-          body.equipmentId = selectedItem;
-          body.labId = parseInt(labId);
-        } else {
-          body.labId = selectedItem;
-        }
-
-        try {
-          document.getElementById("confirm-btn").textContent = "Booking...";
-          document.getElementById("confirm-btn").disabled = true;
-          const res = await fetch(`${API}/reservations`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-            body: JSON.stringify(body),
-          });
-          if (!res.ok) {
-            const data = await res.json();
-            throw new Error(data.error || "Booking failed");
-          }
-          closeModal();
-          showAlert(
-            "success",
-            "Booking confirmed! Check My Reservations for details.",
-          );
-          fetchAll();
-        } catch (e) {
-          showModalAlert("error", e.message);
-        } finally {
-          document.getElementById("confirm-btn").textContent =
-            "Confirm Booking";
-          document.getElementById("confirm-btn").disabled = false;
-        }
-      }
+      document.getElementById("sidebar-role").textContent =
+        role === "LAB_TECHNICIAN" ? "Lab Technician" : "Student";
+      document.getElementById("topbar-date").textContent = new Date().toLocaleDateString("en-GB", {
+        weekday: "short", day: "numeric", month: "long", year: "numeric",
+      });
 
       function showAlert(type, msg) {
         const el = document.getElementById("main-alert");
@@ -1392,15 +736,470 @@
         setTimeout(() => el.classList.remove("show"), 4000);
       }
 
-      // Close modal on overlay click
-      document
-        .getElementById("booking-modal")
-        .addEventListener("click", function (e) {
-          if (e.target === this) closeModal();
-        });
+      /* ─── TABS ─── */
+      let currentTab = "equipment";
+      let labsLoaded = false;
+      function switchTab(tab) {
+        currentTab = tab;
+        document.getElementById("tab-equipment").classList.toggle("active", tab === "equipment");
+        document.getElementById("tab-labs").classList.toggle("active", tab === "labs");
+        document.getElementById("panel-equipment").style.display = tab === "equipment" ? "block" : "none";
+        document.getElementById("panel-labs").style.display = tab === "labs" ? "block" : "none";
+        if (tab === "labs" && !labsLoaded) { loadLabs(); labsLoaded = true; }
+        // sync topbar search
+        const topVal = document.getElementById("topbar-search").value.trim();
+        if (tab === "equipment") document.getElementById("equip-search").value = topVal;
+        else document.getElementById("lab-search").value = topVal;
+      }
 
-      // ── INIT ──
-      fetchAll();
+      /* ─── EQUIPMENT ─── */
+      let allTypes = [];
+      let bookModal = { type: null, step: 1, selectedLab: null, selectedUnit: null };
+
+      async function loadTypes(search = "") {
+        const grid = document.getElementById("equip-grid");
+        grid.innerHTML = '<div class="skeleton"></div>'.repeat(4);
+        try {
+          const url = search
+            ? `${API}/catalog/equipment-types?search=${encodeURIComponent(search)}`
+            : `${API}/catalog/equipment-types`;
+          const res = await fetch(url, { headers: { Authorization: "Bearer " + token } });
+          if (!res.ok) throw new Error(`Failed to load (${res.status})`);
+          allTypes = await res.json();
+          document.getElementById("equip-badge").textContent = allTypes.length;
+          renderTypes(allTypes);
+        } catch (err) {
+          grid.innerHTML = `<div class="empty-state">⚠ ${err.message}</div>`;
+        }
+      }
+
+      function renderTypes(types) {
+        const grid = document.getElementById("equip-grid");
+        document.getElementById("equip-count").textContent = `${types.length} type${types.length===1?"":"s"}`;
+        if (!types.length) {
+          grid.innerHTML = `<div class="empty-state"><div class="empty-icon">📦</div>No equipment matches your search.</div>`;
+          return;
+        }
+        grid.innerHTML = types.map(t => `
+          <article class="card">
+            <div class="card-icon">
+              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round">
+                <rect x="3" y="4" width="18" height="12" rx="2"/><path d="M7 20h10M9 16v4M15 16v4"/>
+              </svg>
+            </div>
+            <h3>${escapeHtml(t.name)}</h3>
+            <p class="desc">${escapeHtml(t.description || "Lab equipment available for booking.")}</p>
+            <div class="card-stats">
+              <div class="card-stat avail"><div class="num">${t.availableUnits}</div><div class="lbl">Available</div></div>
+              <div class="card-stat"><div class="num">${t.totalUnits}</div><div class="lbl">Total Units</div></div>
+            </div>
+            <button class="btn-book" onclick='openModal(${JSON.stringify(t).replace(/'/g,"&#39;")})' ${t.availableUnits===0?"disabled":""}>
+              ${t.availableUnits===0?"Fully booked":"Book a unit →"}
+            </button>
+          </article>
+        `).join("");
+      }
+
+      /* ─── LABS ─── */
+      let allLabs = [];
+      let labEquipMap = {};
+      let selectedLabForBooking = null;
+
+      async function loadLabs() {
+        const grid = document.getElementById("labs-grid");
+        grid.innerHTML = '<div class="skeleton lab-skeleton"></div>'.repeat(3);
+        try {
+          const res = await fetch(`${API}/catalog/labs`, { headers: { Authorization: "Bearer " + token } });
+          if (!res.ok) throw new Error(`Failed to load labs (${res.status})`);
+          allLabs = await res.json();
+          document.getElementById("labs-badge").textContent = allLabs.length;
+          // Load equipment summary per lab
+          await Promise.all(allLabs.map(async lab => {
+            try {
+              const r = await fetch(`${API}/catalog/equipment-types`, { headers: { Authorization: "Bearer " + token } });
+              // We'll use the per-lab equipment endpoint if available, otherwise group from types
+              // For now, load all types and match by lab via units endpoint
+            } catch(e) {}
+          }));
+          // Load unit counts per lab using existing endpoints
+          await loadLabEquipSummaries();
+          renderLabs();
+        } catch(err) {
+          grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1">⚠ ${err.message}</div>`;
+        }
+      }
+
+      async function loadLabEquipSummaries() {
+        // For each lab, fetch available units grouped by equipment type name
+        // We call the existing /catalog/equipment-types/{name}/labs/{labId}/units for each type+lab combo
+        // But to avoid 100s of calls, we'll use /reservations/lab/{id} pattern or just show what we have
+        // We'll build summaries by fetching all types and then checking which labs they're in
+        try {
+          const res = await fetch(`${API}/catalog/equipment-types`, { headers: { Authorization: "Bearer " + token } });
+          if (!res.ok) return;
+          const types = await res.json();
+          for (const lab of allLabs) {
+            labEquipMap[lab.id] = { types: [], totalUnits: 0, availableUnits: 0 };
+          }
+          // For each type, get its labs and build reverse map
+          for (const t of types) {
+            try {
+              const r = await fetch(`${API}/catalog/equipment-types/${encodeURIComponent(t.name)}/labs`, {
+                headers: { Authorization: "Bearer " + token }
+              });
+              if (!r.ok) continue;
+              const labs = await r.json();
+              for (const lab of labs) {
+                if (!labEquipMap[lab.id]) labEquipMap[lab.id] = { types: [], totalUnits: 0, availableUnits: 0 };
+                // Get available units in this lab for this type
+                const ur = await fetch(`${API}/catalog/equipment-types/${encodeURIComponent(t.name)}/labs/${lab.id}/units`, {
+                  headers: { Authorization: "Bearer " + token }
+                });
+                const availUnits = ur.ok ? (await ur.json()).length : 0;
+                // Get total for this type across all labs (proportional estimate)
+                labEquipMap[lab.id].types.push({ name: t.name, available: availUnits });
+                labEquipMap[lab.id].availableUnits += availUnits;
+              }
+            } catch(e) {}
+          }
+          // Compute totalUnits per lab from all types (available + reserved)
+          for (const lab of allLabs) {
+            const m = labEquipMap[lab.id];
+            if (m) m.totalUnits = m.types.reduce((s,t) => s + t.available, 0); // min estimate; server has full count
+          }
+        } catch(e) {}
+      }
+
+      function renderLabs() {
+        const grid = document.getElementById("labs-grid");
+        const search = document.getElementById("lab-search").value.trim().toLowerCase();
+        const statusFilter = document.getElementById("lab-filter").value;
+        let filtered = allLabs.filter(l => {
+          const matchSearch = !search ||
+            l.labName.toLowerCase().includes(search) ||
+            (l.location || "").toLowerCase().includes(search);
+          const matchStatus = !statusFilter || l.status === statusFilter;
+          return matchSearch && matchStatus;
+        });
+        document.getElementById("labs-count").textContent = `${filtered.length} lab${filtered.length===1?"":"s"}`;
+        if (!filtered.length) {
+          grid.innerHTML = `<div class="empty-state" style="grid-column:1/-1"><div class="empty-icon">🏛️</div>No labs match your search.</div>`;
+          return;
+        }
+        grid.innerHTML = filtered.map(lab => {
+          const st = (lab.status || "AVAILABLE").toLowerCase();
+          const em = labEquipMap[lab.id] || { types: [], availableUnits: 0, totalUnits: 0 };
+          const chips = em.types.slice(0, 3).map(t => `<span class="equip-chip">${escapeHtml(t.name)}</span>`).join("");
+          const more = em.types.length > 3 ? `<span class="equip-chip more">+${em.types.length - 3} more</span>` : "";
+          const isAvail = lab.status === "AVAILABLE";
+          return `
+          <div class="lab-card" onclick='openLabModal(${JSON.stringify(lab).replace(/'/g,"&#39;")})' style="cursor:pointer">
+            <div class="lab-card-header status-${st}">
+              <div class="lab-header-row">
+                <div class="lab-icon-wrap">
+                  <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                    <path d="M3 21h18M5 21V7l7-4 7 4v14M9 21V11h6v10"/>
+                  </svg>
+                </div>
+                <span class="lab-status-badge badge-${st}">${formatStatus(lab.status)}</span>
+              </div>
+              <div class="lab-name">${escapeHtml(lab.labName)}</div>
+              <div class="lab-location">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 2C8.13 2 5 5.13 5 9c0 5.25 7 13 7 13s7-7.75 7-13c0-3.87-3.13-7-7-7zm0 9.5c-1.38 0-2.5-1.12-2.5-2.5s1.12-2.5 2.5-2.5 2.5 1.12 2.5 2.5-1.12 2.5-2.5 2.5z"/></svg>
+                ${escapeHtml(lab.location || "Location not set")}
+              </div>
+            </div>
+            <div class="lab-card-body">
+              <div class="lab-stats-row">
+                <div class="lab-stat s-avail"><div class="s-num">${em.availableUnits}</div><div class="s-lbl">Available</div></div>
+                <div class="lab-stat s-total"><div class="s-num">${em.totalUnits || em.availableUnits}</div><div class="s-lbl">Total</div></div>
+                <div class="lab-stat"><div class="s-num">${em.types.length}</div><div class="s-lbl">Types</div></div>
+              </div>
+              ${em.types.length ? `
+              <div class="lab-equip-preview">
+                <div class="lab-equip-label">Equipment</div>
+                <div class="equip-chips">${chips}${more}</div>
+              </div>` : ""}
+              <button class="btn-view-lab" onclick="event.stopPropagation();openLabModal(${JSON.stringify(lab).replace(/'/g,"&#39;")})" ${!isAvail&&lab.status!=="IN_USE"?"disabled":""}>
+                ${isAvail ? "View & Book →" : lab.status==="IN_USE" ? "View Details →" : "Unavailable"}
+              </button>
+            </div>
+          </div>`;
+        }).join("");
+      }
+
+      function formatStatus(s) {
+        if (!s) return "Available";
+        return { AVAILABLE:"Available", IN_USE:"In Use", MAINTENANCE:"Maintenance", UNAVAILABLE:"Unavailable" }[s] || s;
+      }
+
+      /* ─── LAB DETAIL MODAL ─── */
+      let currentLabDetail = null;
+      function openLabModal(lab) {
+        currentLabDetail = lab;
+        const st = (lab.status||"AVAILABLE").toLowerCase();
+        const banner = document.getElementById("lm-banner");
+        banner.className = `lab-modal-banner banner-${st}`;
+        document.getElementById("lm-name").textContent = lab.labName;
+        document.getElementById("lm-loc").textContent = lab.location || "Location not set";
+        const em = labEquipMap[lab.id] || { types: [], availableUnits: 0, totalUnits: 0 };
+        document.getElementById("lm-avail").textContent = em.availableUnits;
+        document.getElementById("lm-total").textContent = em.totalUnits || em.availableUnits;
+        document.getElementById("lm-types").textContent = em.types.length;
+        const list = document.getElementById("lm-equip-list");
+        if (em.types.length) {
+          list.innerHTML = em.types.map(t => `
+            <div class="equip-type-row">
+              <span class="etr-name">${escapeHtml(t.name)}</span>
+              <div class="etr-counts">
+                <span class="etr-avail">${t.available} avail</span>
+              </div>
+            </div>
+          `).join("");
+        } else {
+          list.innerHTML = `<div style="font-size:13px;color:var(--text2);padding:12px 0">No equipment data loaded yet.</div>`;
+        }
+        const bookBtn = document.getElementById("lm-book-btn");
+        const wsBtn = document.getElementById("lm-ws-btn");
+        const unavail = lab.status === "MAINTENANCE" || lab.status === "UNAVAILABLE";
+        bookBtn.disabled = unavail;
+        wsBtn.disabled = unavail;
+        document.getElementById("lab-modal").classList.add("show");
+      }
+
+      function closeLabModal() { document.getElementById("lab-modal").classList.remove("show"); }
+
+      function closeLabAndBook() {
+        closeLabModal();
+        switchTab("equipment");
+        if (currentLabDetail) {
+          showAlert("success", `Browsing equipment for ${currentLabDetail.labName}. Pick a type below to book.`);
+        }
+      }
+
+      /* ─── WORKSTATION BOOKING MODAL ─── */
+      let wsCount = 1;
+
+      function openWsModal() {
+        if (!currentLabDetail) return;
+        if (currentLabDetail.status === "MAINTENANCE" || currentLabDetail.status === "UNAVAILABLE") {
+          showAlert("error", "This lab is not available for booking.");
+          return;
+        }
+        wsCount = 1;
+        document.getElementById("ws-num").textContent = "1";
+        document.getElementById("ws-minus").disabled = true;
+        document.getElementById("ws-plus").disabled = false;
+        document.getElementById("ws-lab-name").textContent = currentLabDetail.labName + " · " + (currentLabDetail.location || "");
+        const d = document.getElementById("ws-date");
+        if (!d.value) d.value = new Date().toISOString().slice(0, 10);
+        document.getElementById("ws-modal").classList.add("show");
+      }
+
+      function closeWsModal() {
+        document.getElementById("ws-modal").classList.remove("show");
+      }
+
+      function changeWs(delta) {
+        wsCount = Math.min(2, Math.max(1, wsCount + delta));
+        document.getElementById("ws-num").textContent = wsCount;
+        document.getElementById("ws-minus").disabled = wsCount <= 1;
+        document.getElementById("ws-plus").disabled = wsCount >= 2;
+      }
+
+      async function submitWsBooking() {
+        const date = document.getElementById("ws-date").value;
+        const start = document.getElementById("ws-start").value;
+        const end = document.getElementById("ws-end").value;
+        if (!date || !start || !end) return showAlert("error", "Please fill in date and time.");
+        if (start >= end) return showAlert("error", "End time must be after start time.");
+
+        const btn = document.getElementById("ws-confirm-btn");
+        btn.disabled = true; btn.textContent = "Booking…";
+
+        try {
+          const res = await fetch(`${API}/reservations`, {
+            method: "POST",
+            headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+            body: JSON.stringify({
+              labId: currentLabDetail.id,
+              startTime: `${date}T${start}:00`,
+              endTime: `${date}T${end}:00`,
+              quantity: wsCount
+              // equipmentId intentionally omitted → lab-only booking
+            })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error || "Booking failed");
+          closeWsModal();
+          closeLabModal();
+          showAlert("success", `✓ Booked ${wsCount} workstation${wsCount > 1 ? "s" : ""} in ${currentLabDetail.labName} successfully.`);
+        } catch (err) {
+          showAlert("error", err.message);
+        } finally {
+          btn.disabled = false; btn.textContent = "Confirm Booking";
+        }
+      }
+
+      /* ─── EQUIPMENT BOOKING MODAL ─── */
+      function openModal(type) {
+        bookModal = { type, step: 1, selectedLab: null, selectedUnit: null };
+        document.getElementById("mTitle").textContent = `Book ${type.name}`;
+        document.getElementById("mSub").textContent = "Select a lab to see available units.";
+        document.getElementById("modal").classList.add("show");
+        setStep(1);
+        loadModalLabs(type.name);
+      }
+      function closeModal() { document.getElementById("modal").classList.remove("show"); }
+      function setStep(n) {
+        bookModal.step = n;
+        ["step1","step2","step3"].forEach((id, i) => {
+          const el = document.getElementById(id);
+          el.classList.remove("active","done");
+          if (i+1 < n) el.classList.add("done");
+          else if (i+1 === n) el.classList.add("active");
+        });
+        document.getElementById("paneLab").style.display = n===1?"block":"none";
+        document.getElementById("paneUnit").style.display = n===2?"block":"none";
+        document.getElementById("paneTime").style.display = n===3?"block":"none";
+        const btn = document.getElementById("btnNext");
+        btn.textContent = n===3?"Confirm Booking":"Next";
+        updateNextEnabled();
+        if (n===3) { const d=document.getElementById("bDate"); if(!d.value) d.value=new Date().toISOString().slice(0,10); }
+      }
+      function updateNextEnabled() {
+        const btn = document.getElementById("btnNext");
+        if (bookModal.step===1) btn.disabled=!bookModal.selectedLab;
+        else if (bookModal.step===2) btn.disabled=!bookModal.selectedUnit;
+        else btn.disabled=false;
+      }
+      async function loadModalLabs(name) {
+        const list = document.getElementById("labList");
+        list.innerHTML = '<div class="empty-state" style="border:none;padding:24px">Loading labs…</div>';
+        try {
+          const res = await fetch(`${API}/catalog/equipment-types/${encodeURIComponent(name)}/labs`, {
+            headers: { Authorization: "Bearer " + token }
+          });
+          if (!res.ok) throw new Error(`Failed (${res.status})`);
+          const labs = await res.json();
+          if (!labs.length) { list.innerHTML='<div class="empty-state" style="border:none">No labs have this equipment.</div>'; return; }
+          list.innerHTML = labs.map(l => `
+            <div class="picker-item" data-lab='${JSON.stringify(l).replace(/'/g,"&#39;")}'>
+              <div>
+                <div class="pname">${escapeHtml(l.labName)}</div>
+                <div class="pmeta">${escapeHtml(l.location||"Location not set")}</div>
+              </div>
+              <span class="badge">${escapeHtml(l.status||"available")}</span>
+            </div>
+          `).join("");
+          list.querySelectorAll(".picker-item").forEach(el => {
+            el.addEventListener("click", () => {
+              list.querySelectorAll(".picker-item").forEach(x=>x.classList.remove("selected"));
+              el.classList.add("selected");
+              bookModal.selectedLab = JSON.parse(el.dataset.lab);
+              updateNextEnabled();
+            });
+          });
+        } catch(err) { list.innerHTML=`<div class="empty-state" style="border:none">⚠ ${err.message}</div>`; }
+      }
+      async function loadUnits() {
+        const grid = document.getElementById("unitList");
+        grid.innerHTML = '<div class="empty-state" style="border:none;grid-column:1/-1">Loading units…</div>';
+        try {
+          const url = `${API}/catalog/equipment-types/${encodeURIComponent(bookModal.type.name)}/labs/${bookModal.selectedLab.id}/units`;
+          const res = await fetch(url, { headers: { Authorization: "Bearer " + token } });
+          if (!res.ok) throw new Error(`Failed (${res.status})`);
+          const units = await res.json();
+          if (!units.length) { grid.innerHTML='<div class="empty-state" style="border:none;grid-column:1/-1">No available units in this lab.</div>'; return; }
+          grid.innerHTML = units.map(u => `
+            <div class="unit-pill" data-unit='${JSON.stringify(u).replace(/'/g,"&#39;")}'>
+              ${escapeHtml(u.equipmentCode||`#${u.id}`)}
+            </div>
+          `).join("");
+          grid.querySelectorAll(".unit-pill").forEach(el => {
+            el.addEventListener("click", () => {
+              grid.querySelectorAll(".unit-pill").forEach(x=>x.classList.remove("selected"));
+              el.classList.add("selected");
+              bookModal.selectedUnit = JSON.parse(el.dataset.unit);
+              updateNextEnabled();
+            });
+          });
+        } catch(err) { grid.innerHTML=`<div class="empty-state" style="border:none;grid-column:1/-1">⚠ ${err.message}</div>`; }
+      }
+      async function nextStep() {
+        if (bookModal.step===1) { setStep(2); await loadUnits(); }
+        else if (bookModal.step===2) {
+          setStep(3);
+          document.getElementById("mSub").textContent = `${bookModal.type.name} · ${bookModal.selectedUnit.equipmentCode} · ${bookModal.selectedLab.labName}`;
+        } else { await submitBooking(); }
+      }
+      async function submitBooking() {
+        const date=document.getElementById("bDate").value;
+        const start=document.getElementById("bStart").value;
+        const end=document.getElementById("bEnd").value;
+        const work=parseInt(document.getElementById("bWork").value||"1",10);
+        if (!date||!start||!end) return showAlert("error","Please pick a date and time.");
+        if (start>=end) return showAlert("error","End time must be after start time.");
+        const btn=document.getElementById("btnNext");
+        btn.disabled=true; btn.textContent="Booking…";
+        try {
+          const res = await fetch(`${API}/reservations`, {
+            method:"POST",
+            headers:{"Content-Type":"application/json","Authorization":"Bearer "+token},
+            body:JSON.stringify({ equipmentId:bookModal.selectedUnit.id, labId:bookModal.selectedLab.id, startTime:`${date}T${start}:00`, endTime:`${date}T${end}:00`, quantity:work })
+          });
+          const data = await res.json();
+          if (!res.ok) throw new Error(data.error||"Booking failed");
+          closeModal();
+          showAlert("success",`✓ Booked ${bookModal.selectedUnit.equipmentCode} successfully.`);
+          loadTypes(document.getElementById("equip-search").value);
+        } catch(err) {
+          showAlert("error",err.message);
+          btn.disabled=false; btn.textContent="Confirm Booking";
+        }
+      }
+
+      /* ─── UTILS ─── */
+      function escapeHtml(s) {
+        return String(s??"").replace(/[&<>"']/g,c=>({
+          "&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"
+        }[c]));
+      }
+
+      /* ─── SEARCH SYNC ─── */
+      let searchTimer;
+      document.getElementById("equip-search").addEventListener("input", e => {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(() => loadTypes(e.target.value.trim()), 250);
+      });
+      document.getElementById("lab-search").addEventListener("input", () => {
+        clearTimeout(searchTimer);
+        searchTimer = setTimeout(renderLabs, 200);
+      });
+      document.getElementById("topbar-search").addEventListener("input", e => {
+        const v = e.target.value.trim();
+        if (currentTab === "equipment") {
+          document.getElementById("equip-search").value = v;
+          clearTimeout(searchTimer);
+          searchTimer = setTimeout(() => loadTypes(v), 250);
+        } else {
+          document.getElementById("lab-search").value = v;
+          clearTimeout(searchTimer);
+          searchTimer = setTimeout(renderLabs, 200);
+        }
+      });
+      document.addEventListener("keydown", e => {
+        if (e.key === "Escape") { closeModal(); closeLabModal(); closeWsModal(); }
+      });
+      document.getElementById("modal").addEventListener("click", e => { if(e.target.id==="modal") closeModal(); });
+      document.getElementById("lab-modal").addEventListener("click", e => { if(e.target.id==="lab-modal") closeLabModal(); });
+      document.getElementById("ws-modal").addEventListener("click", e => { if(e.target.id==="ws-modal") closeWsModal(); });
+
+      /* ─── INIT ─── */
+      loadTypes();
     </script>
+    <script src="/calendar.js"></script>
+    <script src="/notifications.js"></script>
+    <script src="/theme.js"></script>
   </body>
 </html>

@@ -562,6 +562,7 @@
           </svg>
           My Reservations
         </a>
+
         <a href="/report-issue.html" class="nav-item">
           <svg
             viewBox="0 0 24 24"
@@ -575,7 +576,6 @@
           </svg>
           Report Issue
         </a>
-       
       </nav>
       <div class="sidebar-user">
         <div class="user-avatar" id="sidebar-avatar">--</div>
@@ -821,7 +821,9 @@
             const start = new Date(r.startTime);
             const end = new Date(r.endTime);
             const name = r.equipment
-              ? r.equipment.name
+              ? r.equipment.equipmentCode
+                ? `${r.equipment.equipmentCode} — ${r.equipment.name}`
+                : r.equipment.name
               : r.lab
                 ? r.lab.labName
                 : "Unknown";

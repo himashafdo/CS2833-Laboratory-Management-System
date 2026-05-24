@@ -3,6 +3,7 @@ package com.companya.labms.catalog;
 import org.springframework.stereotype.Service;
 import java.util.List;
 import java.util.stream.Collectors;
+import com.companya.labms.reservation.ReservationRepository;
 
 @Service
 public class AdminCatalogService {
@@ -11,16 +12,19 @@ public class AdminCatalogService {
     private final EquipmentTypeRepository equipmentTypeRepository;
     private final LabRepository labRepository;
     private final LabEquipmentRepository labEquipmentRepository;
+    private final ReservationRepository reservationRepository;
 
     public AdminCatalogService(EquipmentRepository equipmentRepository,
-                               EquipmentTypeRepository equipmentTypeRepository,
-                               LabRepository labRepository,
-                               LabEquipmentRepository labEquipmentRepository) {
-        this.equipmentRepository = equipmentRepository;
-        this.equipmentTypeRepository = equipmentTypeRepository;
-        this.labRepository = labRepository;
-        this.labEquipmentRepository = labEquipmentRepository;
-    }
+                           EquipmentTypeRepository equipmentTypeRepository,
+                           LabRepository labRepository,
+                           LabEquipmentRepository labEquipmentRepository,
+                           ReservationRepository reservationRepository) {
+    this.equipmentRepository = equipmentRepository;
+    this.equipmentTypeRepository = equipmentTypeRepository;
+    this.labRepository = labRepository;
+    this.labEquipmentRepository = labEquipmentRepository;
+    this.reservationRepository = reservationRepository;
+}
 
     // ══════════════════════════════════════════
     // EQUIPMENT TYPES
@@ -45,6 +49,7 @@ public class AdminCatalogService {
         if (dto.getName() == null || dto.getName().trim().isEmpty()) {
             throw new IllegalArgumentException("Equipment type name cannot be empty");
         }
+        
         EquipmentType type = new EquipmentType();
         type.setName(dto.getName().trim());
         type.setDescription(dto.getDescription());
@@ -64,23 +69,19 @@ public class AdminCatalogService {
         return equipmentTypeRepository.save(existing);
     }
 
-    public void deleteEquipmentType(Long id) {
-        if (!equipmentTypeRepository.existsById(id)) {
-            throw new RuntimeException("Equipment type not found with ID: " + id);
-        }
-        
-        // Check if there are equipment items using this type
-        List<Equipment> equipment = equipmentRepository.findAll().stream()
-            .filter(e -> e.getEquipmentType() != null && e.getEquipmentType().getId().equals(id))
-            .collect(Collectors.toList());
-        
-        if (!equipment.isEmpty()) {
-            throw new RuntimeException("Cannot delete equipment type: " + equipment.size() + 
-                " equipment item(s) still reference this type. Please delete or reassign them first.");
-        }
-        
-        equipmentTypeRepository.deleteById(id);
+    public void deleteEquipment(Long id) {
+    if (!equipmentRepository.existsById(id)) {
+        throw new RuntimeException("Equipment not found with ID: " + id);
     }
+    // Null out equipment on any reservations first
+    reservationRepository.findByEquipmentId(id).forEach(r -> {
+        r.setEquipment(null);
+        reservationRepository.save(r);
+    });
+    // Remove lab assignments
+    labEquipmentRepository.deleteAll(labEquipmentRepository.findByEquipmentId(id));
+    equipmentRepository.deleteById(id);
+}
 
     // ══════════════════════════════════════════
     // EQUIPMENT
@@ -109,8 +110,8 @@ public class AdminCatalogService {
         equipment.setDescription(dto.getDescription());
         equipment.setImageUrl(dto.getImageUrl());
         equipment.setSerialNumber(dto.getSerialNumber());
-        equipment.setQuantity(dto.getQuantity());
-
+equipment.setQuantity(dto.getQuantity());
+if (dto.getEquipmentCode() != null) equipment.setEquipmentCode(dto.getEquipmentCode());
         if (dto.getEquipmentTypeId() != null) {
             EquipmentType type = equipmentTypeRepository.findById(dto.getEquipmentTypeId())
                 .orElseThrow(() -> new RuntimeException("Equipment type not found"));
@@ -145,7 +146,8 @@ public class AdminCatalogService {
         existing.setDescription(dto.getDescription());
         existing.setImageUrl(dto.getImageUrl());
         existing.setSerialNumber(dto.getSerialNumber());
-        existing.setQuantity(dto.getQuantity());
+existing.setQuantity(dto.getQuantity());
+if (dto.getEquipmentCode() != null) existing.setEquipmentCode(dto.getEquipmentCode());
 
         if (dto.getEquipmentTypeId() != null) {
             EquipmentType type = equipmentTypeRepository.findById(dto.getEquipmentTypeId())
@@ -164,14 +166,7 @@ public class AdminCatalogService {
         return equipmentRepository.save(existing);
     }
 
-    public void deleteEquipment(Long id) {
-        if (!equipmentRepository.existsById(id)) {
-            throw new RuntimeException("Equipment not found with ID: " + id);
-        }
-        List<LabEquipment> assignments = labEquipmentRepository.findByEquipmentId(id);
-        labEquipmentRepository.deleteAll(assignments);
-        equipmentRepository.deleteById(id);
-    }
+
 
     // ══════════════════════════════════════════
     // LABS

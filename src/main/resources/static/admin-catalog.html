@@ -1385,12 +1385,13 @@
 
     <div id="toast"></div>
 
-    const API = "/api"; const AAPI = `${API}/admin/catalog`; const token =
-    sessionStorage.getItem("token"); const username =
-    sessionStorage.getItem("username"); const role =
-    sessionStorage.getItem("role");
-
     <script>
+      const API = "/api";
+      const AAPI = `${API}/admin/catalog`;
+      const token = sessionStorage.getItem("token");
+      const username = sessionStorage.getItem("username");
+      const role = sessionStorage.getItem("role");
+
       if (!token) window.location.href = "/login.html";
       if (role === "STUDENT") window.location.href = "/student-dashboard.html";
       if (role === "ADMIN") window.location.href = "/lead-admin-dashboard.html";

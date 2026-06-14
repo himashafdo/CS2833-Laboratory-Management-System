@@ -1,338 +1,1333 @@
-<!DOCTYPE html>
+<!doctype html>
 <html lang="en">
-<head>
-  <meta charset="UTF-8"/>
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Catalog Manager — Lab Management System</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet"/>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --orange: #f97316; --orange2: #ea6c0a; --orange3: #fb923c;
-      --text: #1a1a2e; --text2: #64748b; --text3: #94a3b8;
-      --border: #e2e8f0; --white: #ffffff; --bg: #f8fafc;
-      --font: "Plus Jakarta Sans", sans-serif;
-    }
-    body { font-family: var(--font); background: var(--bg); min-height: 100vh; display: flex; }
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Catalog Manager — Lab Management System</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="/theme.js"></script>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --orange: #f97316;
+        --orange2: #ea6c0a;
+        --orange3: #fb923c;
+        --text: #1a1a2e;
+        --text2: #64748b;
+        --text3: #94a3b8;
+        --border: #e2e8f0;
+        --white: #ffffff;
+        --bg: #f8fafc;
+        --font: "Plus Jakarta Sans", sans-serif;
+      }
+      [data-theme="dark"] {
+        --text: #f1f5f9;
+        --text2: #cbd5e1;
+        --text3: #94a3b8;
+        --border: #334155;
+        --white: #1e293b;
+        --bg: #0f172a;
+      }
+      body {
+        font-family: var(--font);
+        background: var(--bg);
+        min-height: 100vh;
+        display: flex;
+      }
 
-    /* ── SIDEBAR ── */
-    .sidebar { width: 240px; min-height: 100vh; flex-shrink: 0; background: linear-gradient(180deg, #1a1a2e 0%, #0f172a 100%); display: flex; flex-direction: column; padding: 24px 0; position: fixed; left: 0; top: 0; bottom: 0; z-index: 100; }
-    .sidebar-brand { padding: 0 20px 28px; border-bottom: 1px solid rgba(255,255,255,0.08); margin-bottom: 16px; }
-    .brand-row { display: flex; align-items: center; gap: 10px; }
-    .brand-icon { width: 38px; height: 38px; background: rgba(249,115,22,0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-    .brand-icon svg { width: 20px; height: 20px; }
-    .brand-name { font-size: 14px; font-weight: 700; color: white; line-height: 1.2; }
-    .brand-sub { font-size: 10px; color: rgba(249,115,22,0.8); font-weight: 600; text-transform: uppercase; letter-spacing: 0.08em; margin-top: 2px; }
-    .nav-section { padding: 0 12px; flex: 1; }
-    .nav-label { margin: 16px 0 6px 12px; font-size: 10px; font-weight: 700; color: rgba(255,255,255,0.3); text-transform: uppercase; letter-spacing: 0.08em; }
-    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; margin-bottom: 4px; color: rgba(255,255,255,0.55); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; text-decoration: none; }
-    .nav-item:hover { background: rgba(255,255,255,0.08); color: rgba(255,255,255,0.9); }
-    .nav-item.active { background: rgba(249,115,22,0.15); color: #fb923c; font-weight: 600; border-left: 3px solid var(--orange); }
-    .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
-    .sidebar-user { margin: 16px 12px 0; padding: 12px; border-radius: 12px; background: rgba(249,115,22,0.1); border: 1px solid rgba(249,115,22,0.2); display: flex; align-items: center; gap: 10px; }
-    .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, var(--orange), var(--orange2)); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: white; flex-shrink: 0; }
-    .user-name { font-size: 13px; font-weight: 600; color: white; }
-    .user-role { font-size: 11px; color: rgba(249,115,22,0.8); }
-    .logout-btn { margin-left: auto; background: none; border: none; color: rgba(255,255,255,0.5); cursor: pointer; padding: 4px; transition: 0.2s; }
-    .logout-btn:hover { color: white; }
+      /* ── SIDEBAR ── */
+      .sidebar {
+        width: 240px;
+        min-height: 100vh;
+        flex-shrink: 0;
+        background: linear-gradient(180deg, #1a1a2e 0%, #0f172a 100%);
+        display: flex;
+        flex-direction: column;
+        padding: 24px 0;
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 100;
+      }
+      .sidebar-brand {
+        padding: 0 20px 28px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        margin-bottom: 16px;
+      }
+      .brand-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .brand-icon {
+        width: 38px;
+        height: 38px;
+        background: rgba(249, 115, 22, 0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .brand-icon svg {
+        width: 20px;
+        height: 20px;
+      }
+      .brand-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: white;
+        line-height: 1.2;
+      }
+      .brand-sub {
+        font-size: 10px;
+        color: rgba(249, 115, 22, 0.8);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-top: 2px;
+      }
+      .nav-section {
+        padding: 0 12px;
+        flex: 1;
+      }
+      .nav-label {
+        margin: 16px 0 6px 12px;
+        font-size: 10px;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        margin-bottom: 4px;
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+      }
+      .nav-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .nav-item.active {
+        background: rgba(249, 115, 22, 0.15);
+        color: #fb923c;
+        font-weight: 600;
+        border-left: 3px solid var(--orange);
+      }
+      .nav-item svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+      }
+      .sidebar-user {
+        margin: 16px 12px 0;
+        padding: 12px;
+        border-radius: 12px;
+        background: rgba(249, 115, 22, 0.1);
+        border: 1px solid rgba(249, 115, 22, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--orange), var(--orange2));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+        color: white;
+        flex-shrink: 0;
+      }
+      .user-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: white;
+      }
+      .user-role {
+        font-size: 11px;
+        color: rgba(249, 115, 22, 0.8);
+      }
+      .logout-btn {
+        margin-left: auto;
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        padding: 4px;
+        transition: 0.2s;
+      }
+      .logout-btn:hover {
+        color: white;
+      }
 
-    /* ── MAIN ── */
-    .main { margin-left: 240px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
-    .topbar { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
-    .topbar-left .topbar-title { font-size: 20px; font-weight: 700; color: var(--text); }
-    .topbar-left .topbar-sub { font-size: 13px; color: var(--text2); margin-top: 2px; }
-    .topbar-right { display: flex; align-items: center; gap: 12px; }
-    .topbar-date { padding: 8px 14px; border: 1px solid var(--border); border-radius: 10px; font-size: 13px; color: var(--text2); background: var(--bg); }
-    .topbar-avatar { width: 36px; height: 36px; border-radius: 50%; background: linear-gradient(135deg, #1a1a2e, #1e293b); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: white; cursor: pointer; }
+      /* ── MAIN ── */
+      .main {
+        margin-left: 240px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      .topbar {
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+        padding: 16px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+      .topbar-left .topbar-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .topbar-left .topbar-sub {
+        font-size: 13px;
+        color: var(--text2);
+        margin-top: 2px;
+      }
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .topbar-date {
+        padding: 8px 14px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        font-size: 13px;
+        color: var(--text2);
+        background: var(--bg);
+      }
+      .topbar-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, #1a1a2e, #1e293b);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+        color: white;
+        cursor: pointer;
+      }
 
-    .content { padding: 28px 32px; flex: 1; }
+      .content {
+        padding: 28px 32px;
+        flex: 1;
+      }
 
-    /* ── STATS ── */
-    .stats-grid { display: grid; grid-template-columns: repeat(5,1fr); gap: 16px; margin-bottom: 28px; }
-    .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 18px 20px; display: flex; align-items: center; gap: 12px; }
-    .stat-icon { width: 44px; height: 44px; border-radius: 12px; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .stat-icon svg { width: 20px; height: 20px; }
-    .stat-icon.orange { background: #fff7ed; color: var(--orange); }
-    .stat-icon.green  { background: #f0fdf4; color: #16a34a; }
-    .stat-icon.blue   { background: #eff6ff; color: #2563eb; }
-    .stat-icon.teal   { background: #f0fdfa; color: #0d9488; }
-    .stat-label  { font-size: 11px; color: var(--text2); margin-bottom: 2px; }
-    .stat-number { font-size: 24px; font-weight: 700; color: var(--text); line-height: 1; }
+      /* ── STATS ── */
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(5, 1fr);
+        gap: 16px;
+        margin-bottom: 28px;
+      }
+      .stat-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 18px 20px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .stat-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+      }
+      .stat-icon svg {
+        width: 20px;
+        height: 20px;
+      }
+      .stat-icon.orange {
+        background: #fff7ed;
+        color: var(--orange);
+      }
+      .stat-icon.green {
+        background: #f0fdf4;
+        color: #16a34a;
+      }
+      .stat-icon.blue {
+        background: #eff6ff;
+        color: #2563eb;
+      }
+      .stat-icon.teal {
+        background: #f0fdfa;
+        color: #0d9488;
+      }
+      .stat-label {
+        font-size: 11px;
+        color: var(--text2);
+        margin-bottom: 2px;
+      }
+      .stat-number {
+        font-size: 24px;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1;
+      }
 
-    /* ── TABS ── */
-    .tabs { display: flex; border-bottom: 2px solid var(--border); margin-bottom: 24px; }
-    .tab { padding: 10px 22px; font-size: 13px; font-weight: 500; cursor: pointer; color: var(--text2); border-bottom: 2px solid transparent; margin-bottom: -2px; transition: all 0.2s; }
-    .tab:hover  { color: var(--orange); }
-    .tab.active { color: var(--orange); border-bottom-color: var(--orange); font-weight: 600; }
-    .panel { display: none; }
-    .panel.active { display: block; }
+      /* ── TABS ── */
+      .tabs {
+        display: flex;
+        border-bottom: 2px solid var(--border);
+        margin-bottom: 24px;
+      }
+      .tab {
+        padding: 10px 22px;
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        color: var(--text2);
+        border-bottom: 2px solid transparent;
+        margin-bottom: -2px;
+        transition: all 0.2s;
+      }
+      .tab:hover {
+        color: var(--orange);
+      }
+      .tab.active {
+        color: var(--orange);
+        border-bottom-color: var(--orange);
+        font-weight: 600;
+      }
+      .panel {
+        display: none;
+      }
+      .panel.active {
+        display: block;
+      }
 
-    /* ── EQUIPMENT TYPE CARDS ── */
-    .type-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(200px,1fr)); gap: 14px; margin-bottom: 24px; }
-    .type-card { background: var(--white); border: 1.5px solid var(--border); border-radius: 14px; padding: 18px; cursor: pointer; transition: all 0.2s; position: relative; }
-    .type-card:hover, .type-card.selected { border-color: var(--orange); box-shadow: 0 4px 20px rgba(249,115,22,0.12); }
-    .type-card.selected::after { content: ''; position: absolute; top: 0; left: 0; right: 0; height: 3px; background: linear-gradient(90deg, var(--orange), var(--orange3)); border-radius: 14px 14px 0 0; }
-    .type-card-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 10px; white-space: nowrap; overflow: hidden; text-overflow: ellipsis; }
-    .type-card-counts { display: flex; gap: 8px; flex-wrap: wrap; }
-    .count-pill { font-size: 11px; font-weight: 600; padding: 3px 8px; border-radius: 20px; }
-    .pill-total { background: #f1f5f9; color: var(--text2); }
-    .pill-avail { background: #dcfce7; color: #15803d; }
-    .pill-maint { background: #fee2e2; color: #991b1b; }
+      /* ── EQUIPMENT TYPE CARDS ── */
+      .type-grid {
+        display: grid;
+        grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+        gap: 14px;
+        margin-bottom: 24px;
+      }
+      .type-card {
+        background: var(--white);
+        border: 1.5px solid var(--border);
+        border-radius: 14px;
+        padding: 18px;
+        cursor: pointer;
+        transition: all 0.2s;
+        position: relative;
+      }
+      .type-card:hover,
+      .type-card.selected {
+        border-color: var(--orange);
+        box-shadow: 0 4px 20px rgba(249, 115, 22, 0.12);
+      }
+      .type-card.selected::after {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--orange), var(--orange3));
+        border-radius: 14px 14px 0 0;
+      }
+      .type-card-name {
+        font-size: 13px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 10px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .type-card-counts {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+      }
+      .count-pill {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 3px 8px;
+        border-radius: 20px;
+      }
+      .pill-total {
+        background: #f1f5f9;
+        color: var(--text2);
+      }
+      .pill-avail {
+        background: #dcfce7;
+        color: #15803d;
+      }
+      .pill-maint {
+        background: #fee2e2;
+        color: #991b1b;
+      }
 
-    /* ── DRILL DOWN AREA ── */
-    .drill-area { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 24px; margin-bottom: 20px; animation: fadeIn 0.2s ease; }
-    @keyframes fadeIn { from { opacity:0; transform:translateY(4px); } to { opacity:1; transform:translateY(0); } }
-    .drill-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 18px; flex-wrap: wrap; gap: 10px; }
-    .drill-title { font-size: 16px; font-weight: 700; color: var(--text); }
-    .drill-sub { font-size: 13px; color: var(--text2); margin-top: 2px; }
-    .breadcrumb { font-size: 13px; color: var(--text2); display: flex; align-items: center; gap: 6px; margin-bottom: 16px; }
-    .breadcrumb span { cursor: pointer; color: var(--orange); font-weight: 600; }
-    .breadcrumb span:hover { text-decoration: underline; }
+      /* ── DRILL DOWN AREA ── */
+      .drill-area {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 20px;
+        animation: fadeIn 0.2s ease;
+      }
+      .theme-toggle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: var(--white);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        transition: all 0.2s;
+      }
+      @keyframes fadeIn {
+        from {
+          opacity: 0;
+          transform: translateY(4px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+      .drill-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 18px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .drill-title {
+        font-size: 16px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .drill-sub {
+        font-size: 13px;
+        color: var(--text2);
+        margin-top: 2px;
+      }
+      .breadcrumb {
+        font-size: 13px;
+        color: var(--text2);
+        display: flex;
+        align-items: center;
+        gap: 6px;
+        margin-bottom: 16px;
+      }
+      .breadcrumb span {
+        cursor: pointer;
+        color: var(--orange);
+        font-weight: 600;
+      }
+      .breadcrumb span:hover {
+        text-decoration: underline;
+      }
 
-    /* ── LAB SELECTOR ── */
-    .lab-tabs { display: flex; gap: 8px; flex-wrap: wrap; margin-bottom: 20px; }
-    .lab-tab { padding: 7px 14px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--bg); font-size: 13px; font-weight: 500; color: var(--text2); cursor: pointer; transition: all 0.2s; }
-    .lab-tab:hover { border-color: var(--orange); color: var(--orange); }
-    .lab-tab.active { background: rgba(249,115,22,0.1); border-color: var(--orange); color: var(--orange); font-weight: 600; }
-    .lab-tab .lab-count { font-size: 11px; background: var(--border); color: var(--text2); padding: 1px 6px; border-radius: 10px; margin-left: 4px; }
-    .lab-tab.active .lab-count { background: rgba(249,115,22,0.2); color: var(--orange); }
+      /* ── LAB SELECTOR ── */
+      .lab-tabs {
+        display: flex;
+        gap: 8px;
+        flex-wrap: wrap;
+        margin-bottom: 20px;
+      }
+      .lab-tab {
+        padding: 7px 14px;
+        border-radius: 8px;
+        border: 1.5px solid var(--border);
+        background: var(--bg);
+        font-size: 13px;
+        font-weight: 500;
+        color: var(--text2);
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .lab-tab:hover {
+        border-color: var(--orange);
+        color: var(--orange);
+      }
+      .lab-tab.active {
+        background: rgba(249, 115, 22, 0.1);
+        border-color: var(--orange);
+        color: var(--orange);
+        font-weight: 600;
+      }
+      .lab-tab .lab-count {
+        font-size: 11px;
+        background: var(--border);
+        color: var(--text2);
+        padding: 1px 6px;
+        border-radius: 10px;
+        margin-left: 4px;
+      }
+      .lab-tab.active .lab-count {
+        background: rgba(249, 115, 22, 0.2);
+        color: var(--orange);
+      }
 
-    /* ── UNITS TABLE ── */
-    .units-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 14px; flex-wrap: wrap; gap: 10px; }
-    .units-title { font-size: 14px; font-weight: 700; color: var(--text); }
-    .table-wrap { overflow-x: auto; }
-    table { width: 100%; border-collapse: collapse; white-space: nowrap; }
-    th { text-align: left; padding: 11px 14px; font-size: 11px; font-weight: 600; color: var(--text2); border-bottom: 2px solid var(--border); text-transform: uppercase; letter-spacing: 0.05em; }
-    td { padding: 12px 14px; font-size: 13px; color: var(--text); border-bottom: 1px solid var(--border); vertical-align: middle; }
-    tr:last-child td { border-bottom: none; }
-    tr:hover td { background: var(--bg); }
+      /* ── UNITS TABLE ── */
+      .units-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 14px;
+        flex-wrap: wrap;
+        gap: 10px;
+      }
+      .units-title {
+        font-size: 14px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .table-wrap {
+        overflow-x: auto;
+      }
+      table {
+        width: 100%;
+        border-collapse: collapse;
+        white-space: nowrap;
+      }
+      th {
+        text-align: left;
+        padding: 11px 14px;
+        font-size: 11px;
+        font-weight: 600;
+        color: var(--text2);
+        border-bottom: 2px solid var(--border);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      td {
+        padding: 12px 14px;
+        font-size: 13px;
+        color: var(--text);
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
+      }
+      tr:last-child td {
+        border-bottom: none;
+      }
+      tr:hover td {
+        background: var(--bg);
+      }
 
-    /* ── BADGES ── */
-    .badge { display: inline-block; padding: 3px 10px; border-radius: 20px; font-size: 11px; font-weight: 600; }
-    .badge-available   { background: #dcfce7; color: #15803d; }
-    .badge-reserved    { background: #fef9c3; color: #854d0e; }
-    .badge-maintenance { background: #fee2e2; color: #991b1b; }
-    .badge-unavailable { background: #f1f5f9; color: #64748b; }
-    .badge-in_use      { background: #dbeafe; color: #1d4ed8; }
+      /* ── BADGES ── */
+      .badge {
+        display: inline-block;
+        padding: 3px 10px;
+        border-radius: 20px;
+        font-size: 11px;
+        font-weight: 600;
+      }
+      .badge-available {
+        background: #dcfce7;
+        color: #15803d;
+      }
+      .badge-reserved {
+        background: #fef9c3;
+        color: #854d0e;
+      }
+      .badge-maintenance {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .badge-unavailable {
+        background: #f1f5f9;
+        color: #64748b;
+      }
+      .badge-in_use {
+        background: #dbeafe;
+        color: #1d4ed8;
+      }
 
-    /* ── STATUS SELECT ── */
-    .status-select { padding: 5px 10px; border: 1px solid var(--border); border-radius: 6px; font-family: var(--font); font-size: 12px; background: var(--bg); color: var(--text); outline: none; cursor: pointer; }
-    .status-select:focus { border-color: var(--orange); }
+      /* ── STATUS SELECT ── */
+      .status-select {
+        padding: 5px 10px;
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        font-family: var(--font);
+        font-size: 12px;
+        background: var(--bg);
+        color: var(--text);
+        outline: none;
+        cursor: pointer;
+      }
+      .status-select:focus {
+        border-color: var(--orange);
+      }
 
-    /* ── BUTTONS ── */
-    .btn { display: inline-flex; align-items: center; gap: 6px; padding: 8px 16px; border-radius: 8px; border: none; font-family: var(--font); font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-    .btn svg { width: 14px; height: 14px; }
-    .btn-primary { background: linear-gradient(135deg, var(--orange), var(--orange2)); color: white; }
-    .btn-primary:hover { opacity: 0.9; transform: translateY(-1px); }
-    .btn-outline { background: var(--white); color: var(--text2); border: 1.5px solid var(--border); }
-    .btn-outline:hover { border-color: var(--orange); color: var(--orange); }
-    .btn-red-soft { background: #fff1f2; color: #be123c; border: 1px solid #fecdd3; }
-    .btn-red-soft:hover { background: #ffe4e6; }
-    .btn-sm { padding: 5px 10px; font-size: 12px; border-radius: 6px; }
+      /* ── BUTTONS ── */
+      .btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+        padding: 8px 16px;
+        border-radius: 8px;
+        border: none;
+        font-family: var(--font);
+        font-size: 13px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+      }
+      .btn svg {
+        width: 14px;
+        height: 14px;
+      }
+      .btn-primary {
+        background: linear-gradient(135deg, var(--orange), var(--orange2));
+        color: white;
+      }
+      .btn-primary:hover {
+        opacity: 0.9;
+        transform: translateY(-1px);
+      }
+      .btn-outline {
+        background: var(--white);
+        color: var(--text2);
+        border: 1.5px solid var(--border);
+      }
+      .btn-outline:hover {
+        border-color: var(--orange);
+        color: var(--orange);
+      }
+      .btn-red-soft {
+        background: #fff1f2;
+        color: #be123c;
+        border: 1px solid #fecdd3;
+      }
+      .btn-red-soft:hover {
+        background: #ffe4e6;
+      }
+      .btn-sm {
+        padding: 5px 10px;
+        font-size: 12px;
+        border-radius: 6px;
+      }
 
-    /* ── LABS TABLE PANEL ── */
-    .table-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; overflow: hidden; }
-    .panel-header { display: flex; align-items: center; justify-content: space-between; padding: 20px 24px; border-bottom: 1px solid var(--border); }
-    .panel-header h2 { font-size: 15px; font-weight: 700; color: var(--text); }
-    .panel-header-right { display: flex; gap: 10px; }
-    .search-wrap { background: var(--white); border: 1px solid var(--border); border-radius: 8px; padding: 8px 12px; display: flex; align-items: center; gap: 8px; width: 240px; }
-    .search-wrap input { border: none; outline: none; font-family: var(--font); font-size: 13px; color: var(--text); background: transparent; width: 100%; }
-    .search-wrap svg { color: var(--text3); flex-shrink: 0; width: 14px; height: 14px; }
+      /* ── LABS TABLE PANEL ── */
+      .table-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        overflow: hidden;
+      }
+      .panel-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 24px;
+        border-bottom: 1px solid var(--border);
+      }
+      .panel-header h2 {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .panel-header-right {
+        display: flex;
+        gap: 10px;
+      }
+      .search-wrap {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        padding: 8px 12px;
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        width: 240px;
+      }
+      .search-wrap input {
+        border: none;
+        outline: none;
+        font-family: var(--font);
+        font-size: 13px;
+        color: var(--text);
+        background: transparent;
+        width: 100%;
+      }
+      .search-wrap svg {
+        color: var(--text3);
+        flex-shrink: 0;
+        width: 14px;
+        height: 14px;
+      }
 
-    /* ── MODAL ── */
-    .modal-overlay { position: fixed; inset: 0; background: rgba(0,0,0,0.5); display: none; align-items: center; justify-content: center; z-index: 200; padding: 20px; }
-    .modal-overlay.show { display: flex; }
-    .modal { background: var(--white); border-radius: 18px; padding: 28px; width: 100%; max-width: 440px; box-shadow: 0 20px 60px rgba(0,0,0,0.18); position: relative; animation: fadeIn 0.2s ease; }
-    .modal-title { font-size: 17px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
-    .modal-sub   { font-size: 13px; color: var(--text2); margin-bottom: 20px; }
-    .modal-close { position: absolute; top: 18px; right: 20px; width: 28px; height: 28px; border-radius: 50%; background: var(--bg); border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; font-size: 14px; color: var(--text2); }
-    .modal-close:hover { background: #fee2e2; color: #be123c; }
-    .form-group { margin-bottom: 14px; }
-    .form-group label { display: block; font-size: 11px; font-weight: 700; color: var(--text); text-transform: uppercase; letter-spacing: 0.05em; margin-bottom: 6px; }
-    .form-group input, .form-group select, .form-group textarea { width: 100%; padding: 10px 14px; border: 1.5px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 13px; color: var(--text); background: var(--bg); outline: none; }
-    .form-group input:focus, .form-group select:focus { border-color: var(--orange); background: var(--white); }
-    .form-group input[readonly] { background: #f1f5f9; color: var(--text2); cursor: not-allowed; }
-    .form-group textarea { resize: vertical; min-height: 60px; }
-    .form-actions { display: flex; gap: 10px; justify-content: flex-end; margin-top: 20px; padding-top: 16px; border-top: 1px solid var(--border); }
-    .btn-cancel { padding: 10px 18px; border-radius: 8px; border: 1.5px solid var(--border); background: var(--white); font-family: var(--font); font-size: 13px; font-weight: 600; color: var(--text2); cursor: pointer; }
-    .btn-save { padding: 10px 22px; border-radius: 8px; border: none; background: linear-gradient(135deg, var(--orange), var(--orange2)); font-family: var(--font); font-size: 13px; font-weight: 600; color: white; cursor: pointer; }
+      /* ── MODAL ── */
+      .modal-overlay {
+        position: fixed;
+        inset: 0;
+        background: rgba(0, 0, 0, 0.5);
+        display: none;
+        align-items: center;
+        justify-content: center;
+        z-index: 200;
+        padding: 20px;
+      }
+      .modal-overlay.show {
+        display: flex;
+      }
+      .modal {
+        background: var(--white);
+        border-radius: 18px;
+        padding: 28px;
+        width: 100%;
+        max-width: 440px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.18);
+        position: relative;
+        animation: fadeIn 0.2s ease;
+      }
+      .modal-title {
+        font-size: 17px;
+        font-weight: 700;
+        color: var(--text);
+        margin-bottom: 4px;
+      }
+      .modal-sub {
+        font-size: 13px;
+        color: var(--text2);
+        margin-bottom: 20px;
+      }
+      .modal-close {
+        position: absolute;
+        top: 18px;
+        right: 20px;
+        width: 28px;
+        height: 28px;
+        border-radius: 50%;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        font-size: 14px;
+        color: var(--text2);
+      }
+      .modal-close:hover {
+        background: #fee2e2;
+        color: #be123c;
+      }
+      .form-group {
+        margin-bottom: 14px;
+      }
+      .form-group label {
+        display: block;
+        font-size: 11px;
+        font-weight: 700;
+        color: var(--text);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+        margin-bottom: 6px;
+      }
+      .form-group input,
+      .form-group select,
+      .form-group textarea {
+        width: 100%;
+        padding: 10px 14px;
+        border: 1.5px solid var(--border);
+        border-radius: 8px;
+        font-family: var(--font);
+        font-size: 13px;
+        color: var(--text);
+        background: var(--bg);
+        outline: none;
+      }
+      .form-group input:focus,
+      .form-group select:focus {
+        border-color: var(--orange);
+        background: var(--white);
+      }
+      .form-group input[readonly] {
+        background: #f1f5f9;
+        color: var(--text2);
+        cursor: not-allowed;
+      }
+      .form-group textarea {
+        resize: vertical;
+        min-height: 60px;
+      }
+      .form-actions {
+        display: flex;
+        gap: 10px;
+        justify-content: flex-end;
+        margin-top: 20px;
+        padding-top: 16px;
+        border-top: 1px solid var(--border);
+      }
+      .btn-cancel {
+        padding: 10px 18px;
+        border-radius: 8px;
+        border: 1.5px solid var(--border);
+        background: var(--white);
+        font-family: var(--font);
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text2);
+        cursor: pointer;
+      }
+      .btn-save {
+        padding: 10px 22px;
+        border-radius: 8px;
+        border: none;
+        background: linear-gradient(135deg, var(--orange), var(--orange2));
+        font-family: var(--font);
+        font-size: 13px;
+        font-weight: 600;
+        color: white;
+        cursor: pointer;
+      }
 
-    /* ── TOAST ── */
-    #toast { position: fixed; bottom: 24px; right: 24px; padding: 12px 18px; border-radius: 10px; font-family: var(--font); font-size: 13px; font-weight: 600; color: white; opacity: 0; pointer-events: none; transition: all 0.3s; transform: translateY(8px); z-index: 9999; }
-    #toast.show { opacity: 1; transform: translateY(0); }
-    #toast.success { background: #16a34a; }
-    #toast.error   { background: #dc2626; }
+      /* ── TOAST ── */
+      #toast {
+        position: fixed;
+        bottom: 24px;
+        right: 24px;
+        padding: 12px 18px;
+        border-radius: 10px;
+        font-family: var(--font);
+        font-size: 13px;
+        font-weight: 600;
+        color: white;
+        opacity: 0;
+        pointer-events: none;
+        transition: all 0.3s;
+        transform: translateY(8px);
+        z-index: 9999;
+      }
+      #toast.show {
+        opacity: 1;
+        transform: translateY(0);
+      }
+      #toast.success {
+        background: #16a34a;
+      }
+      #toast.error {
+        background: #dc2626;
+      }
 
-    .empty { text-align: center; padding: 40px; color: var(--text3); font-size: 13px; }
+      .empty {
+        text-align: center;
+        padding: 40px;
+        color: var(--text3);
+        font-size: 13px;
+      }
 
-    @media(max-width:1100px) { .stats-grid { grid-template-columns: repeat(3,1fr); } }
-    @media(max-width:768px)  { .sidebar{display:none} .main{margin-left:0} .content{padding:20px 16px} .stats-grid{grid-template-columns:1fr 1fr} }
-  </style>
-</head>
-<body>
-
-<!-- SIDEBAR -->
-<aside class="sidebar">
-  <div class="sidebar-brand">
-    <div class="brand-row">
-      <div class="brand-icon">
-        <svg viewBox="0 0 32 32" fill="none" stroke="#f97316" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-          <line x1="4" y1="16" x2="12" y2="16"/><line x1="12" y1="9" x2="12" y2="23"/>
-          <line x1="12" y1="10.5" x2="26" y2="5"/><line x1="12" y1="21.5" x2="26" y2="27"/>
-          <polygon points="22,24.5 26,27 23.5,22.5" fill="#f97316" stroke="none"/>
-          <line x1="26" y1="5" x2="26" y2="2"/><line x1="26" y1="27" x2="26" y2="30"/>
-        </svg>
-      </div>
-      <div>
-        <div class="brand-name">Laboratory Management System</div>
-        <div class="brand-sub">Lab Technician</div>
-      </div>
-    </div>
-  </div>
-  <nav class="nav-section">
-    <div class="nav-label">Overview</div>
-    <a href="/admin-dashboard.html" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="7" height="7"/><rect x="14" y="3" width="7" height="7"/><rect x="3" y="14" width="7" height="7"/><rect x="14" y="14" width="7" height="7"/></svg>
-      Dashboard
-    </a>
-    <div class="nav-label">Management</div>
-    <a href="/admin-catalog.html" class="nav-item active">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
-      Equipment & Labs
-    </a>
-    <a href="/admin-reservations.html" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/><line x1="16" y1="2" x2="16" y2="6"/><line x1="8" y1="2" x2="8" y2="6"/><line x1="3" y1="10" x2="21" y2="10"/></svg>
-      All Reservations
-    </a>
-    <a href="/admin-issues.html" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><line x1="12" y1="8" x2="12" y2="12"/><line x1="12" y1="16" x2="12.01" y2="16"/></svg>
-      Issue Tickets
-    </a>
-    <a href="/requests.html" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"/></svg>
-      Equipment Requests
-    </a>
-    <a href="/admin-users.html" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/></svg>
-      Manage Users
-    </a>
-    <div class="nav-label">Student View</div>
-    <a href="/catalog.html" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16"/></svg>
-      Equipment Catalog
-    </a>
-    <a href="/report-issue.html" class="nav-item">
-      <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"/><line x1="12" y1="9" x2="12" y2="13"/><line x1="12" y1="17" x2="12.01" y2="17"/></svg>
-      Report Issue
-    </a>
-  </nav>
-  <div class="sidebar-user">
-    <div class="user-avatar" id="sidebar-avatar">LT</div>
-    <div>
-      <div class="user-name" id="sidebar-name">Lab Technician</div>
-      <div class="user-role">Lab Technician</div>
-    </div>
-    <button class="logout-btn" onclick="sessionStorage.clear();window.location.href='/login.html'" title="Logout">
-      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4"/><polyline points="16 17 21 12 16 7"/><line x1="21" y1="12" x2="9" y2="12"/></svg>
-    </button>
-  </div>
-</aside>
-
-<!-- MAIN -->
-<div class="main">
-  <div class="topbar">
-    <div class="topbar-left">
-      <div class="topbar-title">Catalog Manager</div>
-      <div class="topbar-sub">Manage equipment units and lab rooms</div>
-    </div>
-    <div class="topbar-right">
-      <div class="topbar-date" id="topbarDate"></div>
-      <div class="topbar-avatar" id="topbar-avatar">LT</div>
-    </div>
-  </div>
-
-  <div class="content">
-
-    <!-- STATS -->
-    <div class="stats-grid">
-      <div class="stat-card">
-        <div class="stat-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="3" width="18" height="18" rx="2"/><line x1="3" y1="9" x2="21" y2="9"/><line x1="9" y1="3" x2="9" y2="21"/></svg></div>
-        <div><div class="stat-label">Equipment Types</div><div class="stat-number" id="statTypes">—</div></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon orange"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="4" y="2" width="16" height="20" rx="2"/><line x1="8" y1="6" x2="16" y2="6"/><line x1="8" y1="11" x2="16" y2="11"/><line x1="8" y1="16" x2="16" y2="16"/></svg></div>
-        <div><div class="stat-label">Total Units</div><div class="stat-number" id="statTotalEquip">—</div></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon green"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><polyline points="20 6 9 17 4 12"/></svg></div>
-        <div><div class="stat-label">Available</div><div class="stat-number" id="statAvailEquip">—</div></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon blue"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z"/></svg></div>
-        <div><div class="stat-label">Total Labs</div><div class="stat-number" id="statTotalLabs">—</div></div>
-      </div>
-      <div class="stat-card">
-        <div class="stat-icon teal"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
-        <div><div class="stat-label">Available Labs</div><div class="stat-number" id="statAvailLabs">—</div></div>
-      </div>
-    </div>
-
-    <!-- TABS -->
-    <div class="tabs">
-      <div class="tab active" id="tab-equipment" onclick="switchTab('equipment')">🔧 Equipment</div>
-      <div class="tab" id="tab-labs" onclick="switchTab('labs')">🏫 Lab Rooms</div>
-    </div>
-
-    <!-- EQUIPMENT PANEL -->
-    <div class="panel active" id="panel-equipment">
-
-      <!-- TYPE CARDS -->
-      <div style="display:flex;align-items:center;justify-content:space-between;margin-bottom:14px;">
-        <div style="font-size:14px;font-weight:700;color:var(--text)">Equipment Types <span style="font-size:12px;font-weight:400;color:var(--text2)">— click to manage units</span></div>
-        <input type="text" id="typeSearch" placeholder="Search types..." oninput="filterTypes()"
-          style="padding:8px 12px;border:1px solid var(--border);border-radius:8px;font-family:var(--font);font-size:13px;outline:none;width:200px;">
-      </div>
-      <div class="type-grid" id="typeGrid"><div class="empty">Loading...</div></div>
-
-      <!-- DRILL DOWN -->
-      <div id="drillArea" style="display:none">
-        <div class="drill-area">
-          <div class="breadcrumb">
-            <span onclick="closeDrill()">All Types</span>
-            <span style="color:var(--text2);cursor:default"> › </span>
-            <span style="color:var(--text);cursor:default" id="drillTypeName"></span>
-            <span id="drillLabBread" style="display:none;color:var(--text2);cursor:default"> › <span id="drillLabName" style="color:var(--text)"></span></span>
+      @media (max-width: 1100px) {
+        .stats-grid {
+          grid-template-columns: repeat(3, 1fr);
+        }
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+        .main {
+          margin-left: 0;
+        }
+        .content {
+          padding: 20px 16px;
+        }
+        .stats-grid {
+          grid-template-columns: 1fr 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- SIDEBAR -->
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-row">
+          <div class="brand-icon">
+            <svg
+              viewBox="0 0 32 32"
+              fill="none"
+              stroke="#f97316"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="4" y1="16" x2="12" y2="16" />
+              <line x1="12" y1="9" x2="12" y2="23" />
+              <line x1="12" y1="10.5" x2="26" y2="5" />
+              <line x1="12" y1="21.5" x2="26" y2="27" />
+              <polygon
+                points="22,24.5 26,27 23.5,22.5"
+                fill="#f97316"
+                stroke="none"
+              />
+              <line x1="26" y1="5" x2="26" y2="2" />
+              <line x1="26" y1="27" x2="26" y2="30" />
+            </svg>
           </div>
+          <div>
+            <div class="brand-name">Laboratory Management System</div>
+            <div class="brand-sub">Lab Technician</div>
+          </div>
+        </div>
+      </div>
+      <nav class="nav-section">
+        <div class="nav-label">Overview</div>
+        <a href="/admin-dashboard.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" />
+          </svg>
+          Dashboard
+        </a>
+        <div class="nav-label">Management</div>
+        <a href="/admin-catalog.html" class="nav-item active">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+          </svg>
+          Equipment & Labs
+        </a>
+        <a href="/admin-reservations.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" />
+          </svg>
+          All Reservations
+        </a>
+        <a href="/admin-issues.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" />
+          </svg>
+          Issue Tickets
+        </a>
+        <a href="/requests.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+            />
+          </svg>
+          Equipment Requests
+        </a>
+        <a href="/admin-users.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+          </svg>
+          Manage Users
+        </a>
+        <div class="nav-label">Student View</div>
+        <a href="/catalog.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+          </svg>
+          Equipment Catalog
+        </a>
+        <a href="/report-issue.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+            />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" />
+          </svg>
+          Report Issue
+        </a>
+      </nav>
+      <div class="sidebar-user">
+        <div class="user-avatar" id="sidebar-avatar">LT</div>
+        <div>
+          <div class="user-name" id="sidebar-name">Lab Technician</div>
+          <div class="user-role">Lab Technician</div>
+        </div>
+        <button
+          class="logout-btn"
+          onclick="
+            sessionStorage.clear();
+            window.location.href = '/login.html';
+          "
+          title="Logout"
+        >
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
+          </svg>
+        </button>
+      </div>
+    </aside>
 
-          <div class="drill-header">
-            <div>
-              <div class="drill-title" id="drillTitle">Select a Lab</div>
-              <div class="drill-sub" id="drillSub">Choose which lab to view units from</div>
+    <!-- MAIN -->
+    <div class="main">
+      <div class="topbar">
+        <div class="topbar-left">
+          <div class="topbar-title">Catalog Manager</div>
+          <div class="topbar-sub">Manage equipment units and lab rooms</div>
+        </div>
+        <div class="topbar-right">
+          <div class="topbar-date" id="topbarDate"></div>
+          <button
+            id="theme-btn"
+            class="theme-toggle"
+            type="button"
+            title="Toggle theme"
+          ></button>
+          <div class="topbar-avatar" id="topbar-avatar">LT</div>
+        </div>
+      </div>
+
+      <div class="content">
+        <!-- STATS -->
+        <div class="stats-grid">
+          <div class="stat-card">
+            <div class="stat-icon orange">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="3" y="3" width="18" height="18" rx="2" />
+                <line x1="3" y1="9" x2="21" y2="9" />
+                <line x1="9" y1="3" x2="9" y2="21" />
+              </svg>
             </div>
-            <button class="btn btn-primary btn-sm" id="addUnitBtn" style="display:none" onclick="openAddUnitModal()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              Add Unit
-            </button>
+            <div>
+              <div class="stat-label">Equipment Types</div>
+              <div class="stat-number" id="statTypes">—</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon orange">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <rect x="4" y="2" width="16" height="20" rx="2" />
+                <line x1="8" y1="6" x2="16" y2="6" />
+                <line x1="8" y1="11" x2="16" y2="11" />
+                <line x1="8" y1="16" x2="16" y2="16" />
+              </svg>
+            </div>
+            <div>
+              <div class="stat-label">Total Units</div>
+              <div class="stat-number" id="statTotalEquip">—</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon green">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2.5"
+              >
+                <polyline points="20 6 9 17 4 12" />
+              </svg>
+            </div>
+            <div>
+              <div class="stat-label">Available</div>
+              <div class="stat-number" id="statAvailEquip">—</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon blue">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
+              </svg>
+            </div>
+            <div>
+              <div class="stat-label">Total Labs</div>
+              <div class="stat-number" id="statTotalLabs">—</div>
+            </div>
+          </div>
+          <div class="stat-card">
+            <div class="stat-icon teal">
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="12" cy="12" r="10" />
+                <polyline points="12 6 12 12 16 14" />
+              </svg>
+            </div>
+            <div>
+              <div class="stat-label">Available Labs</div>
+              <div class="stat-number" id="statAvailLabs">—</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- TABS -->
+        <div class="tabs">
+          <div
+            class="tab active"
+            id="tab-equipment"
+            onclick="switchTab('equipment')"
+          >
+            🔧 Equipment
+          </div>
+          <div class="tab" id="tab-labs" onclick="switchTab('labs')">
+            🏫 Lab Rooms
+          </div>
+        </div>
+
+        <!-- EQUIPMENT PANEL -->
+        <div class="panel active" id="panel-equipment">
+          <!-- TYPE CARDS -->
+          <div
+            style="
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              margin-bottom: 14px;
+            "
+          >
+            <div style="font-size: 14px; font-weight: 700; color: var(--text)">
+              Equipment Types
+              <span
+                style="font-size: 12px; font-weight: 400; color: var(--text2)"
+                >— click to manage units</span
+              >
+            </div>
+            <input
+              type="text"
+              id="typeSearch"
+              placeholder="Search types..."
+              oninput="filterTypes()"
+              style="
+                padding: 8px 12px;
+                border: 1px solid var(--border);
+                border-radius: 8px;
+                font-family: var(--font);
+                font-size: 13px;
+                outline: none;
+                width: 200px;
+              "
+            />
+          </div>
+          <div class="type-grid" id="typeGrid">
+            <div class="empty">Loading...</div>
           </div>
 
-          <!-- LAB TABS -->
-          <div class="lab-tabs" id="labTabs"></div>
+          <!-- DRILL DOWN -->
+          <div id="drillArea" style="display: none">
+            <div class="drill-area">
+              <div class="breadcrumb">
+                <span onclick="closeDrill()">All Types</span>
+                <span style="color: var(--text2); cursor: default"> › </span>
+                <span
+                  style="color: var(--text); cursor: default"
+                  id="drillTypeName"
+                ></span>
+                <span
+                  id="drillLabBread"
+                  style="display: none; color: var(--text2); cursor: default"
+                >
+                  › <span id="drillLabName" style="color: var(--text)"></span
+                ></span>
+              </div>
 
-          <!-- UNITS TABLE -->
-          <div id="unitsArea" style="display:none">
-            <div class="table-wrap">
+              <div class="drill-header">
+                <div>
+                  <div class="drill-title" id="drillTitle">Select a Lab</div>
+                  <div class="drill-sub" id="drillSub">
+                    Choose which lab to view units from
+                  </div>
+                </div>
+                <button
+                  class="btn btn-primary btn-sm"
+                  id="addUnitBtn"
+                  style="display: none"
+                  onclick="openAddUnitModal()"
+                >
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                  >
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                  Add Unit
+                </button>
+              </div>
+
+              <!-- LAB TABS -->
+              <div class="lab-tabs" id="labTabs"></div>
+
+              <!-- UNITS TABLE -->
+              <div id="unitsArea" style="display: none">
+                <div class="table-wrap">
+                  <table>
+                    <thead>
+                      <tr>
+                        <th>Equipment Code</th>
+                        <th>Name</th>
+                        <th>Serial Number</th>
+                        <th>Current Status</th>
+                        <th>Change Status</th>
+                        <th>Actions</th>
+                      </tr>
+                    </thead>
+                    <tbody id="unitsTbody"></tbody>
+                  </table>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- LABS PANEL -->
+        <div class="panel" id="panel-labs">
+          <div class="table-card">
+            <div class="panel-header">
+              <h2>Lab Rooms</h2>
+              <div class="panel-header-right">
+                <div class="search-wrap">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2"
+                  >
+                    <circle cx="11" cy="11" r="8" />
+                    <line x1="21" y1="21" x2="16.65" y2="16.65" />
+                  </svg>
+                  <input
+                    type="text"
+                    id="labSearch"
+                    placeholder="Search labs..."
+                    oninput="filterLabs()"
+                  />
+                </div>
+                <button class="btn btn-primary" onclick="openAddLab()">
+                  <svg
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    stroke="currentColor"
+                    stroke-width="2.5"
+                  >
+                    <line x1="12" y1="5" x2="12" y2="19" />
+                    <line x1="5" y1="12" x2="19" y2="12" />
+                  </svg>
+                  Add Lab
+                </button>
+              </div>
+            </div>
+            <div class="table-wrap" style="padding: 0 24px 24px">
               <table>
                 <thead>
                   <tr>
-                    <th>Equipment Code</th>
-                    <th>Name</th>
-                    <th>Serial Number</th>
-                    <th>Current Status</th>
-                    <th>Change Status</th>
+                    <th>ID</th>
+                    <th>Lab Name</th>
+                    <th>Location</th>
+                    <th>Status</th>
                     <th>Actions</th>
                   </tr>
                 </thead>
-                <tbody id="unitsTbody"></tbody>
+                <tbody id="labBody">
+                  <tr>
+                    <td colspan="5"><div class="empty">Loading...</div></td>
+                  </tr>
+                </tbody>
               </table>
             </div>
           </div>
@@ -340,513 +1335,698 @@
       </div>
     </div>
 
-    <!-- LABS PANEL -->
-    <div class="panel" id="panel-labs">
-      <div class="table-card">
-        <div class="panel-header">
-          <h2>Lab Rooms</h2>
-          <div class="panel-header-right">
-            <div class="search-wrap">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"/><line x1="21" y1="21" x2="16.65" y2="16.65"/></svg>
-              <input type="text" id="labSearch" placeholder="Search labs..." oninput="filterLabs()">
-            </div>
-            <button class="btn btn-primary" onclick="openAddLab()">
-              <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><line x1="12" y1="5" x2="12" y2="19"/><line x1="5" y1="12" x2="19" y2="12"/></svg>
-              Add Lab
-            </button>
-          </div>
+    <!-- MODAL: ADD UNIT -->
+    <div class="modal-overlay" id="addUnitModal">
+      <div class="modal">
+        <div class="modal-close" onclick="closeModal('addUnitModal')">✕</div>
+        <div class="modal-title">Add New Unit</div>
+        <div class="modal-sub" id="addUnitSub">Adding to selected lab</div>
+        <div class="form-group">
+          <label>Equipment Code (Auto-generated)</label>
+          <input type="text" id="newUnitCode" readonly />
         </div>
-        <div class="table-wrap" style="padding:0 24px 24px">
-          <table>
-            <thead><tr><th>ID</th><th>Lab Name</th><th>Location</th><th>Status</th><th>Actions</th></tr></thead>
-            <tbody id="labBody"><tr><td colspan="5"><div class="empty">Loading...</div></td></tr></tbody>
-          </table>
+        <div class="form-group">
+          <label>Equipment Name</label>
+          <input type="text" id="newUnitName" readonly />
+        </div>
+        <div class="form-group">
+          <label>Serial Number (optional)</label>
+          <input
+            type="text"
+            id="newUnitSerial"
+            placeholder="e.g. SN-2026-001"
+          />
+        </div>
+        <div class="form-group">
+          <label>Initial Status</label>
+          <select id="newUnitStatus">
+            <option value="AVAILABLE">Available</option>
+            <option value="MAINTENANCE">Maintenance</option>
+            <option value="UNAVAILABLE">Unavailable</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button class="btn-cancel" onclick="closeModal('addUnitModal')">
+            Cancel
+          </button>
+          <button class="btn-save" onclick="saveNewUnit()">Add Unit</button>
         </div>
       </div>
     </div>
 
-  </div>
-</div>
-
-<!-- MODAL: ADD UNIT -->
-<div class="modal-overlay" id="addUnitModal">
-  <div class="modal">
-    <div class="modal-close" onclick="closeModal('addUnitModal')">✕</div>
-    <div class="modal-title">Add New Unit</div>
-    <div class="modal-sub" id="addUnitSub">Adding to selected lab</div>
-    <div class="form-group">
-      <label>Equipment Code (Auto-generated)</label>
-      <input type="text" id="newUnitCode" readonly />
+    <!-- MODAL: ADD/EDIT LAB -->
+    <div class="modal-overlay" id="labModal">
+      <div class="modal">
+        <div class="modal-close" onclick="closeModal('labModal')">✕</div>
+        <div class="modal-title" id="labModalTitle">Add Lab Room</div>
+        <div class="modal-sub">Fill in the lab details below</div>
+        <input type="hidden" id="labId" />
+        <div class="form-group">
+          <label>Lab Name *</label
+          ><input type="text" id="labName" placeholder="e.g. Analog Lab" />
+        </div>
+        <div class="form-group">
+          <label>Location</label
+          ><input
+            type="text"
+            id="labLocation"
+            placeholder="e.g. ENTC, Floor 2"
+          />
+        </div>
+        <div class="form-group">
+          <label>Status</label>
+          <select id="labStatus">
+            <option value="AVAILABLE">Available</option>
+            <option value="IN_USE">In Use</option>
+            <option value="MAINTENANCE">Maintenance</option>
+          </select>
+        </div>
+        <div class="form-actions">
+          <button class="btn-cancel" onclick="closeModal('labModal')">
+            Cancel
+          </button>
+          <button class="btn-save" onclick="saveLab()">Save Lab</button>
+        </div>
+      </div>
     </div>
-    <div class="form-group">
-      <label>Equipment Name</label>
-      <input type="text" id="newUnitName" readonly />
-    </div>
-    <div class="form-group">
-      <label>Serial Number (optional)</label>
-      <input type="text" id="newUnitSerial" placeholder="e.g. SN-2026-001" />
-    </div>
-    <div class="form-group">
-      <label>Initial Status</label>
-      <select id="newUnitStatus">
-        <option value="AVAILABLE">Available</option>
-        <option value="MAINTENANCE">Maintenance</option>
-        <option value="UNAVAILABLE">Unavailable</option>
-      </select>
-    </div>
-    <div class="form-actions">
-      <button class="btn-cancel" onclick="closeModal('addUnitModal')">Cancel</button>
-      <button class="btn-save" onclick="saveNewUnit()">Add Unit</button>
-    </div>
-  </div>
-</div>
 
-<!-- MODAL: ADD/EDIT LAB -->
-<div class="modal-overlay" id="labModal">
-  <div class="modal">
-    <div class="modal-close" onclick="closeModal('labModal')">✕</div>
-    <div class="modal-title" id="labModalTitle">Add Lab Room</div>
-    <div class="modal-sub">Fill in the lab details below</div>
-    <input type="hidden" id="labId">
-    <div class="form-group"><label>Lab Name *</label><input type="text" id="labName" placeholder="e.g. Analog Lab"></div>
-    <div class="form-group"><label>Location</label><input type="text" id="labLocation" placeholder="e.g. ENTC, Floor 2"></div>
-    <div class="form-group">
-      <label>Status</label>
-      <select id="labStatus">
-        <option value="AVAILABLE">Available</option>
-        <option value="IN_USE">In Use</option>
-        <option value="MAINTENANCE">Maintenance</option>
-      </select>
-    </div>
-    <div class="form-actions">
-      <button class="btn-cancel" onclick="closeModal('labModal')">Cancel</button>
-      <button class="btn-save" onclick="saveLab()">Save Lab</button>
-    </div>
-  </div>
-</div>
+    <div id="toast"></div>
 
-<div id="toast"></div>
+    <script>
+      const API = "http://localhost:8080/api";
+      const AAPI = `${API}/admin/catalog`;
+      const token = sessionStorage.getItem("token");
+      const username = sessionStorage.getItem("username");
+      const role = sessionStorage.getItem("role");
 
-<script>
-  const API = 'http://localhost:8080/api';
-  const AAPI = `${API}/admin/catalog`;
-  const token = sessionStorage.getItem('token');
-  const username = sessionStorage.getItem('username');
-  const role = sessionStorage.getItem('role');
+      if (!token) window.location.href = "/login.html";
+      if (role === "STUDENT") window.location.href = "/student-dashboard.html";
+      if (role === "ADMIN") window.location.href = "/lead-admin-dashboard.html";
 
-  if (!token) window.location.href = '/login.html';
-  if (role === 'STUDENT') window.location.href = '/student-dashboard.html';
-  if (role === 'ADMIN') window.location.href = '/lead-admin-dashboard.html';
+      if (username) {
+        const i = username.substring(0, 2).toUpperCase();
+        document.getElementById("sidebar-avatar").textContent = i;
+        document.getElementById("topbar-avatar").textContent = i;
+        document.getElementById("sidebar-name").textContent = username;
+      }
 
-  if (username) {
-    const i = username.substring(0,2).toUpperCase();
-    document.getElementById('sidebar-avatar').textContent = i;
-    document.getElementById('topbar-avatar').textContent  = i;
-    document.getElementById('sidebar-name').textContent   = username;
-  }
+      document.getElementById("topbarDate").textContent =
+        new Date().toLocaleDateString("en-GB", {
+          weekday: "short",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
 
-  document.getElementById('topbarDate').textContent =
-    new Date().toLocaleDateString('en-GB', {weekday:'short',day:'numeric',month:'long',year:'numeric'});
+      const hdrs = {
+        "Content-Type": "application/json",
+        Authorization: "Bearer " + token,
+      };
 
-  const hdrs = { 'Content-Type':'application/json', 'Authorization':'Bearer '+token };
+      let allEquipment = [];
+      let allLabs = [];
+      let groupedTypes = [];
+      let selectedType = null;
+      let selectedLab = null;
 
-  let allEquipment = [];
-  let allLabs = [];
-  let groupedTypes = [];
-  let selectedType = null;
-  let selectedLab = null;
+      window.onload = () => {
+        loadStats();
+        loadEquipment();
+        loadLabs();
+      };
 
-  window.onload = () => { loadStats(); loadEquipment(); loadLabs(); };
+      // ── TABS ──
+      function switchTab(t) {
+        document
+          .querySelectorAll(".tab")
+          .forEach((b) => b.classList.remove("active"));
+        document
+          .querySelectorAll(".panel")
+          .forEach((p) => p.classList.remove("active"));
+        document.getElementById("tab-" + t).classList.add("active");
+        document.getElementById("panel-" + t).classList.add("active");
+      }
 
-  // ── TABS ──
-  function switchTab(t) {
-    document.querySelectorAll('.tab').forEach(b=>b.classList.remove('active'));
-    document.querySelectorAll('.panel').forEach(p=>p.classList.remove('active'));
-    document.getElementById('tab-'+t).classList.add('active');
-    document.getElementById('panel-'+t).classList.add('active');
-  }
+      // ── STATS ──
+      async function loadStats() {
+        try {
+          const d = await fetch(`${AAPI}/stats`, { headers: hdrs }).then((r) =>
+            r.json(),
+          );
+          document.getElementById("statTypes").textContent =
+            d.totalEquipmentTypes || groupedTypes.length || "—";
+          document.getElementById("statAvailEquip").textContent =
+            d.availableEquipment;
+          document.getElementById("statTotalLabs").textContent = d.totalLabs;
+          document.getElementById("statAvailLabs").textContent =
+            d.availableLabs;
+          document.getElementById("statTotalEquip").textContent =
+            d.totalEquipment;
+        } catch (e) {}
+      }
 
-  // ── STATS ──
-  async function loadStats() {
-    try {
-      const d = await fetch(`${AAPI}/stats`, {headers:hdrs}).then(r=>r.json());
-      document.getElementById('statTypes').textContent     = d.totalEquipmentTypes || groupedTypes.length || '—';
-      document.getElementById('statAvailEquip').textContent= d.availableEquipment;
-      document.getElementById('statTotalLabs').textContent = d.totalLabs;
-      document.getElementById('statAvailLabs').textContent = d.availableLabs;
-      document.getElementById('statTotalEquip').textContent= d.totalEquipment;
-    } catch(e) {}
-  }
+      // ── LOAD ALL EQUIPMENT ──
+      async function loadEquipment() {
+        try {
+          allEquipment = await fetch(`${AAPI}/equipment`, {
+            headers: hdrs,
+          }).then((r) => r.json());
+          buildGroupedTypes();
+          renderTypeCards(groupedTypes);
+        } catch (e) {
+          document.getElementById("typeGrid").innerHTML =
+            '<div class="empty">Failed to load equipment.</div>';
+        }
+      }
 
-  // ── LOAD ALL EQUIPMENT ──
-  async function loadEquipment() {
-    try {
-      allEquipment = await fetch(`${AAPI}/equipment`, {headers:hdrs}).then(r=>r.json());
-      buildGroupedTypes();
-      renderTypeCards(groupedTypes);
-    } catch(e) {
-      document.getElementById('typeGrid').innerHTML = '<div class="empty">Failed to load equipment.</div>';
-    }
-  }
+      function buildGroupedTypes() {
+        const map = {};
+        allEquipment.forEach((e) => {
+          const key = e.name;
+          if (!map[key])
+            map[key] = {
+              name: key,
+              total: 0,
+              available: 0,
+              maintenance: 0,
+              reserved: 0,
+            };
+          map[key].total++;
+          if (e.status === "AVAILABLE") map[key].available++;
+          if (e.status === "MAINTENANCE") map[key].maintenance++;
+          if (e.status === "RESERVED") map[key].reserved++;
+        });
+        groupedTypes = Object.values(map).sort((a, b) =>
+          a.name.localeCompare(b.name),
+        );
+        document.getElementById("statTypes").textContent = groupedTypes.length;
+      }
 
-  function buildGroupedTypes() {
-    const map = {};
-    allEquipment.forEach(e => {
-      const key = e.name;
-      if (!map[key]) map[key] = { name: key, total:0, available:0, maintenance:0, reserved:0 };
-      map[key].total++;
-      if (e.status === 'AVAILABLE')   map[key].available++;
-      if (e.status === 'MAINTENANCE') map[key].maintenance++;
-      if (e.status === 'RESERVED')    map[key].reserved++;
-    });
-    groupedTypes = Object.values(map).sort((a,b)=>a.name.localeCompare(b.name));
-    document.getElementById('statTypes').textContent = groupedTypes.length;
-  }
-
-  function renderTypeCards(types) {
-    const grid = document.getElementById('typeGrid');
-    if (!types.length) { grid.innerHTML = '<div class="empty">No equipment found.</div>'; return; }
-    grid.innerHTML = types.map(t => `
-      <div class="type-card ${selectedType===t.name?'selected':''}" onclick="selectType('${esc(t.name)}')">
+      function renderTypeCards(types) {
+        const grid = document.getElementById("typeGrid");
+        if (!types.length) {
+          grid.innerHTML = '<div class="empty">No equipment found.</div>';
+          return;
+        }
+        grid.innerHTML = types
+          .map(
+            (t) => `
+      <div class="type-card ${selectedType === t.name ? "selected" : ""}" onclick="selectType('${esc(t.name)}')">
         <div class="type-card-name">${t.name}</div>
         <div class="type-card-counts">
           <span class="count-pill pill-total">${t.total} total</span>
           <span class="count-pill pill-avail">${t.available} avail</span>
-          ${t.maintenance>0?`<span class="count-pill pill-maint">${t.maintenance} maint</span>`:''}
+          ${t.maintenance > 0 ? `<span class="count-pill pill-maint">${t.maintenance} maint</span>` : ""}
         </div>
-      </div>`).join('');
-  }
-
-  function filterTypes() {
-    const q = document.getElementById('typeSearch').value.toLowerCase();
-    renderTypeCards(groupedTypes.filter(t => t.name.toLowerCase().includes(q)));
-  }
-
-  // ── SELECT TYPE → SHOW LABS ──
-  function selectType(typeName) {
-    selectedType = typeName;
-    selectedLab = null;
-    renderTypeCards(groupedTypes.filter(t => {
-      const q = document.getElementById('typeSearch').value.toLowerCase();
-      return !q || t.name.toLowerCase().includes(q);
-    }));
-
-    document.getElementById('drillArea').style.display = 'block';
-    document.getElementById('drillTypeName').textContent = typeName;
-    document.getElementById('drillTitle').textContent = typeName + ' — Select Lab';
-    document.getElementById('drillSub').textContent = 'Choose a lab to view and manage individual units';
-    document.getElementById('addUnitBtn').style.display = 'none';
-    document.getElementById('unitsArea').style.display = 'none';
-    document.getElementById('drillLabBread').style.display = 'none';
-
-    // Build lab tabs — show only labs that have units of this type
-    const unitsOfType = allEquipment.filter(e => e.name === typeName);
-    const labIds = [...new Set(unitsOfType.map(e => getLabIdFromCode(e.equipmentCode)).filter(Boolean))];
-
-    // Map lab codes from equipment codes to actual lab names
-    const labCounts = {};
-    unitsOfType.forEach(e => {
-      const labCode = getLabCodeFromCode(e.equipmentCode);
-      if (labCode) {
-        if (!labCounts[labCode]) labCounts[labCode] = { count:0, available:0 };
-        labCounts[labCode].count++;
-        if (e.status === 'AVAILABLE') labCounts[labCode].available++;
+      </div>`,
+          )
+          .join("");
       }
-    });
 
-    // Map lab codes to full lab names
-    const labCodeMap = { 'ANAL':'Analog Lab','DIGI':'Digital Lab','TELE':'Telecom Lab','COMP':'Computer Lab','UAV':'UAV Lab' };
-    const labTabs = document.getElementById('labTabs');
+      function filterTypes() {
+        const q = document.getElementById("typeSearch").value.toLowerCase();
+        renderTypeCards(
+          groupedTypes.filter((t) => t.name.toLowerCase().includes(q)),
+        );
+      }
 
-    if (!Object.keys(labCounts).length) {
-      labTabs.innerHTML = '<div style="font-size:13px;color:var(--text3);">No units assigned to any lab yet.</div>';
-    } else {
-      labTabs.innerHTML = Object.entries(labCounts).map(([code, info]) => `
+      // ── SELECT TYPE → SHOW LABS ──
+      function selectType(typeName) {
+        selectedType = typeName;
+        selectedLab = null;
+        renderTypeCards(
+          groupedTypes.filter((t) => {
+            const q = document.getElementById("typeSearch").value.toLowerCase();
+            return !q || t.name.toLowerCase().includes(q);
+          }),
+        );
+
+        document.getElementById("drillArea").style.display = "block";
+        document.getElementById("drillTypeName").textContent = typeName;
+        document.getElementById("drillTitle").textContent =
+          typeName + " — Select Lab";
+        document.getElementById("drillSub").textContent =
+          "Choose a lab to view and manage individual units";
+        document.getElementById("addUnitBtn").style.display = "none";
+        document.getElementById("unitsArea").style.display = "none";
+        document.getElementById("drillLabBread").style.display = "none";
+
+        // Build lab tabs — show only labs that have units of this type
+        const unitsOfType = allEquipment.filter((e) => e.name === typeName);
+        const labIds = [
+          ...new Set(
+            unitsOfType
+              .map((e) => getLabIdFromCode(e.equipmentCode))
+              .filter(Boolean),
+          ),
+        ];
+
+        // Map lab codes from equipment codes to actual lab names
+        const labCounts = {};
+        unitsOfType.forEach((e) => {
+          const labCode = getLabCodeFromCode(e.equipmentCode);
+          if (labCode) {
+            if (!labCounts[labCode])
+              labCounts[labCode] = { count: 0, available: 0 };
+            labCounts[labCode].count++;
+            if (e.status === "AVAILABLE") labCounts[labCode].available++;
+          }
+        });
+
+        // Map lab codes to full lab names
+        const labCodeMap = {
+          ANAL: "Analog Lab",
+          DIGI: "Digital Lab",
+          TELE: "Telecom Lab",
+          COMP: "Computer Lab",
+          UAV: "UAV Lab",
+        };
+        const labTabs = document.getElementById("labTabs");
+
+        if (!Object.keys(labCounts).length) {
+          labTabs.innerHTML =
+            '<div style="font-size:13px;color:var(--text3);">No units assigned to any lab yet.</div>';
+        } else {
+          labTabs.innerHTML = Object.entries(labCounts)
+            .map(
+              ([code, info]) => `
         <div class="lab-tab" onclick="selectLab('${code}')" id="labtab-${code}">
           ${labCodeMap[code] || code}
           <span class="lab-count">${info.available}/${info.count}</span>
-        </div>`).join('');
-    }
+        </div>`,
+            )
+            .join("");
+        }
 
-    // Scroll to drill area
-    document.getElementById('drillArea').scrollIntoView({behavior:'smooth', block:'nearest'});
-  }
+        // Scroll to drill area
+        document
+          .getElementById("drillArea")
+          .scrollIntoView({ behavior: "smooth", block: "nearest" });
+      }
 
-  function getLabCodeFromCode(equipCode) {
-    if (!equipCode) return null;
-    const parts = equipCode.split('-');
-    return parts.length >= 3 ? parts[parts.length-1] : null;
-  }
+      function getLabCodeFromCode(equipCode) {
+        if (!equipCode) return null;
+        const parts = equipCode.split("-");
+        return parts.length >= 3 ? parts[parts.length - 1] : null;
+      }
 
-  function getLabIdFromCode(equipCode) {
-    const code = getLabCodeFromCode(equipCode);
-    const map = { 'ANAL':1,'DIGI':2,'TELE':3,'COMP':4,'UAV':5 };
-    return code ? map[code] : null;
-  }
+      function getLabIdFromCode(equipCode) {
+        const code = getLabCodeFromCode(equipCode);
+        const map = { ANAL: 1, DIGI: 2, TELE: 3, COMP: 4, UAV: 5 };
+        return code ? map[code] : null;
+      }
 
-  function getLabIdFromLabCode(labCode) {
-    const map = { 'ANAL':1,'DIGI':2,'TELE':3,'COMP':4,'UAV':5 };
-    return map[labCode] || null;
-  }
+      function getLabIdFromLabCode(labCode) {
+        const map = { ANAL: 1, DIGI: 2, TELE: 3, COMP: 4, UAV: 5 };
+        return map[labCode] || null;
+      }
 
-  // ── SELECT LAB → SHOW UNITS ──
-  function selectLab(labCode) {
-    selectedLab = labCode;
-    const labCodeMap = { 'ANAL':'Analog Lab','DIGI':'Digital Lab','TELE':'Telecom Lab','COMP':'Computer Lab','UAV':'UAV Lab' };
-    const labName = labCodeMap[labCode] || labCode;
+      // ── SELECT LAB → SHOW UNITS ──
+      function selectLab(labCode) {
+        selectedLab = labCode;
+        const labCodeMap = {
+          ANAL: "Analog Lab",
+          DIGI: "Digital Lab",
+          TELE: "Telecom Lab",
+          COMP: "Computer Lab",
+          UAV: "UAV Lab",
+        };
+        const labName = labCodeMap[labCode] || labCode;
 
-    document.querySelectorAll('.lab-tab').forEach(t => t.classList.remove('active'));
-    const tab = document.getElementById('labtab-'+labCode);
-    if (tab) tab.classList.add('active');
+        document
+          .querySelectorAll(".lab-tab")
+          .forEach((t) => t.classList.remove("active"));
+        const tab = document.getElementById("labtab-" + labCode);
+        if (tab) tab.classList.add("active");
 
-    document.getElementById('drillTitle').textContent = selectedType + ' — ' + labName;
-    document.getElementById('drillSub').textContent = 'Individual units — change status or add new unit';
-    document.getElementById('addUnitBtn').style.display = 'flex';
-    document.getElementById('drillLabBread').style.display = 'inline';
-    document.getElementById('drillLabName').textContent = labName;
+        document.getElementById("drillTitle").textContent =
+          selectedType + " — " + labName;
+        document.getElementById("drillSub").textContent =
+          "Individual units — change status or add new unit";
+        document.getElementById("addUnitBtn").style.display = "flex";
+        document.getElementById("drillLabBread").style.display = "inline";
+        document.getElementById("drillLabName").textContent = labName;
 
-    renderUnits(selectedType, labCode);
-  }
+        renderUnits(selectedType, labCode);
+      }
 
-  function renderUnits(typeName, labCode) {
-    const units = allEquipment
-      .filter(e => e.name === typeName && getLabCodeFromCode(e.equipmentCode) === labCode)
-      .sort((a,b) => (a.equipmentCode||'').localeCompare(b.equipmentCode||''));
+      function renderUnits(typeName, labCode) {
+        const units = allEquipment
+          .filter(
+            (e) =>
+              e.name === typeName &&
+              getLabCodeFromCode(e.equipmentCode) === labCode,
+          )
+          .sort((a, b) =>
+            (a.equipmentCode || "").localeCompare(b.equipmentCode || ""),
+          );
 
-    document.getElementById('unitsArea').style.display = 'block';
-    const tbody = document.getElementById('unitsTbody');
+        document.getElementById("unitsArea").style.display = "block";
+        const tbody = document.getElementById("unitsTbody");
 
-    if (!units.length) {
-      tbody.innerHTML = '<tr><td colspan="6" class="empty">No units in this lab.</td></tr>';
-      return;
-    }
+        if (!units.length) {
+          tbody.innerHTML =
+            '<tr><td colspan="6" class="empty">No units in this lab.</td></tr>';
+          return;
+        }
 
-    tbody.innerHTML = units.map(u => `
+        tbody.innerHTML = units
+          .map(
+            (u) => `
       <tr id="unit-row-${u.id}">
-        <td style="font-weight:700;font-family:monospace;font-size:13px;">${u.equipmentCode||'—'}</td>
+        <td style="font-weight:700;font-family:monospace;font-size:13px;">${u.equipmentCode || "—"}</td>
         <td style="color:var(--text2);">${u.name}</td>
-        <td style="color:var(--text2);font-size:12px;">${u.serialNumber||'—'}</td>
-        <td><span class="badge badge-${(u.status||'available').toLowerCase()}" id="badge-${u.id}">${u.status||'AVAILABLE'}</span></td>
+        <td style="color:var(--text2);font-size:12px;">${u.serialNumber || "—"}</td>
+        <td><span class="badge badge-${(u.status || "available").toLowerCase()}" id="badge-${u.id}">${u.status || "AVAILABLE"}</span></td>
         <td>
           <select class="status-select" onchange="updateUnitStatus(${u.id}, this.value)" id="sel-${u.id}">
-            <option value="AVAILABLE"    ${u.status==='AVAILABLE'   ?'selected':''}>Available</option>
-            <option value="RESERVED"     ${u.status==='RESERVED'    ?'selected':''}>Reserved</option>
-            <option value="MAINTENANCE"  ${u.status==='MAINTENANCE' ?'selected':''}>Maintenance</option>
-            <option value="UNAVAILABLE"  ${u.status==='UNAVAILABLE' ?'selected':''}>Unavailable</option>
+            <option value="AVAILABLE"    ${u.status === "AVAILABLE" ? "selected" : ""}>Available</option>
+            <option value="RESERVED"     ${u.status === "RESERVED" ? "selected" : ""}>Reserved</option>
+            <option value="MAINTENANCE"  ${u.status === "MAINTENANCE" ? "selected" : ""}>Maintenance</option>
+            <option value="UNAVAILABLE"  ${u.status === "UNAVAILABLE" ? "selected" : ""}>Unavailable</option>
           </select>
         </td>
         <td>
           <button class="btn btn-red-soft btn-sm" onclick="deleteUnit(${u.id}, '${esc(u.equipmentCode)}')">Delete</button>
         </td>
-      </tr>`).join('');
-  }
-
-  // ── UPDATE UNIT STATUS ──
-  async function updateUnitStatus(id, newStatus) {
-    try {
-      const res = await fetch(`${AAPI}/equipment/${id}/status`, {
-        method:'PATCH', headers:hdrs,
-        body: JSON.stringify({status: newStatus})
-      });
-      if (!res.ok) throw new Error('Update failed');
-      // Update local data
-      const unit = allEquipment.find(e=>e.id===id);
-      if (unit) unit.status = newStatus;
-      // Update badge inline
-      const badge = document.getElementById('badge-'+id);
-      if (badge) {
-        badge.className = `badge badge-${newStatus.toLowerCase()}`;
-        badge.textContent = newStatus;
-      }
-      buildGroupedTypes();
-      renderTypeCards(groupedTypes.filter(t=>{
-        const q=document.getElementById('typeSearch').value.toLowerCase();
-        return !q||t.name.toLowerCase().includes(q);
-      }));
-      loadStats();
-      toast('Status updated','success');
-    } catch(e) { toast('Failed to update status','error'); }
-  }
-
-  // ── DELETE UNIT ──
-  async function deleteUnit(id, code) {
-    if (!confirm(`Delete unit ${code}? This cannot be undone.`)) return;
-    try {
-      const res = await fetch(`${AAPI}/equipment/${id}`, {method:'DELETE', headers:hdrs});
-      if (!res.ok) throw new Error('Delete failed');
-      allEquipment = allEquipment.filter(e=>e.id!==id);
-      buildGroupedTypes();
-      renderUnits(selectedType, selectedLab);
-      renderTypeCards(groupedTypes.filter(t=>{
-        const q=document.getElementById('typeSearch').value.toLowerCase();
-        return !q||t.name.toLowerCase().includes(q);
-      }));
-      loadStats();
-      toast('Unit deleted','success');
-    } catch(e) { toast('Failed to delete','error'); }
-  }
-
-  function closeDrill() {
-    selectedType = null; selectedLab = null;
-    document.getElementById('drillArea').style.display = 'none';
-    renderTypeCards(groupedTypes);
-  }
-
-  // ── ADD NEW UNIT ──
-  function openAddUnitModal() {
-    if (!selectedType || !selectedLab) return;
-    const labCodeMap = { 'ANAL':'Analog Lab','DIGI':'Digital Lab','TELE':'Telecom Lab','COMP':'Computer Lab','UAV':'UAV Lab' };
-    document.getElementById('addUnitSub').textContent = `Adding to ${labCodeMap[selectedLab]||selectedLab}`;
-    document.getElementById('newUnitName').value = selectedType;
-
-    // Auto-generate next code
-    const existing = allEquipment
-      .filter(e => e.name === selectedType && getLabCodeFromCode(e.equipmentCode) === selectedLab)
-      .map(e => {
-        const parts = (e.equipmentCode||'').split('-');
-        return parts.length >= 2 ? parseInt(parts[1]) : 0;
-      })
-      .filter(n => !isNaN(n));
-
-    const nextNum = existing.length ? Math.max(...existing) + 1 : 1;
-    // Get prefix from existing units of this type
-    const sample = allEquipment.find(e => e.name === selectedType && e.equipmentCode);
-    const prefix = sample ? sample.equipmentCode.split('-')[0] : selectedType.substring(0,3).toUpperCase();
-    const newCode = `${prefix}-${String(nextNum).padStart(2,'0')}-${selectedLab}`;
-    document.getElementById('newUnitCode').value = newCode;
-    document.getElementById('newUnitSerial').value = '';
-    document.getElementById('newUnitStatus').value = 'AVAILABLE';
-
-    showModal('addUnitModal');
-  }
-
-  async function saveNewUnit() {
-    const code   = document.getElementById('newUnitCode').value;
-    const name   = document.getElementById('newUnitName').value;
-    const serial = document.getElementById('newUnitSerial').value;
-    const status = document.getElementById('newUnitStatus').value;
-    const labId  = getLabIdFromLabCode(selectedLab);
-
-    try {
-      const res = await fetch(`${AAPI}/equipment`, {
-        method:'POST', headers:hdrs,
-        body: JSON.stringify({
-          name, description: name, serialNumber: serial,
-          status, quantity: 1, equipmentCode: code
-        })
-      });
-      if (!res.ok) { const d=await res.json(); throw new Error(d.error||'Failed'); }
-      const newUnit = await res.json();
-
-      // Assign to lab
-      if (labId) {
-        await fetch(`${AAPI}/labs/${labId}/equipment/${newUnit.id}`, {
-          method:'POST', headers:hdrs,
-          body: JSON.stringify({quantity:1})
-        });
+      </tr>`,
+          )
+          .join("");
       }
 
-      allEquipment.push({...newUnit, equipmentCode: code});
-      closeModal('addUnitModal');
-      buildGroupedTypes();
-      renderUnits(selectedType, selectedLab);
-      renderTypeCards(groupedTypes.filter(t=>{
-        const q=document.getElementById('typeSearch').value.toLowerCase();
-        return !q||t.name.toLowerCase().includes(q);
-      }));
-      loadStats();
-      toast('Unit added successfully','success');
-    } catch(e) { toast(e.message,'error'); }
-  }
+      // ── UPDATE UNIT STATUS ──
+      async function updateUnitStatus(id, newStatus) {
+        try {
+          const res = await fetch(`${AAPI}/equipment/${id}/status`, {
+            method: "PATCH",
+            headers: hdrs,
+            body: JSON.stringify({ status: newStatus }),
+          });
+          if (!res.ok) throw new Error("Update failed");
+          // Update local data
+          const unit = allEquipment.find((e) => e.id === id);
+          if (unit) unit.status = newStatus;
+          // Update badge inline
+          const badge = document.getElementById("badge-" + id);
+          if (badge) {
+            badge.className = `badge badge-${newStatus.toLowerCase()}`;
+            badge.textContent = newStatus;
+          }
+          buildGroupedTypes();
+          renderTypeCards(
+            groupedTypes.filter((t) => {
+              const q = document
+                .getElementById("typeSearch")
+                .value.toLowerCase();
+              return !q || t.name.toLowerCase().includes(q);
+            }),
+          );
+          loadStats();
+          toast("Status updated", "success");
+        } catch (e) {
+          toast("Failed to update status", "error");
+        }
+      }
 
-  // ── LABS ──
-  async function loadLabs() {
-    try {
-      allLabs = await fetch(`${AAPI}/labs`, {headers:hdrs}).then(r=>r.json());
-      renderLabs(allLabs);
-    } catch(e) { document.getElementById('labBody').innerHTML = eRow(5,'Failed to load.'); }
-  }
+      // ── DELETE UNIT ──
+      async function deleteUnit(id, code) {
+        if (!confirm(`Delete unit ${code}? This cannot be undone.`)) return;
+        try {
+          const res = await fetch(`${AAPI}/equipment/${id}`, {
+            method: "DELETE",
+            headers: hdrs,
+          });
+          if (!res.ok) throw new Error("Delete failed");
+          allEquipment = allEquipment.filter((e) => e.id !== id);
+          buildGroupedTypes();
+          renderUnits(selectedType, selectedLab);
+          renderTypeCards(
+            groupedTypes.filter((t) => {
+              const q = document
+                .getElementById("typeSearch")
+                .value.toLowerCase();
+              return !q || t.name.toLowerCase().includes(q);
+            }),
+          );
+          loadStats();
+          toast("Unit deleted", "success");
+        } catch (e) {
+          toast("Failed to delete", "error");
+        }
+      }
 
-  function renderLabs(labs) {
-    const tb = document.getElementById('labBody');
-    if (!labs||!labs.length) { tb.innerHTML = eRow(5,'No labs found.'); return; }
-    tb.innerHTML = labs.map(l => `
+      function closeDrill() {
+        selectedType = null;
+        selectedLab = null;
+        document.getElementById("drillArea").style.display = "none";
+        renderTypeCards(groupedTypes);
+      }
+
+      // ── ADD NEW UNIT ──
+      function openAddUnitModal() {
+        if (!selectedType || !selectedLab) return;
+        const labCodeMap = {
+          ANAL: "Analog Lab",
+          DIGI: "Digital Lab",
+          TELE: "Telecom Lab",
+          COMP: "Computer Lab",
+          UAV: "UAV Lab",
+        };
+        document.getElementById("addUnitSub").textContent =
+          `Adding to ${labCodeMap[selectedLab] || selectedLab}`;
+        document.getElementById("newUnitName").value = selectedType;
+
+        // Auto-generate next code
+        const existing = allEquipment
+          .filter(
+            (e) =>
+              e.name === selectedType &&
+              getLabCodeFromCode(e.equipmentCode) === selectedLab,
+          )
+          .map((e) => {
+            const parts = (e.equipmentCode || "").split("-");
+            return parts.length >= 2 ? parseInt(parts[1]) : 0;
+          })
+          .filter((n) => !isNaN(n));
+
+        const nextNum = existing.length ? Math.max(...existing) + 1 : 1;
+        // Get prefix from existing units of this type
+        const sample = allEquipment.find(
+          (e) => e.name === selectedType && e.equipmentCode,
+        );
+        const prefix = sample
+          ? sample.equipmentCode.split("-")[0]
+          : selectedType.substring(0, 3).toUpperCase();
+        const newCode = `${prefix}-${String(nextNum).padStart(2, "0")}-${selectedLab}`;
+        document.getElementById("newUnitCode").value = newCode;
+        document.getElementById("newUnitSerial").value = "";
+        document.getElementById("newUnitStatus").value = "AVAILABLE";
+
+        showModal("addUnitModal");
+      }
+
+      async function saveNewUnit() {
+        const code = document.getElementById("newUnitCode").value;
+        const name = document.getElementById("newUnitName").value;
+        const serial = document.getElementById("newUnitSerial").value;
+        const status = document.getElementById("newUnitStatus").value;
+        const labId = getLabIdFromLabCode(selectedLab);
+
+        try {
+          const res = await fetch(`${AAPI}/equipment`, {
+            method: "POST",
+            headers: hdrs,
+            body: JSON.stringify({
+              name,
+              description: name,
+              serialNumber: serial,
+              status,
+              quantity: 1,
+              equipmentCode: code,
+            }),
+          });
+          if (!res.ok) {
+            const d = await res.json();
+            throw new Error(d.error || "Failed");
+          }
+          const newUnit = await res.json();
+
+          // Assign to lab
+          if (labId) {
+            await fetch(`${AAPI}/labs/${labId}/equipment/${newUnit.id}`, {
+              method: "POST",
+              headers: hdrs,
+              body: JSON.stringify({ quantity: 1 }),
+            });
+          }
+
+          allEquipment.push({ ...newUnit, equipmentCode: code });
+          closeModal("addUnitModal");
+          buildGroupedTypes();
+          renderUnits(selectedType, selectedLab);
+          renderTypeCards(
+            groupedTypes.filter((t) => {
+              const q = document
+                .getElementById("typeSearch")
+                .value.toLowerCase();
+              return !q || t.name.toLowerCase().includes(q);
+            }),
+          );
+          loadStats();
+          toast("Unit added successfully", "success");
+        } catch (e) {
+          toast(e.message, "error");
+        }
+      }
+
+      // ── LABS ──
+      async function loadLabs() {
+        try {
+          allLabs = await fetch(`${AAPI}/labs`, { headers: hdrs }).then((r) =>
+            r.json(),
+          );
+          renderLabs(allLabs);
+        } catch (e) {
+          document.getElementById("labBody").innerHTML = eRow(
+            5,
+            "Failed to load.",
+          );
+        }
+      }
+
+      function renderLabs(labs) {
+        const tb = document.getElementById("labBody");
+        if (!labs || !labs.length) {
+          tb.innerHTML = eRow(5, "No labs found.");
+          return;
+        }
+        tb.innerHTML = labs
+          .map(
+            (l) => `
       <tr>
         <td style="color:var(--text2);font-size:12px;">#${l.id}</td>
         <td style="font-weight:600;">${l.labName}</td>
-        <td style="color:var(--text2);">${l.location||'—'}</td>
+        <td style="color:var(--text2);">${l.location || "—"}</td>
         <td>${badge(l.status)}</td>
         <td>
           <button class="btn btn-outline btn-sm" onclick="openEditLab(${l.id})" style="margin-right:4px">Edit</button>
           <button class="btn btn-red-soft btn-sm" onclick="deleteLab(${l.id},'${esc(l.labName)}')">Delete</button>
         </td>
-      </tr>`).join('');
-  }
+      </tr>`,
+          )
+          .join("");
+      }
 
-  function filterLabs() {
-    const q = document.getElementById('labSearch').value.toLowerCase();
-    renderLabs(allLabs.filter(l=>l.labName.toLowerCase().includes(q)));
-  }
+      function filterLabs() {
+        const q = document.getElementById("labSearch").value.toLowerCase();
+        renderLabs(allLabs.filter((l) => l.labName.toLowerCase().includes(q)));
+      }
 
-  function openAddLab() {
-    document.getElementById('labModalTitle').textContent = 'Add Lab Room';
-    ['labId','labName','labLocation'].forEach(id=>document.getElementById(id).value='');
-    document.getElementById('labStatus').value='AVAILABLE';
-    showModal('labModal');
-  }
+      function openAddLab() {
+        document.getElementById("labModalTitle").textContent = "Add Lab Room";
+        ["labId", "labName", "labLocation"].forEach(
+          (id) => (document.getElementById(id).value = ""),
+        );
+        document.getElementById("labStatus").value = "AVAILABLE";
+        showModal("labModal");
+      }
 
-  function openEditLab(id) {
-    const l = allLabs.find(x=>x.id===id); if(!l) return;
-    document.getElementById('labModalTitle').textContent = 'Edit Lab Room';
-    document.getElementById('labId').value       = l.id;
-    document.getElementById('labName').value     = l.labName;
-    document.getElementById('labLocation').value = l.location||'';
-    document.getElementById('labStatus').value   = l.status;
-    showModal('labModal');
-  }
+      function openEditLab(id) {
+        const l = allLabs.find((x) => x.id === id);
+        if (!l) return;
+        document.getElementById("labModalTitle").textContent = "Edit Lab Room";
+        document.getElementById("labId").value = l.id;
+        document.getElementById("labName").value = l.labName;
+        document.getElementById("labLocation").value = l.location || "";
+        document.getElementById("labStatus").value = l.status;
+        showModal("labModal");
+      }
 
-  async function saveLab() {
-    const id   = document.getElementById('labId').value;
-    const name = document.getElementById('labName').value.trim();
-    if (!name) { toast('Lab name is required','error'); return; }
-    const body = { labName:name, location:document.getElementById('labLocation').value.trim(), status:document.getElementById('labStatus').value };
-    try {
-      const res = await fetch(id?`${AAPI}/labs/${id}`:`${AAPI}/labs`, {
-        method:id?'PUT':'POST', headers:hdrs, body:JSON.stringify(body)
+      async function saveLab() {
+        const id = document.getElementById("labId").value;
+        const name = document.getElementById("labName").value.trim();
+        if (!name) {
+          toast("Lab name is required", "error");
+          return;
+        }
+        const body = {
+          labName: name,
+          location: document.getElementById("labLocation").value.trim(),
+          status: document.getElementById("labStatus").value,
+        };
+        try {
+          const res = await fetch(id ? `${AAPI}/labs/${id}` : `${AAPI}/labs`, {
+            method: id ? "PUT" : "POST",
+            headers: hdrs,
+            body: JSON.stringify(body),
+          });
+          if (!res.ok) {
+            const d = await res.json();
+            throw new Error(d.error || "Save failed");
+          }
+          toast(id ? "Lab updated!" : "Lab added!", "success");
+          closeModal("labModal");
+          await loadLabs();
+          await loadStats();
+        } catch (e) {
+          toast(e.message, "error");
+        }
+      }
+
+      async function deleteLab(id, name) {
+        if (!confirm(`Delete lab "${name}"?`)) return;
+        try {
+          const res = await fetch(`${AAPI}/labs/${id}`, {
+            method: "DELETE",
+            headers: hdrs,
+          });
+          if (!res.ok) {
+            const d = await res.json();
+            throw new Error(d.error || "Failed");
+          }
+          toast("Lab deleted", "success");
+          await loadLabs();
+          await loadStats();
+        } catch (e) {
+          toast(e.message, "error");
+        }
+      }
+
+      // ── HELPERS ──
+      function showModal(id) {
+        document.getElementById(id).classList.add("show");
+      }
+      function closeModal(id) {
+        document.getElementById(id).classList.remove("show");
+      }
+      document.querySelectorAll(".modal-overlay").forEach((o) => {
+        o.addEventListener("click", (e) => {
+          if (e.target === o) o.classList.remove("show");
+        });
       });
-      if (!res.ok) { const d=await res.json(); throw new Error(d.error||'Save failed'); }
-      toast(id?'Lab updated!':'Lab added!','success');
-      closeModal('labModal'); await loadLabs(); await loadStats();
-    } catch(e) { toast(e.message,'error'); }
-  }
 
-  async function deleteLab(id, name) {
-    if (!confirm(`Delete lab "${name}"?`)) return;
-    try {
-      const res = await fetch(`${AAPI}/labs/${id}`,{method:'DELETE',headers:hdrs});
-      if (!res.ok) { const d=await res.json(); throw new Error(d.error||'Failed'); }
-      toast('Lab deleted','success'); await loadLabs(); await loadStats();
-    } catch(e) { toast(e.message,'error'); }
-  }
-
-  // ── HELPERS ──
-  function showModal(id)  { document.getElementById(id).classList.add('show'); }
-  function closeModal(id) { document.getElementById(id).classList.remove('show'); }
-  document.querySelectorAll('.modal-overlay').forEach(o=>{
-    o.addEventListener('click', e=>{ if(e.target===o) o.classList.remove('show'); });
-  });
-
-  function badge(status) {
-    const map={'AVAILABLE':'badge-available','RESERVED':'badge-reserved','MAINTENANCE':'badge-maintenance','UNAVAILABLE':'badge-unavailable','IN_USE':'badge-in_use'};
-    return `<span class="badge ${map[status]||'badge-unavailable'}">${(status||'').replace('_',' ')}</span>`;
-  }
-  function eRow(cols,msg) { return `<tr><td colspan="${cols}"><div class="empty">${msg}</div></td></tr>`; }
-  function esc(s) { return (s||'').replace(/'/g,"\\'").replace(/"/g,'&quot;'); }
-  function toast(msg, type='success') {
-    const t=document.getElementById('toast');
-    t.textContent=msg; t.className=`show ${type}`;
-    setTimeout(()=>t.className='',3000);
-  }
-</script>
-</body>
+      function badge(status) {
+        const map = {
+          AVAILABLE: "badge-available",
+          RESERVED: "badge-reserved",
+          MAINTENANCE: "badge-maintenance",
+          UNAVAILABLE: "badge-unavailable",
+          IN_USE: "badge-in_use",
+        };
+        return `<span class="badge ${map[status] || "badge-unavailable"}">${(status || "").replace("_", " ")}</span>`;
+      }
+      function eRow(cols, msg) {
+        return `<tr><td colspan="${cols}"><div class="empty">${msg}</div></td></tr>`;
+      }
+      function esc(s) {
+        return (s || "").replace(/'/g, "\\'").replace(/"/g, "&quot;");
+      }
+      function toast(msg, type = "success") {
+        const t = document.getElementById("toast");
+        t.textContent = msg;
+        t.className = `show ${type}`;
+        setTimeout(() => (t.className = ""), 3000);
+      }
+    </script>
+  </body>
 </html>

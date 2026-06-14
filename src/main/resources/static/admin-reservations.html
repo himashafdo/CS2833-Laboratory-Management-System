@@ -8,6 +8,7 @@
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <script src="/theme.js"></script>
     <style>
       *,
       *::before,
@@ -27,6 +28,14 @@
         --white: #ffffff;
         --bg: #f8fafc;
         --font: "Plus Jakarta Sans", sans-serif;
+      }
+      [data-theme="dark"] {
+        --text: #f1f5f9;
+        --text2: #cbd5e1;
+        --text3: #94a3b8;
+        --border: #334155;
+        --white: #1e293b;
+        --bg: #0f172a;
       }
       body {
         font-family: var(--font);
@@ -656,6 +665,19 @@
         color: var(--text3);
         font-size: 13px;
       }
+      .theme-toggle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: var(--white);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        transition: all 0.2s;
+      }
 
       @media (max-width: 1100px) {
         .stats-grid {
@@ -874,6 +896,12 @@
         </div>
         <div class="topbar-right">
           <div class="topbar-date" id="topbarDate"></div>
+          <button
+            id="theme-btn"
+            class="theme-toggle"
+            type="button"
+            title="Toggle theme"
+          ></button>
           <div class="topbar-avatar" id="topbar-avatar">LT</div>
         </div>
       </div>

@@ -1,814 +1,1628 @@
 <!doctype html>
-<html lang="en">
-<head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Admin Dashboard — Lab Management System</title>
-  <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap" rel="stylesheet" />
-  <!-- Chart.js for Advanced Analytics -->
-  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
-  <style>
-    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
-    :root {
-      --orange: #f97316; --orange2: #ea6c0a; --text: #1a1a2e; --text2: #64748b;
-      --text3: #94a3b8; --border: #e2e8f0; --white: #ffffff; --bg: #f8fafc;
-      --font: "Plus Jakarta Sans", sans-serif;
-    }
-    body { font-family: var(--font); background: var(--bg); min-height: 100vh; display: flex; overflow-x: hidden;}
-
-    /* ── SIDEBAR ── */
-    .sidebar { width: 240px; min-height: 100vh; flex-shrink: 0; background: linear-gradient(180deg, #f97316 0%, #c2410c 100%); display: flex; flex-direction: column; padding: 24px 0; position: fixed; left: 0; top: 0; bottom: 0; z-index: 100; }
-    .sidebar-brand { padding: 0 20px 28px; border-bottom: 1px solid rgba(255, 255, 255, 0.15); margin-bottom: 16px; }
-    .brand-row { display: flex; align-items: center; gap: 10px; }
-    .brand-icon { width: 38px; height: 38px; background: rgba(255, 255, 255, 0.2); border-radius: 10px; display: flex; align-items: center; justify-content: center; }
-    .brand-icon svg { width: 20px; height: 20px; }
-    .brand-name { font-size: 14px; font-weight: 700; color: white; line-height: 1.2; }
-    .nav-section { padding: 0 12px; flex: 1; }
-    .nav-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: 10px; margin-bottom: 4px; color: rgba(255, 255, 255, 0.8); font-size: 13px; font-weight: 500; cursor: pointer; transition: all 0.2s; text-decoration: none; }
-    .nav-item:hover { background: rgba(255, 255, 255, 0.15); color: white; }
-    .nav-item.active { background: rgba(255, 255, 255, 0.25); color: white; font-weight: 600; }
-    .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
-    .sidebar-user { margin: 16px 12px 0; padding: 12px; border-radius: 12px; background: rgba(0, 0, 0, 0.15); display: flex; align-items: center; gap: 10px; }
-    .user-avatar { width: 36px; height: 36px; border-radius: 50%; background: rgba(255, 255, 255, 0.3); display: flex; align-items: center; justify-content: center; font-size: 13px; font-weight: 700; color: white; flex-shrink: 0; }
-    .user-name { font-size: 13px; font-weight: 600; color: white; }
-    .user-role { font-size: 11px; color: rgba(255, 255, 255, 0.7); }
-
-    /* ── MAIN ── */
-    .main { margin-left: 240px; flex: 1; display: flex; flex-direction: column; min-height: 100vh; }
-    .topbar { background: var(--white); border-bottom: 1px solid var(--border); padding: 16px 32px; display: flex; align-items: center; justify-content: space-between; position: sticky; top: 0; z-index: 50; }
-    .topbar-title { font-size: 20px; font-weight: 700; color: var(--text); }
-    .topbar-right { display: flex; align-items: center; gap: 12px; }
-    .topbar-icon { width: 36px; height: 36px; border-radius: 50%; border: 1px solid var(--border); display: flex; align-items: center; justify-content: center; cursor: pointer; background: var(--white); color: var(--text2); position: relative; }
-
-    /* ── TABS ── */
-    .tabs-container { padding: 20px 32px 0; background: var(--white); border-bottom: 1px solid var(--border); display: flex; gap: 24px; }
-    .tab-btn { padding: 12px 0; font-size: 14px; font-weight: 600; color: var(--text2); cursor: pointer; border: none; background: none; border-bottom: 3px solid transparent; transition: all 0.2s; font-family: var(--font); }
-    .tab-btn:hover { color: var(--orange); }
-    .tab-btn.active { color: var(--orange); border-bottom-color: var(--orange); }
-    
-    .tab-content { display: none; padding: 28px 32px; }
-    .tab-content.active { display: block; animation: fadeIn 0.3s ease; }
-    @keyframes fadeIn { from { opacity: 0; transform: translateY(5px); } to { opacity: 1; transform: translateY(0); } }
-
-    /* ── CONTENT ── */
-    .stats-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 28px; }
-    .stat-card { background: var(--white); border: 1px solid var(--border); border-radius: 14px; padding: 20px; border-top: 3px solid transparent; transition: transform 0.2s; display: flex; justify-content: space-between; align-items: center; }
-    .stat-card:hover { transform: translateY(-2px); box-shadow: 0 4px 12px rgba(0,0,0,0.05); }
-    .stat-card.blue { border-top-color: #3b82f6; }
-    .stat-card.teal { border-top-color: #14b8a6; }
-    .stat-card.amber { border-top-color: #f59e0b; }
-    .stat-label { font-size: 12px; font-weight: 600; color: var(--text2); margin-bottom: 10px; text-transform: uppercase; letter-spacing: 0.04em; }
-    .stat-value { font-size: 32px; font-weight: 700; color: var(--text); line-height: 1; margin-bottom: 4px; }
-    .stat-sub { font-size: 12px; color: var(--text3); }
-
-    .sections-grid { display: grid; grid-template-columns: 350px 1fr; gap: 20px; margin-bottom: 20px; }
-    .section-card { background: var(--white); border: 1px solid var(--border); border-radius: 16px; padding: 24px; box-shadow: 0 1px 3px rgba(0,0,0,0.02); }
-    .section-header { display: flex; align-items: center; justify-content: space-between; margin-bottom: 20px; }
-    .section-title { font-size: 16px; font-weight: 700; color: var(--text); }
-    
-    .chart-container { width: 100%; height: 300px; }
-
-    /* ── FORMS & BUTTONS ── */
-    .form-group { margin-bottom: 16px; }
-    .form-label { display: block; font-size: 13px; font-weight: 600; color: var(--text); margin-bottom: 8px; }
-    .form-input, .form-textarea, .form-select { width: 100%; padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; font-family: var(--font); font-size: 13px; color: var(--text); outline: none; transition: border-color 0.2s; background: var(--white); }
-    .form-textarea { resize: vertical; min-height: 100px; }
-    .form-input:focus, .form-textarea:focus, .form-select:focus { border-color: var(--orange); }
-    .form-checkbox { display: flex; align-items: center; gap: 8px; font-size: 13px; color: var(--text); cursor: pointer; }
-    
-    .btn-submit { background: var(--text); color: white; border: none; padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: background 0.2s; }
-    .btn-submit:hover { background: #0f172a; }
-    .btn-outline { background: var(--white); color: var(--text); border: 1px solid var(--border); padding: 10px 20px; border-radius: 10px; font-size: 13px; font-weight: 600; cursor: pointer; transition: all 0.2s; }
-    .btn-outline:hover { background: #f1f5f9; border-color: #cbd5e1; }
-
-    /* ── TOOLBARS & FILTERS ── */
-    .toolbar { display: flex; gap: 12px; margin-bottom: 16px; align-items: center; flex-wrap: wrap; }
-    .search-box { position: relative; flex: 1; min-width: 250px; }
-    .search-icon { position: absolute; left: 14px; top: 50%; transform: translateY(-50%); color: var(--text3); }
-    .search-input { width: 100%; padding: 10px 14px 10px 40px; border: 1px solid var(--border); border-radius: 10px; font-family: var(--font); font-size: 13px; }
-    .filter-select { padding: 10px 14px; border: 1px solid var(--border); border-radius: 10px; font-family: var(--font); font-size: 13px; background: white; min-width: 140px; }
-
-    /* ── TABLES ── */
-    .table-container { overflow-x: auto; }
-    .data-table { width: 100%; border-collapse: collapse; white-space: nowrap; }
-    .data-table th { text-align: left; padding: 14px; font-size: 12px; font-weight: 600; color: var(--text2); border-bottom: 2px solid var(--border); text-transform: uppercase; letter-spacing: 0.05em; }
-    .data-table td { padding: 16px 14px; font-size: 13px; color: var(--text); border-bottom: 1px solid var(--border); vertical-align: middle; }
-    .data-table tr:hover { background: #f8fafc; }
-    .action-btn { background: none; border: 1px solid var(--border); padding: 6px 12px; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; transition: all 0.2s; color: var(--text); margin-right: 4px; }
-    .action-btn:hover { background: var(--border); }
-    .action-btn.approve { color: #166534; background: #f0fdf4; border-color: #bbf7d0; }
-    .action-btn.approve:hover { background: #dcfce7; }
-    .action-btn.reject { color: #991b1b; background: #fef2f2; border-color: #fecaca; }
-    .action-btn.reject:hover { background: #fee2e2; }
-
-    /* ── PAGINATION ── */
-    .pagination { display: flex; justify-content: flex-end; align-items: center; gap: 8px; margin-top: 20px; font-size: 13px; color: var(--text2); }
-    .page-btn { padding: 6px 12px; border: 1px solid var(--border); background: white; border-radius: 6px; cursor: pointer; font-family: var(--font); transition: all 0.2s; }
-    .page-btn:hover:not(:disabled) { background: #f1f5f9; }
-    .page-btn:disabled { opacity: 0.5; cursor: not-allowed; }
-    .page-active { background: var(--orange); color: white; border-color: var(--orange); }
-    .page-active:hover { background: var(--orange2); }
-
-    /* ── NOTICE ITEMS ── */
-    .notice-item { padding: 16px; border: 1px solid var(--border); border-radius: 12px; margin-bottom: 12px; display: flex; gap: 16px; background: var(--bg); }
-    .notice-icon { width: 40px; height: 40px; border-radius: 10px; background: #eff6ff; color: #3b82f6; display: flex; align-items: center; justify-content: center; flex-shrink: 0; }
-    .notice-info { flex: 1; }
-    .notice-title { font-size: 14px; font-weight: 700; color: var(--text); margin-bottom: 4px; display: flex; justify-content: space-between; align-items: center; }
-    .notice-desc { font-size: 13px; color: var(--text2); line-height: 1.5; }
-    
-    .status-badge { font-size: 10px; font-weight: 700; padding: 4px 8px; border-radius: 20px; text-transform: uppercase; }
-    .status-badge.active { background: #dcfce7; color: #15803d; }
-    .status-badge.inactive { background: #f1f5f9; color: #64748b; }
-    .status-badge.pending { background: #fef9c3; color: #854d0e; }
-
-    /* ── TOAST NOTIFICATIONS ── */
-    .toast-container { position: fixed; top: 20px; right: 20px; z-index: 9999; display: flex; flex-direction: column; gap: 10px; }
-    .toast { background: white; border-left: 4px solid var(--orange); box-shadow: 0 4px 12px rgba(0,0,0,0.1); padding: 16px 20px; border-radius: 8px; font-size: 14px; font-weight: 500; display: flex; align-items: center; gap: 12px; min-width: 300px; transform: translateX(120%); transition: transform 0.3s ease-in-out; }
-    .toast.show { transform: translateX(0); }
-    .toast.success { border-left-color: #10b981; }
-    .toast.error { border-left-color: #ef4444; }
-
-    /* ── MODALS ── */
-    .modal-overlay { position: fixed; top: 0; left: 0; right: 0; bottom: 0; background: rgba(0,0,0,0.5); backdrop-filter: blur(2px); z-index: 1000; display: none; align-items: center; justify-content: center; opacity: 0; transition: opacity 0.2s; }
-    .modal-overlay.active { display: flex; opacity: 1; }
-    .modal { background: white; border-radius: 16px; width: 100%; max-width: 500px; padding: 24px; transform: translateY(20px); transition: transform 0.2s; box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1); }
-    .modal-overlay.active .modal { transform: translateY(0); }
-    .modal-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 20px; }
-    .modal-title { font-size: 18px; font-weight: 700; color: var(--text); }
-    .close-modal { background: none; border: none; font-size: 20px; color: var(--text3); cursor: pointer; }
-    .close-modal:hover { color: var(--text); }
-    .modal-footer { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; padding-top: 16px; border-top: 1px solid var(--border); }
-  </style>
-</head>
-<body>
-  <!-- TOAST CONTAINER -->
-  <div class="toast-container" id="toast-container"></div>
-
-  <!-- ── SIDEBAR ── -->
-  <aside class="sidebar">
-    <div class="sidebar-brand">
-      <div class="brand-row">
-        <div class="brand-icon">
-          <svg viewBox="0 0 32 32" fill="none" stroke="white" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round">
-            <line x1="4" y1="16" x2="12" y2="16" />
-            <line x1="12" y1="9" x2="12" y2="23" />
-            <line x1="12" y1="10.5" x2="26" y2="5" />
-            <line x1="12" y1="21.5" x2="26" y2="27" />
-            <polygon points="22,24.5 26,27 23.5,22.5" fill="white" stroke="none" />
-            <line x1="26" y1="5" x2="26" y2="2" />
-            <line x1="26" y1="27" x2="26" y2="30" />
+<html lang="en" data-theme="light">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Lab Technician Dashboard — Lab Management System</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+    <style>
+      *,
+      *::before,
+      *::after {
+        box-sizing: border-box;
+        margin: 0;
+        padding: 0;
+      }
+      :root {
+        --orange: #f97316;
+        --orange2: #ea6c0a;
+        --orange3: #fb923c;
+        --navy: #1a1a2e;
+        --navy2: #0f172a;
+        --navy3: #1e293b;
+        --text: #1a1a2e;
+        --text2: #64748b;
+        --text3: #94a3b8;
+        --border: #e2e8f0;
+        --white: #ffffff;
+        --bg: #f8fafc;
+        --font: "Plus Jakarta Sans", sans-serif;
+      }
+      [data-theme="dark"] {
+        --text: #f1f5f9;
+        --text2: #cbd5e1;
+        --text3: #94a3b8;
+        --border: #334155;
+        --white: #1e293b;
+        --bg: #0f172a;
+      }
+      body {
+        font-family: var(--font);
+        background: var(--bg);
+        min-height: 100vh;
+        display: flex;
+      }
+      .sidebar {
+        width: 240px;
+        min-height: 100vh;
+        flex-shrink: 0;
+        background: linear-gradient(180deg, #1a1a2e 0%, #0f172a 100%);
+        display: flex;
+        flex-direction: column;
+        padding: 24px 0;
+        position: fixed;
+        left: 0;
+        top: 0;
+        bottom: 0;
+        z-index: 100;
+      }
+      .sidebar-brand {
+        padding: 0 20px 28px;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.08);
+        margin-bottom: 16px;
+      }
+      .brand-row {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .brand-icon {
+        width: 38px;
+        height: 38px;
+        background: rgba(249, 115, 22, 0.2);
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .brand-icon svg {
+        width: 20px;
+        height: 20px;
+      }
+      .brand-name {
+        font-size: 14px;
+        font-weight: 700;
+        color: white;
+        line-height: 1.2;
+      }
+      .brand-sub {
+        font-size: 10px;
+        color: rgba(249, 115, 22, 0.8);
+        font-weight: 600;
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-top: 2px;
+      }
+      .nav-section {
+        padding: 0 12px;
+        flex: 1;
+        overflow-y: auto;
+      }
+      .nav-label {
+        margin: 16px 0 6px 12px;
+        font-size: 10px;
+        font-weight: 700;
+        color: rgba(255, 255, 255, 0.3);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+      }
+      .nav-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        padding: 10px 12px;
+        border-radius: 10px;
+        margin-bottom: 4px;
+        color: rgba(255, 255, 255, 0.55);
+        font-size: 13px;
+        font-weight: 500;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+      }
+      .nav-item:hover {
+        background: rgba(255, 255, 255, 0.08);
+        color: rgba(255, 255, 255, 0.9);
+      }
+      .nav-item.active {
+        background: rgba(249, 115, 22, 0.15);
+        color: #fb923c;
+        font-weight: 600;
+        border-left: 3px solid var(--orange);
+      }
+      .nav-item svg {
+        width: 16px;
+        height: 16px;
+        flex-shrink: 0;
+      }
+      .sidebar-user {
+        margin: 16px 12px 0;
+        padding: 12px;
+        border-radius: 12px;
+        background: rgba(249, 115, 22, 0.1);
+        border: 1px solid rgba(249, 115, 22, 0.2);
+        display: flex;
+        align-items: center;
+        gap: 10px;
+      }
+      .user-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--orange), var(--orange2));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+        color: white;
+        flex-shrink: 0;
+      }
+      .user-name {
+        font-size: 13px;
+        font-weight: 600;
+        color: white;
+      }
+      .user-role {
+        font-size: 11px;
+        color: rgba(249, 115, 22, 0.8);
+      }
+      .logout-btn {
+        margin-left: auto;
+        background: none;
+        border: none;
+        color: rgba(255, 255, 255, 0.5);
+        cursor: pointer;
+        padding: 4px;
+        transition: 0.2s;
+      }
+      .logout-btn:hover {
+        color: white;
+        transform: scale(1.1);
+      }
+      .main {
+        margin-left: 240px;
+        flex: 1;
+        display: flex;
+        flex-direction: column;
+        min-height: 100vh;
+      }
+      .topbar {
+        background: var(--white);
+        border-bottom: 1px solid var(--border);
+        padding: 16px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        position: sticky;
+        top: 0;
+        z-index: 50;
+      }
+      .topbar-title {
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .topbar-right {
+        display: flex;
+        align-items: center;
+        gap: 12px;
+      }
+      .search-box {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 9px 16px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        background: var(--bg);
+        width: 220px;
+      }
+      .search-box input {
+        border: none;
+        outline: none;
+        font-family: var(--font);
+        font-size: 13px;
+        color: var(--text);
+        background: transparent;
+        width: 100%;
+      }
+      .search-box input::placeholder {
+        color: var(--text3);
+      }
+      .topbar-date {
+        padding: 8px 14px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        font-size: 13px;
+        color: var(--text2);
+        background: var(--bg);
+        white-space: nowrap;
+      }
+      .theme-toggle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: var(--white);
+        color: var(--text2);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        transition: all 0.2s;
+      }
+      .topbar-icon {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        background: var(--white);
+        color: var(--text2);
+        position: relative;
+      }
+      .notif-dot {
+        width: 8px;
+        height: 8px;
+        background: var(--orange);
+        border-radius: 50%;
+        position: absolute;
+        top: 6px;
+        right: 6px;
+        border: 2px solid var(--white);
+      }
+      .topbar-avatar {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--navy), var(--navy3));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 13px;
+        font-weight: 700;
+        color: white;
+        cursor: pointer;
+      }
+      .content {
+        padding: 28px 32px;
+        flex: 1;
+      }
+      .welcome-banner {
+        background: linear-gradient(135deg, var(--navy) 0%, #1e3a5f 100%);
+        border-radius: 18px;
+        padding: 28px 32px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 28px;
+        position: relative;
+        overflow: hidden;
+      }
+      .welcome-banner::before {
+        content: "";
+        position: absolute;
+        width: 200px;
+        height: 200px;
+        border-radius: 50%;
+        background: rgba(249, 115, 22, 0.08);
+        top: -60px;
+        right: 100px;
+      }
+      .welcome-banner::after {
+        content: "";
+        position: absolute;
+        width: 120px;
+        height: 120px;
+        border-radius: 50%;
+        background: rgba(249, 115, 22, 0.05);
+        bottom: -30px;
+        right: 40px;
+      }
+      .welcome-text {
+        position: relative;
+        z-index: 1;
+      }
+      .welcome-title {
+        font-size: 22px;
+        font-weight: 700;
+        color: white;
+        margin-bottom: 6px;
+      }
+      .welcome-sub {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.7);
+      }
+      .welcome-badge {
+        position: relative;
+        z-index: 1;
+        background: rgba(249, 115, 22, 0.2);
+        border: 1px solid rgba(249, 115, 22, 0.3);
+        border-radius: 12px;
+        padding: 10px 16px;
+        text-align: center;
+      }
+      .welcome-badge-label {
+        font-size: 10px;
+        font-weight: 700;
+        color: rgba(249, 115, 22, 0.8);
+        text-transform: uppercase;
+        letter-spacing: 0.08em;
+        margin-bottom: 4px;
+      }
+      .welcome-badge-value {
+        font-size: 22px;
+        font-weight: 700;
+        color: white;
+      }
+      .stats-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 16px;
+        margin-bottom: 28px;
+      }
+      .stat-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 14px;
+        padding: 20px;
+        border-top: 3px solid transparent;
+      }
+      .stat-card.blue {
+        border-top-color: #3b82f6;
+      }
+      .stat-card.teal {
+        border-top-color: #14b8a6;
+      }
+      .stat-card.amber {
+        border-top-color: #f59e0b;
+      }
+      .stat-card.red {
+        border-top-color: #ef4444;
+      }
+      .stat-label {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text2);
+        margin-bottom: 10px;
+        text-transform: uppercase;
+        letter-spacing: 0.04em;
+      }
+      .stat-value {
+        font-size: 32px;
+        font-weight: 700;
+        color: var(--text);
+        line-height: 1;
+        margin-bottom: 4px;
+      }
+      .stat-sub {
+        font-size: 12px;
+        color: var(--text3);
+      }
+      .sections-grid {
+        display: grid;
+        grid-template-columns: 1fr 340px;
+        gap: 20px;
+      }
+      .section-card {
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 16px;
+        padding: 24px;
+        margin-bottom: 20px;
+      }
+      .section-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: 20px;
+      }
+      .section-title {
+        font-size: 15px;
+        font-weight: 700;
+        color: var(--text);
+      }
+      .view-all {
+        font-size: 13px;
+        color: var(--orange);
+        font-weight: 600;
+        text-decoration: none;
+        cursor: pointer;
+      }
+      .list-item {
+        display: flex;
+        align-items: center;
+        gap: 14px;
+        padding: 14px 0;
+        border-bottom: 1px solid var(--border);
+      }
+      .list-item:last-child {
+        border-bottom: none;
+        padding-bottom: 0;
+      }
+      .item-icon {
+        width: 42px;
+        height: 42px;
+        border-radius: 10px;
+        background: var(--bg);
+        border: 1px solid var(--border);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        color: var(--text2);
+      }
+      .item-info {
+        flex: 1;
+        min-width: 0;
+      }
+      .item-title {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--text);
+        margin-bottom: 3px;
+        white-space: nowrap;
+        overflow: hidden;
+        text-overflow: ellipsis;
+      }
+      .item-meta {
+        font-size: 12px;
+        color: var(--text2);
+      }
+      .status-badge {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 20px;
+        flex-shrink: 0;
+      }
+      .status-green {
+        background: #dcfce7;
+        color: #15803d;
+      }
+      .status-red {
+        background: #fee2e2;
+        color: #991b1b;
+      }
+      .status-gray {
+        background: #f1f5f9;
+        color: #64748b;
+      }
+      .btn-action {
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text);
+        background: var(--white);
+        border: 1px solid var(--border);
+        border-radius: 6px;
+        padding: 6px 12px;
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+        display: inline-block;
+        font-family: var(--font);
+      }
+      .btn-action:hover {
+        border-color: var(--orange);
+        color: var(--orange);
+      }
+      .btn-action.navy {
+        background: var(--navy);
+        color: white;
+        border-color: var(--navy);
+      }
+      .quick-actions {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 12px;
+      }
+      .action-btn {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        justify-content: center;
+        gap: 10px;
+        padding: 20px 16px;
+        border-radius: 14px;
+        border: 1.5px solid var(--border);
+        background: var(--white);
+        cursor: pointer;
+        transition: all 0.2s;
+        text-decoration: none;
+      }
+      .action-btn:hover {
+        border-color: var(--navy);
+        background: #f8fafc;
+        transform: translateY(-2px);
+      }
+      .action-icon {
+        width: 44px;
+        height: 44px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .action-icon svg {
+        width: 22px;
+        height: 22px;
+      }
+      .action-icon.blue {
+        background: #eff6ff;
+        color: #3b82f6;
+      }
+      .action-icon.navy {
+        background: #f1f5f9;
+        color: var(--navy);
+      }
+      .action-icon.amber {
+        background: #fffbeb;
+        color: #f59e0b;
+      }
+      .action-icon.red {
+        background: #fff1f2;
+        color: #ef4444;
+      }
+      .action-label {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--text);
+        text-align: center;
+      }
+      .empty-state {
+        text-align: center;
+        padding: 32px;
+        color: var(--text3);
+        font-size: 13px;
+      }
+      .empty-icon {
+        font-size: 32px;
+        margin-bottom: 8px;
+      }
+      .alert {
+        padding: 10px 14px;
+        border-radius: 8px;
+        font-size: 13px;
+        margin-bottom: 16px;
+        display: none;
+      }
+      .alert.show {
+        display: block;
+      }
+      .alert.success {
+        background: #f0fdf4;
+        border: 1px solid #bbf7d0;
+        color: #166534;
+      }
+      .alert.error {
+        background: #fff1f2;
+        border: 1px solid #fecdd3;
+        color: #be123c;
+      }
+      @keyframes spin {
+        to {
+          transform: rotate(360deg);
+        }
+      }
+      @media (max-width: 1200px) {
+        .sections-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+      @media (max-width: 900px) {
+        .stats-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+      }
+      @media (max-width: 768px) {
+        .sidebar {
+          display: none;
+        }
+        .main {
+          margin-left: 0;
+        }
+        .content {
+          padding: 20px 16px;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <aside class="sidebar">
+      <div class="sidebar-brand">
+        <div class="brand-row">
+          <div class="brand-icon">
+            <svg
+              viewBox="0 0 32 32"
+              fill="none"
+              stroke="#f97316"
+              stroke-width="1.8"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+            >
+              <line x1="4" y1="16" x2="12" y2="16" />
+              <line x1="12" y1="9" x2="12" y2="23" />
+              <line x1="12" y1="10.5" x2="26" y2="5" />
+              <line x1="12" y1="21.5" x2="26" y2="27" />
+              <polygon
+                points="22,24.5 26,27 23.5,22.5"
+                fill="#f97316"
+                stroke="none"
+              />
+              <line x1="26" y1="5" x2="26" y2="2" />
+              <line x1="26" y1="27" x2="26" y2="30" />
+            </svg>
+          </div>
+          <div>
+            <div class="brand-name">Laboratory Management System</div>
+            <div class="brand-sub">Lab Technician</div>
+          </div>
+        </div>
+      </div>
+      <nav class="nav-section">
+        <div class="nav-label">Overview</div>
+        <a href="/admin-dashboard.html" class="nav-item active">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="3" y="3" width="7" height="7" />
+            <rect x="14" y="3" width="7" height="7" />
+            <rect x="3" y="14" width="7" height="7" />
+            <rect x="14" y="14" width="7" height="7" /></svg
+          >Dashboard
+        </a>
+        <div class="nav-label">Management</div>
+        <a href="/admin-catalog.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg
+          >Equipment & Labs
+        </a>
+        <a href="/admin-reservations.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <rect x="3" y="4" width="18" height="18" rx="2" />
+            <line x1="16" y1="2" x2="16" y2="6" />
+            <line x1="8" y1="2" x2="8" y2="6" />
+            <line x1="3" y1="10" x2="21" y2="10" /></svg
+          >All Reservations
+        </a>
+        <a href="/admin-issues.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <circle cx="12" cy="12" r="10" />
+            <line x1="12" y1="8" x2="12" y2="12" />
+            <line x1="12" y1="16" x2="12.01" y2="16" /></svg
+          >Issue Tickets
+        </a>
+        <a href="/requests.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+            /></svg
+          >Equipment Requests
+        </a>
+        <a href="/admin-users.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2" />
+            <circle cx="9" cy="7" r="4" />
+            <path d="M23 21v-2a4 4 0 00-3-3.87" />
+            <path d="M16 3.13a4 4 0 010 7.75" /></svg
+          >Manage Users
+        </a>
+        <div class="nav-label">Student View</div>
+        <a href="/catalog.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg
+          >Equipment Catalog
+        </a>
+        <a href="/report-issue.html" class="nav-item">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+            />
+            <line x1="12" y1="9" x2="12" y2="13" />
+            <line x1="12" y1="17" x2="12.01" y2="17" /></svg
+          >Report Issue
+        </a>
+        <div class="nav-label">Analytics</div>
+        <a href="#demand-section" class="nav-item" onclick="scrollToDemand()">
+          <svg
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
+            /></svg
+          >Demand Monitoring
+        </a>
+      </nav>
+      <div class="sidebar-user">
+        <div class="user-avatar" id="sidebar-avatar">LT</div>
+        <div>
+          <div class="user-name" id="sidebar-name">Lab Technician</div>
+          <div class="user-role">Lab Technician</div>
+        </div>
+        <button class="logout-btn" onclick="logout()" title="Logout">
+          <svg
+            width="16"
+            height="16"
+            viewBox="0 0 24 24"
+            fill="none"
+            stroke="currentColor"
+            stroke-width="2"
+          >
+            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
+            <polyline points="16 17 21 12 16 7" />
+            <line x1="21" y1="12" x2="9" y2="12" />
           </svg>
-        </div>
-        <div><div class="brand-name">Laboratory Management System</div></div>
+        </button>
       </div>
-    </div>
+    </aside>
 
-    <nav class="nav-section">
-      <a href="/student-dashboard.html" class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="3" width="7" height="7" /><rect x="14" y="3" width="7" height="7" />
-          <rect x="3" y="14" width="7" height="7" /><rect x="14" y="14" width="7" height="7" />
-        </svg> Dashboard
-      </a>
-      <a href="/catalog.html" class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M4 6h16M4 10h16M4 14h16M4 18h16" /></svg> Equipment & Lab Spaces
-      </a>
-      <a href="/my-reservations.html" class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <rect x="3" y="4" width="18" height="18" rx="2" />
-          <line x1="16" y1="2" x2="16" y2="6" /><line x1="8" y1="2" x2="8" y2="6" /><line x1="3" y1="10" x2="21" y2="10" />
-        </svg> My Reservations
-      </a>
-      <a href="/report-issue.html" class="nav-item">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          <circle cx="12" cy="12" r="10" /><line x1="12" y1="8" x2="12" y2="12" /><line x1="12" y1="16" x2="12.01" y2="16" />
-        </svg> Report Issue
-      </a>
-      <div style="margin: 20px 0 10px 12px; font-size: 11px; font-weight: 700; color: rgba(255,255,255,0.5); text-transform: uppercase; letter-spacing: 0.05em;">Admin</div>
-      <a href="/admin-dashboard.html" class="nav-item active">
-        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M12 22s8-4 8-10V5l-8-3-8 3v7c0 6 8 10 8 10z"/></svg> Admin Control Panel
-      </a>
-    </nav>
-
-    <div class="sidebar-user">
-      <div class="user-avatar">AD</div>
-      <div><div class="user-name">Admin User</div><div class="user-role">System Administrator</div></div>
-    </div>
-  </aside>
-
-  <!-- ── MAIN ── -->
-  <div class="main">
-    <div class="topbar">
-      <div class="topbar-title">Admin Control Panel</div>
-      <div class="topbar-right">
-        <div class="topbar-icon" onclick="refreshAllData()" title="Refresh Data">
-          <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M21 2v6h-6M3 12a9 9 0 0 1 15-6.7L21 8M3 22v-6h6M21 12a9 9 0 0 1-15 6.7L3 16"/></svg>
-        </div>
-      </div>
-    </div>
-
-    <!-- TABS -->
-    <div class="tabs-container">
-      <button class="tab-btn active" onclick="switchTab('overview')">Overview</button>
-      <button class="tab-btn" onclick="switchTab('equipment')">Manage Equipment</button>
-      <button class="tab-btn" onclick="switchTab('reservations')">Reservations Queue</button>
-      <button class="tab-btn" onclick="switchTab('issues')">Issue Tracker</button>
-    </div>
-
-    <!-- OVERVIEW TAB -->
-    <div id="tab-overview" class="tab-content active">
-      <div class="stats-grid">
-        <div class="stat-card blue">
-          <div>
-            <div class="stat-label">Total Users</div>
-            <div class="stat-value" id="stat-users">...</div>
-            <div class="stat-sub">Registered students and staff</div>
-          </div>
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#3b82f6" stroke-width="2" opacity="0.3"><path d="M17 21v-2a4 4 0 0 0-4-4H5a4 4 0 0 0-4 4v2"></path><circle cx="9" cy="7" r="4"></circle><path d="M23 21v-2a4 4 0 0 0-3-3.87"></path><path d="M16 3.13a4 4 0 0 1 0 7.75"></path></svg>
-        </div>
-        <div class="stat-card teal">
-          <div>
-            <div class="stat-label">Equipment Items</div>
-            <div class="stat-value" id="stat-equipment">...</div>
-            <div class="stat-sub">Tracked in database</div>
-          </div>
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#14b8a6" stroke-width="2" opacity="0.3"><polygon points="12 2 2 7 12 12 22 7 12 2"></polygon><polyline points="2 17 12 22 22 17"></polyline><polyline points="2 12 12 17 22 12"></polyline></svg>
-        </div>
-        <div class="stat-card amber">
-          <div>
-            <div class="stat-label">System Notices</div>
-            <div class="stat-value" id="stat-notices">0</div>
-            <div class="stat-sub">Total published notices</div>
-          </div>
-          <svg width="40" height="40" viewBox="0 0 24 24" fill="none" stroke="#f59e0b" stroke-width="2" opacity="0.3"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path></svg>
-        </div>
-      </div>
-
-      <div class="sections-grid">
-        <div class="section-card">
-          <div class="section-header"><div class="section-title">Broadcast Notice</div></div>
-          <form id="notice-form">
-            <div class="form-group">
-              <label class="form-label">Notice Title</label>
-              <input type="text" id="notice-title" class="form-input" placeholder="e.g., Lab Closed for Maintenance" required />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Message Content</label>
-              <textarea id="notice-message" class="form-textarea" placeholder="Enter the full announcement..." required></textarea>
-            </div>
-            <div class="form-group">
-              <label class="form-checkbox"><input type="checkbox" id="notice-active" checked /> Mark as active</label>
-            </div>
-            <button type="submit" class="btn-submit" id="btn-submit" style="width: 100%;">Publish Notice</button>
-          </form>
-        </div>
-
-        <div class="section-card">
-          <div class="section-header">
-            <div class="section-title">Dashboard Analytics</div>
-          </div>
-          <div class="chart-container">
-            <canvas id="dashboardChart"></canvas>
-          </div>
-        </div>
-      </div>
-      
-      <div class="section-card" style="margin-bottom: 20px;">
-          <div class="section-header">
-            <div class="section-title">Recent Notices</div>
-          </div>
-          <div id="notices-list"><div style="text-align:center;padding:30px;color:var(--text3);font-size:13px;">Loading notices...</div></div>
-      </div>
-    </div>
-
-    <!-- EQUIPMENT TAB -->
-    <div id="tab-equipment" class="tab-content">
-      <div class="section-card">
-        <div class="section-header">
-          <div class="section-title">Equipment Inventory</div>
-        </div>
-        
-        <div class="toolbar">
+    <div class="main">
+      <div class="topbar">
+        <div class="topbar-title">Lab Technician Dashboard</div>
+        <div class="topbar-right">
           <div class="search-box">
-            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <input type="text" class="search-input" id="search-equipment" placeholder="Search equipment by name..." onkeyup="renderEquipmentTable()" />
+            <svg
+              width="14"
+              height="14"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <circle cx="11" cy="11" r="8" />
+              <line x1="21" y1="21" x2="16.65" y2="16.65" />
+            </svg>
+            <input
+              type="text"
+              placeholder="Search equipment, labs..."
+              onclick="window.location.href = '/catalog.html'"
+            />
           </div>
-          <select class="filter-select" id="filter-equipment-status" onchange="renderEquipmentTable()">
-            <option value="ALL">All Statuses</option>
-            <option value="AVAILABLE">Available</option>
-            <option value="MAINTENANCE">Maintenance</option>
-            <option value="IN_USE">In Use</option>
-          </select>
-          <div style="flex-grow: 1;"></div>
-          <button class="btn-outline" onclick="exportCSV('equipment')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Export
+          <div class="topbar-date" id="topbar-date"></div>
+          <button
+            id="theme-btn"
+            class="theme-toggle"
+            type="button"
+            title="Toggle theme"
+          >
+            🌙
           </button>
-          <button class="btn-submit" onclick="openModal('modal-equipment')">+ Add Equipment</button>
-        </div>
-
-        <div class="table-container">
-          <table class="data-table">
-            <thead><tr><th>Name</th><th>Description</th><th>Status</th><th>Qty</th><th>Actions</th></tr></thead>
-            <tbody id="table-equipment"><tr><td colspan="5" style="text-align:center;">Loading...</td></tr></tbody>
-          </table>
-        </div>
-        <div class="pagination" id="pagination-equipment"></div>
-      </div>
-    </div>
-
-    <!-- RESERVATIONS TAB -->
-    <div id="tab-reservations" class="tab-content">
-      <div class="section-card">
-        <div class="section-header">
-          <div class="section-title">Reservations Queue</div>
-        </div>
-        
-        <div class="toolbar">
-          <div class="search-box">
-            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <input type="text" class="search-input" id="search-reservations" placeholder="Search by ID..." onkeyup="renderReservationsTable()" />
+          <div class="topbar-icon">
+            <svg
+              width="16"
+              height="16"
+              viewBox="0 0 24 24"
+              fill="none"
+              stroke="currentColor"
+              stroke-width="2"
+            >
+              <path
+                d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"
+              />
+            </svg>
+            <div class="notif-dot"></div>
           </div>
-          <select class="filter-select" id="filter-reservations-status" onchange="renderReservationsTable()">
-            <option value="ALL">All Statuses</option>
-            <option value="PENDING">Pending</option>
-            <option value="APPROVED">Approved</option>
-            <option value="REJECTED">Rejected</option>
-            <option value="CONFIRMED">Confirmed</option>
-          </select>
-          <div style="flex-grow: 1;"></div>
-          <button class="btn-outline" onclick="exportCSV('reservations')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Export
-          </button>
+          <a href="/profile.html" style="text-decoration: none"
+            ><div class="topbar-avatar" id="topbar-avatar">LT</div></a
+          >
         </div>
-
-        <div class="table-container">
-          <table class="data-table">
-            <thead><tr><th>Booking ID</th><th>Start Time</th><th>End Time</th><th>Status</th><th>Actions</th></tr></thead>
-            <tbody id="table-reservations"><tr><td colspan="5" style="text-align:center;">Loading...</td></tr></tbody>
-          </table>
-        </div>
-        <div class="pagination" id="pagination-reservations"></div>
       </div>
-    </div>
 
-    <!-- ISSUES TAB -->
-    <div id="tab-issues" class="tab-content">
-      <div class="section-card">
-        <div class="section-header">
-          <div class="section-title">Issue Tracker</div>
-        </div>
-        
-        <div class="toolbar">
-          <div class="search-box">
-            <svg class="search-icon" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="11" cy="11" r="8"></circle><line x1="21" y1="21" x2="16.65" y2="16.65"></line></svg>
-            <input type="text" class="search-input" id="search-issues" placeholder="Search issues by title..." onkeyup="renderIssuesTable()" />
+      <div class="content">
+        <div id="main-alert" class="alert"></div>
+
+        <div class="welcome-banner">
+          <div class="welcome-text">
+            <div class="welcome-title" id="welcome-title">
+              Lab Technician Panel
+            </div>
+            <div class="welcome-sub" id="welcome-sub">
+              Monitor equipment, manage issues and approve reservations.
+            </div>
           </div>
-          <select class="filter-select" id="filter-issues-status" onchange="renderIssuesTable()">
-            <option value="ALL">All Statuses</option>
-            <option value="OPEN">Open</option>
-            <option value="IN_PROGRESS">In Progress</option>
-            <option value="RESOLVED">Resolved</option>
-          </select>
-          <div style="flex-grow: 1;"></div>
-          <button class="btn-outline" onclick="exportCSV('issues')">
-            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" style="vertical-align: middle; margin-right: 4px;"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"></path><polyline points="7 10 12 15 17 10"></polyline><line x1="12" y1="15" x2="12" y2="3"></line></svg> Export
-          </button>
-        </div>
-
-        <div class="table-container">
-          <table class="data-table">
-            <thead><tr><th>Title</th><th>Description</th><th>Type</th><th>Status</th><th>Priority</th><th>Actions</th></tr></thead>
-            <tbody id="table-issues"><tr><td colspan="6" style="text-align:center;">Loading...</td></tr></tbody>
-          </table>
-        </div>
-        <div class="pagination" id="pagination-issues"></div>
-      </div>
-    </div>
-  </div>
-
-  <!-- ── MODALS ── -->
-  <!-- Equipment Modal -->
-  <div class="modal-overlay" id="modal-equipment">
-    <div class="modal">
-      <div class="modal-header">
-        <div class="modal-title" id="equipment-modal-title">Add/Edit Equipment</div>
-        <button class="close-modal" onclick="closeModal('modal-equipment')">&times;</button>
-      </div>
-      <form id="equipment-form" onsubmit="handleEquipmentSubmit(event)">
-        <div class="form-group">
-          <label class="form-label">Name</label>
-          <input type="text" class="form-input" id="eq-name" required>
-        </div>
-        <div class="form-group">
-          <label class="form-label">Description</label>
-          <textarea class="form-textarea" id="eq-desc" style="min-height: 60px;"></textarea>
-        </div>
-        <div style="display: flex; gap: 16px;">
-          <div class="form-group" style="flex: 1;">
-            <label class="form-label">Status</label>
-            <select class="form-select" id="eq-status">
-              <option value="AVAILABLE">AVAILABLE</option>
-              <option value="MAINTENANCE">MAINTENANCE</option>
-            </select>
-          </div>
-          <div class="form-group" style="flex: 1;">
-            <label class="form-label">Quantity</label>
-            <input type="number" class="form-input" id="eq-qty" min="0" value="1">
+          <div class="welcome-badge">
+            <div class="welcome-badge-label">Pending Actions</div>
+            <div class="welcome-badge-value" id="pending-count">-</div>
           </div>
         </div>
-        <div class="modal-footer">
-          <button type="button" class="btn-outline" onclick="closeModal('modal-equipment')">Cancel</button>
-          <button type="submit" class="btn-submit">Save Equipment</button>
+
+        <div class="stats-grid">
+          <div class="stat-card blue">
+            <div class="stat-label">Total Reservations</div>
+            <div class="stat-value" id="stat-res">-</div>
+            <div class="stat-sub">Active and upcoming</div>
+          </div>
+          <div class="stat-card red">
+            <div class="stat-label">Open Issues</div>
+            <div class="stat-value" id="stat-issues">-</div>
+            <div class="stat-sub">Reported by students</div>
+          </div>
+          <div class="stat-card amber">
+            <div class="stat-label">Under Maintenance</div>
+            <div class="stat-value" id="stat-maintenance">-</div>
+            <div class="stat-sub">Equipment unavailable</div>
+          </div>
+          <div class="stat-card teal">
+            <div class="stat-label">Pending Requests</div>
+            <div class="stat-value" id="stat-reqs">-</div>
+            <div class="stat-sub">Awaiting approval</div>
+          </div>
         </div>
-      </form>
-    </div>
-  </div>
 
-  <!-- Action Confirmation Modal -->
-  <div class="modal-overlay" id="modal-confirm">
-    <div class="modal" style="max-width: 400px;">
-      <div class="modal-header">
-        <div class="modal-title" id="confirm-title">Confirm Action</div>
-        <button class="close-modal" onclick="closeModal('modal-confirm')">&times;</button>
-      </div>
-      <p style="font-size: 14px; color: var(--text2); margin-bottom: 20px;" id="confirm-message">Are you sure you want to proceed?</p>
-      <div class="modal-footer">
-        <button class="btn-outline" onclick="closeModal('modal-confirm')">Cancel</button>
-        <button class="btn-submit" id="confirm-action-btn" style="background: #ef4444;">Confirm</button>
+        <div class="sections-grid">
+          <div class="left-col">
+            <div class="section-card">
+              <div class="section-header">
+                <div class="section-title">Equipment Status</div>
+                <a href="/admin-catalog.html" class="view-all">Manage</a>
+              </div>
+              <div id="eq-list">
+                <div class="empty-state">
+                  <div
+                    style="
+                      width: 24px;
+                      height: 24px;
+                      border: 3px solid #e2e8f0;
+                      border-top-color: #1a1a2e;
+                      border-radius: 50%;
+                      animation: spin 0.8s linear infinite;
+                      margin: 0 auto 8px;
+                    "
+                  ></div>
+                  Loading...
+                </div>
+              </div>
+            </div>
+            <div class="section-card">
+              <div class="section-header">
+                <div class="section-title">Open Issue Tickets</div>
+                <a href="/admin-issues.html" class="view-all">View all</a>
+              </div>
+              <div id="issues-list">
+                <div class="empty-state">Loading issues...</div>
+              </div>
+            </div>
+            <div class="section-card">
+              <div class="section-header">
+                <div class="section-title">Pending Reservations</div>
+                <a href="/admin-reservations.html" class="view-all">View all</a>
+              </div>
+              <div id="reservations-list">
+                <div class="empty-state">Loading reservations...</div>
+              </div>
+            </div>
+          </div>
+          <div class="right-col">
+            <div class="section-card">
+              <div class="section-header">
+                <div class="section-title">Quick Actions</div>
+              </div>
+              <div class="quick-actions">
+                <a href="/admin-reservations.html" class="action-btn"
+                  ><div class="action-icon navy">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <rect x="3" y="4" width="18" height="18" rx="2" />
+                      <line x1="16" y1="2" x2="16" y2="6" />
+                      <line x1="8" y1="2" x2="8" y2="6" />
+                      <line x1="3" y1="10" x2="21" y2="10" />
+                    </svg>
+                  </div>
+                  <div class="action-label">Manage Reservations</div></a
+                >
+                <a href="/admin-issues.html" class="action-btn"
+                  ><div class="action-icon red">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <circle cx="12" cy="12" r="10" />
+                      <line x1="12" y1="8" x2="12" y2="12" />
+                      <line x1="12" y1="16" x2="12.01" y2="16" />
+                    </svg>
+                  </div>
+                  <div class="action-label">Resolve Issues</div></a
+                >
+                <a href="/admin-catalog.html" class="action-btn"
+                  ><div class="action-icon blue">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
+                    </svg>
+                  </div>
+                  <div class="action-label">Update Catalog</div></a
+                >
+                <a href="/requests.html" class="action-btn"
+                  ><div class="action-icon amber">
+                    <svg
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      stroke="currentColor"
+                      stroke-width="2"
+                    >
+                      <path
+                        d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
+                      />
+                    </svg>
+                  </div>
+                  <div class="action-label">Equipment Requests</div></a
+                >
+              </div>
+            </div>
+            <div class="section-card">
+              <div class="section-header">
+                <div class="section-title">Recent Activity</div>
+              </div>
+              <div
+                id="activity-list"
+                style="max-height: 340px; overflow-y: auto"
+              >
+                <div class="empty-state">Loading activity...</div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- DEMAND MONITORING -->
+        <div id="demand-section" style="margin-top: 8px">
+          <div class="section-card" style="margin-bottom: 20px">
+            <div class="section-header">
+              <div class="section-title">Demand Monitoring</div>
+              <button
+                onclick="loadDemand()"
+                style="
+                  font-size: 12px;
+                  font-weight: 600;
+                  color: var(--orange);
+                  background: none;
+                  border: none;
+                  cursor: pointer;
+                  font-family: var(--font);
+                "
+              >
+                Refresh
+              </button>
+            </div>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: repeat(4, 1fr);
+                gap: 12px;
+                margin-bottom: 24px;
+              "
+            >
+              <div
+                style="
+                  background: var(--bg);
+                  border: 1px solid var(--border);
+                  border-radius: 12px;
+                  padding: 16px;
+                "
+              >
+                <div
+                  style="
+                    font-size: 11px;
+                    font-weight: 600;
+                    color: var(--text2);
+                    text-transform: uppercase;
+                    margin-bottom: 8px;
+                  "
+                >
+                  Total Reservations
+                </div>
+                <div
+                  style="font-size: 28px; font-weight: 700; color: var(--text)"
+                  id="dm-total"
+                >
+                  -
+                </div>
+              </div>
+              <div
+                style="
+                  background: var(--bg);
+                  border: 1px solid var(--border);
+                  border-radius: 12px;
+                  padding: 16px;
+                "
+              >
+                <div
+                  style="
+                    font-size: 11px;
+                    font-weight: 600;
+                    color: var(--text2);
+                    text-transform: uppercase;
+                    margin-bottom: 8px;
+                  "
+                >
+                  Active Now
+                </div>
+                <div
+                  style="font-size: 28px; font-weight: 700; color: #16a34a"
+                  id="dm-active"
+                >
+                  -
+                </div>
+              </div>
+              <div
+                style="
+                  background: var(--bg);
+                  border: 1px solid var(--border);
+                  border-radius: 12px;
+                  padding: 16px;
+                "
+              >
+                <div
+                  style="
+                    font-size: 11px;
+                    font-weight: 600;
+                    color: var(--text2);
+                    text-transform: uppercase;
+                    margin-bottom: 8px;
+                  "
+                >
+                  Open Tickets
+                </div>
+                <div
+                  style="font-size: 28px; font-weight: 700; color: #ef4444"
+                  id="dm-tickets"
+                >
+                  -
+                </div>
+              </div>
+              <div
+                style="
+                  background: var(--bg);
+                  border: 1px solid var(--border);
+                  border-radius: 12px;
+                  padding: 16px;
+                "
+              >
+                <div
+                  style="
+                    font-size: 11px;
+                    font-weight: 600;
+                    color: var(--text2);
+                    text-transform: uppercase;
+                    margin-bottom: 8px;
+                  "
+                >
+                  Equipment Available
+                </div>
+                <div
+                  style="font-size: 28px; font-weight: 700; color: #3b82f6"
+                  id="dm-avail"
+                >
+                  -
+                </div>
+              </div>
+            </div>
+            <div
+              style="
+                display: grid;
+                grid-template-columns: 1fr 1fr;
+                gap: 20px;
+                margin-bottom: 24px;
+              "
+            >
+              <div>
+                <div
+                  style="
+                    font-size: 13px;
+                    font-weight: 700;
+                    color: var(--text);
+                    margin-bottom: 12px;
+                  "
+                >
+                  Most Used Equipment
+                </div>
+                <div style="position: relative; height: 220px">
+                  <canvas id="dm-equip-chart"></canvas>
+                </div>
+              </div>
+              <div>
+                <div
+                  style="
+                    font-size: 13px;
+                    font-weight: 700;
+                    color: var(--text);
+                    margin-bottom: 12px;
+                  "
+                >
+                  Lab Utilisation
+                </div>
+                <div
+                  id="dm-lab-bars"
+                  style="display: flex; flex-direction: column; gap: 12px"
+                ></div>
+              </div>
+            </div>
+            <div>
+              <div
+                style="
+                  font-size: 13px;
+                  font-weight: 700;
+                  color: var(--text);
+                  margin-bottom: 12px;
+                "
+              >
+                Peak Usage Hours
+              </div>
+              <div id="dm-heatmap" style="overflow-x: auto"></div>
+            </div>
+          </div>
+        </div>
       </div>
     </div>
-  </div>
 
-  <script>
-    // Global State for Data and Pagination
-    const state = {
-      equipment: [],
-      reservations: [],
-      issues: [],
-      pagination: {
-        equipment: { page: 1, limit: 5 },
-        reservations: { page: 1, limit: 5 },
-        issues: { page: 1, limit: 5 }
+    <script>
+      const API = "http://localhost:8080/api";
+      const token = sessionStorage.getItem("token");
+      const username = sessionStorage.getItem("username");
+      const role = sessionStorage.getItem("role");
+
+      if (!token) window.location.href = "/login.html";
+      if (role === "STUDENT") window.location.href = "/student-dashboard.html";
+      if (role === "ADMIN") window.location.href = "/lead-admin-dashboard.html";
+
+      if (username) {
+        const i = username.substring(0, 2).toUpperCase();
+        document.getElementById("sidebar-avatar").textContent = i;
+        document.getElementById("topbar-avatar").textContent = i;
+        document.getElementById("sidebar-name").textContent = username;
+        document.getElementById("welcome-title").textContent =
+          "Welcome back, " + username + "!";
       }
-    };
 
-    let dashboardChartInstance = null;
+      document.getElementById("topbar-date").textContent =
+        new Date().toLocaleDateString("en-GB", {
+          weekday: "short",
+          day: "numeric",
+          month: "long",
+          year: "numeric",
+        });
 
-    document.addEventListener('DOMContentLoaded', () => {
-      refreshAllData();
-    });
-
-    function showToast(message, type = 'success') {
-      const container = document.getElementById('toast-container');
-      const toast = document.createElement('div');
-      toast.className = `toast ${type}`;
-      toast.innerHTML = `
-        <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
-          ${type === 'success' ? '<path d="M22 11.08V12a10 10 0 1 1-5.93-9.14"></path><polyline points="22 4 12 14.01 9 11.01"></polyline>' : '<circle cx="12" cy="12" r="10"></circle><line x1="12" y1="8" x2="12" y2="12"></line><line x1="12" y1="16" x2="12.01" y2="16"></line>'}
-        </svg>
-        <span>${message}</span>
-      `;
-      container.appendChild(toast);
-      
-      // Trigger animation
-      setTimeout(() => toast.classList.add('show'), 10);
-      
-      // Remove toast
-      setTimeout(() => {
-        toast.classList.remove('show');
-        setTimeout(() => toast.remove(), 300);
-      }, 3000);
-    }
-
-    function openModal(id) {
-      document.getElementById(id).classList.add('active');
-    }
-    
-    function closeModal(id) {
-      document.getElementById(id).classList.remove('active');
-    }
-
-    function switchTab(tabId) {
-      document.querySelectorAll('.tab-content').forEach(el => el.classList.remove('active'));
-      document.querySelectorAll('.tab-btn').forEach(el => el.classList.remove('active'));
-      
-      document.getElementById('tab-' + tabId).classList.add('active');
-      event.currentTarget.classList.add('active');
-
-      if (tabId === 'overview') updateChart();
-      if (tabId === 'equipment') renderEquipmentTable();
-      if (tabId === 'reservations') renderReservationsTable();
-      if (tabId === 'issues') renderIssuesTable();
-    }
-
-    async function refreshAllData() {
-      await Promise.all([
-        loadStats(),
-        loadNotices(),
-        fetchData('equipment'),
-        fetchData('reservations'),
-        fetchData('issues')
-      ]);
-      initChart();
-      showToast('Data refreshed successfully', 'success');
-    }
-
-    async function loadStats() {
-      try {
-        const res = await fetch('/api/admin/notices/stats');
-        if (res.ok) {
-          const stats = await res.json();
-          document.getElementById('stat-users').textContent = stats.users || 0;
-          document.getElementById('stat-equipment').textContent = stats.equipment || 0;
-          document.getElementById('stat-notices').textContent = stats.notices || 0;
-        }
-      } catch (e) { console.error('Stats fail', e); }
-    }
-
-    // Chart logic
-    function initChart() {
-      const ctx = document.getElementById('dashboardChart').getContext('2d');
-      if (dashboardChartInstance) dashboardChartInstance.destroy();
-      
-      // Count statuses for demo chart
-      const pendingRes = state.reservations.filter(r => r.status === 'PENDING').length;
-      const approvedRes = state.reservations.filter(r => r.status === 'APPROVED').length;
-      const openIssues = state.issues.filter(i => i.status !== 'RESOLVED').length;
-
-      dashboardChartInstance = new Chart(ctx, {
-        type: 'bar',
-        data: {
-          labels: ['Pending Reservations', 'Approved Reservations', 'Open Issues'],
-          datasets: [{
-            label: 'System Metrics',
-            data: [pendingRes, approvedRes, openIssues],
-            backgroundColor: ['#f59e0b', '#10b981', '#ef4444'],
-            borderRadius: 6
-          }]
-        },
-        options: {
-          responsive: true,
-          maintainAspectRatio: false,
-          scales: { y: { beginAtZero: true, ticks: { precision: 0 } } },
-          plugins: { legend: { display: false } }
-        }
-      });
-    }
-
-    function updateChart() {
-      if(dashboardChartInstance) {
-          dashboardChartInstance.data.datasets[0].data = [
-              state.reservations.filter(r => r.status === 'PENDING').length,
-              state.reservations.filter(r => r.status === 'APPROVED').length,
-              state.issues.filter(i => i.status !== 'RESOLVED').length
-          ];
-          dashboardChartInstance.update();
+      function logout() {
+        sessionStorage.clear();
+        window.location.href = "/login.html";
       }
-    }
+      function showAlert(type, msg) {
+        const el = document.getElementById("main-alert");
+        el.className = "alert " + type + " show";
+        el.textContent = msg;
+        setTimeout(() => el.classList.remove("show"), 4000);
+      }
+      function scrollToDemand() {
+        document
+          .getElementById("demand-section")
+          .scrollIntoView({ behavior: "smooth" });
+      }
 
-    // Generic fetch data
-    async function fetchData(type) {
-      try {
-        const res = await fetch(`/api/admin/notices/${type}`);
-        if(res.ok) {
-          state[type] = await res.json();
-          if (document.getElementById(`tab-${type}`).classList.contains('active')) {
-            if(type==='equipment') renderEquipmentTable();
-            if(type==='reservations') renderReservationsTable();
-            if(type==='issues') renderIssuesTable();
+      async function loadDashboard() {
+        try {
+          const h = { Authorization: "Bearer " + token };
+          const [r1, r2, r3, r4] = await Promise.all([
+            fetch(API + "/reservations", { headers: h }).catch(() => ({
+              ok: false,
+            })),
+            fetch(API + "/issues", { headers: h }).catch(() => ({ ok: false })),
+            fetch(API + "/catalog/equipment", { headers: h }).catch(() => ({
+              ok: false,
+            })),
+            fetch(API + "/requests", { headers: h }).catch(() => ({
+              ok: false,
+            })),
+          ]);
+          const reservations = r1.ok ? await r1.json() : [];
+          const issues = r2.ok ? await r2.json() : [];
+          const equipment = r3.ok ? await r3.json() : [];
+          const requests = r4.ok ? await r4.json() : [];
+
+          const pendingRes = reservations.filter((r) => r.status === "PENDING");
+          const openIssues = issues.filter(
+            (i) => i.status !== "RESOLVED" && i.status !== "CLOSED",
+          );
+          const maintenance = equipment.filter(
+            (e) => e.status === "MAINTENANCE",
+          );
+          const pendingReqs = requests.filter((r) => r.status === "PENDING");
+
+          document.getElementById("stat-res").textContent = reservations.length;
+          document.getElementById("stat-issues").textContent =
+            openIssues.length;
+          document.getElementById("stat-maintenance").textContent =
+            maintenance.length;
+          document.getElementById("stat-reqs").textContent = pendingReqs.length;
+          document.getElementById("pending-count").textContent =
+            pendingRes.length + openIssues.length + pendingReqs.length;
+          document.getElementById("welcome-sub").textContent =
+            pendingRes.length +
+            " pending reservations · " +
+            openIssues.length +
+            " open issues · " +
+            pendingReqs.length +
+            " equipment requests awaiting approval.";
+
+          const eqList = document.getElementById("eq-list");
+          if (!equipment.length) {
+            eqList.innerHTML =
+              '<div class="empty-state">No equipment found.</div>';
+          } else {
+            eqList.innerHTML = equipment
+              .slice(0, 5)
+              .map((eq) => {
+                const b =
+                  eq.status === "AVAILABLE"
+                    ? "status-green"
+                    : eq.status === "MAINTENANCE"
+                      ? "status-red"
+                      : "status-gray";
+                return (
+                  '<div class="list-item"><div class="item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="12" rx="2"/></svg></div><div class="item-info"><div class="item-title">' +
+                  eq.name +
+                  '</div><div class="item-meta">' +
+                  (eq.equipmentCode || "") +
+                  '</div></div><span class="status-badge ' +
+                  b +
+                  '">' +
+                  eq.status +
+                  "</span></div>"
+                );
+              })
+              .join("");
+          }
+
+          const issuesList = document.getElementById("issues-list");
+          if (!openIssues.length) {
+            issuesList.innerHTML =
+              '<div class="empty-state"><div class="empty-icon">OK</div>No open issues.</div>';
+          } else {
+            issuesList.innerHTML = openIssues
+              .slice(0, 5)
+              .map(
+                (i) =>
+                  '<div class="list-item"><div class="item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="#ef4444" stroke-width="2"><circle cx="12" cy="12" r="10"/></svg></div><div class="item-info"><div class="item-title">' +
+                  i.title +
+                  '</div><div class="item-meta">' +
+                  i.status +
+                  '</div></div><a href="/admin-issues.html" class="btn-action">Manage</a></div>',
+              )
+              .join("");
+          }
+
+          const resList = document.getElementById("reservations-list");
+          if (!pendingRes.length) {
+            resList.innerHTML =
+              '<div class="empty-state"><div class="empty-icon">OK</div>No pending reservations.</div>';
+          } else {
+            resList.innerHTML = pendingRes
+              .slice(0, 5)
+              .map((r) => {
+                const name = r.equipment
+                  ? r.equipment.name
+                  : r.lab
+                    ? r.lab.labName
+                    : "Resource";
+                const start = r.startTime
+                  ? new Date(r.startTime).toLocaleString("en-GB", {
+                      day: "numeric",
+                      month: "short",
+                      hour: "2-digit",
+                      minute: "2-digit",
+                    })
+                  : "";
+                return (
+                  '<div class="list-item"><div class="item-icon"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="3" y="4" width="18" height="18" rx="2"/></svg></div><div class="item-info"><div class="item-title">' +
+                  name +
+                  '</div><div class="item-meta">' +
+                  (r.user?.username || "Student") +
+                  " " +
+                  start +
+                  '</div></div><a href="/admin-reservations.html" class="btn-action navy">Review</a></div>'
+                );
+              })
+              .join("");
+          }
+
+          const activity = [
+            ...reservations.slice(0, 5).map((r) => ({
+              type: "Reservation",
+              color: "#3b82f6",
+              title:
+                "Reservation by " +
+                (r.user?.username || "student") +
+                " for " +
+                (r.equipment?.name || r.lab?.labName || "resource"),
+              date: new Date(r.createdAt || Date.now()),
+            })),
+            ...issues.slice(0, 5).map((i) => ({
+              type: "Issue",
+              color: "#ef4444",
+              title: "Issue: " + i.title,
+              date: new Date(i.createdAt || Date.now()),
+            })),
+            ...requests.slice(0, 3).map((r) => ({
+              type: "Request",
+              color: "#f59e0b",
+              title: "Request: " + r.itemName,
+              date: new Date(r.createdAt || Date.now()),
+            })),
+          ].sort((a, b) => b.date - a.date);
+          const actList = document.getElementById("activity-list");
+          if (!activity.length) {
+            actList.innerHTML =
+              '<div class="empty-state">No recent activity.</div>';
+          } else {
+            actList.innerHTML = activity
+              .slice(0, 10)
+              .map(
+                (a) =>
+                  '<div class="list-item"><div class="item-icon" style="color:' +
+                  a.color +
+                  '"><svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div><div class="item-info"><div class="item-title" style="font-size:13px;">' +
+                  a.title +
+                  '</div><div class="item-meta">' +
+                  a.type +
+                  " · " +
+                  a.date.toLocaleString() +
+                  "</div></div></div>",
+              )
+              .join("");
+          }
+        } catch (e) {
+          console.error("Dashboard load failed", e);
+          showAlert("error", "Failed to load dashboard data.");
+        }
+      }
+
+      let dmEquipChart = null;
+
+      async function loadDemand() {
+        try {
+          const h = { Authorization: "Bearer " + token };
+          const [r1, r2, r3] = await Promise.all([
+            fetch(API + "/reservations", { headers: h }),
+            fetch(API + "/catalog/equipment", { headers: h }),
+            fetch(API + "/issues", { headers: h }),
+          ]);
+          const reservations = r1.ok ? await r1.json() : [];
+          const equipment = r2.ok ? await r2.json() : [];
+          const issues = r3.ok ? await r3.json() : [];
+          const now = new Date();
+
+          document.getElementById("dm-total").textContent = reservations.length;
+          document.getElementById("dm-active").textContent =
+            reservations.filter(
+              (r) =>
+                new Date(r.startTime) <= now &&
+                new Date(r.endTime) >= now &&
+                r.status !== "CANCELLED",
+            ).length;
+          document.getElementById("dm-tickets").textContent = issues.filter(
+            (i) => i.status !== "RESOLVED",
+          ).length;
+          document.getElementById("dm-avail").textContent = equipment.filter(
+            (e) => e.status === "AVAILABLE",
+          ).length;
+
+          const ec = {};
+          reservations.forEach((r) => {
+            const n = r.equipment?.name;
+            if (n) ec[n] = (ec[n] || 0) + 1;
+          });
+          const sorted = Object.entries(ec)
+            .sort((a, b) => b[1] - a[1])
+            .slice(0, 8);
+          if (dmEquipChart) dmEquipChart.destroy();
+          dmEquipChart = new Chart(
+            document.getElementById("dm-equip-chart").getContext("2d"),
+            {
+              type: "bar",
+              data: {
+                labels: sorted.map(([n]) =>
+                  n.length > 22 ? n.slice(0, 22) + "..." : n,
+                ),
+                datasets: [
+                  {
+                    label: "Reservations",
+                    data: sorted.map(([, c]) => c),
+                    backgroundColor: "#f97316",
+                    borderRadius: 5,
+                    borderSkipped: false,
+                  },
+                ],
+              },
+              options: {
+                indexAxis: "y",
+                responsive: true,
+                maintainAspectRatio: false,
+                plugins: { legend: { display: false } },
+                scales: {
+                  x: {
+                    grid: { color: "#f1f5f9" },
+                    ticks: { color: "#64748b", font: { size: 11 } },
+                  },
+                  y: {
+                    grid: { display: false },
+                    ticks: { color: "#64748b", font: { size: 11 } },
+                  },
+                },
+              },
+            },
+          );
+
+          const lc = {};
+          reservations.forEach((r) => {
+            const n = r.lab?.labName;
+            if (n) lc[n] = (lc[n] || 0) + 1;
+          });
+          const ls = Object.entries(lc).sort((a, b) => b[1] - a[1]);
+          const ml = ls[0]?.[1] || 1;
+          document.getElementById("dm-lab-bars").innerHTML = ls
+            .map(
+              ([name, count]) =>
+                '<div><div style="display:flex;justify-content:space-between;font-size:13px;margin-bottom:5px;"><span style="font-weight:500;color:var(--text)">' +
+                name +
+                '</span><span style="color:var(--text2)">' +
+                count +
+                '</span></div><div style="background:var(--bg);border-radius:6px;height:8px;overflow:hidden;border:1px solid var(--border);"><div style="height:100%;border-radius:6px;background:var(--orange);width:' +
+                Math.round((count / ml) * 100) +
+                '%;"></div></div></div>',
+            )
+            .join("");
+
+          const DAYS = ["Sun", "Mon", "Tue", "Wed", "Thu", "Fri", "Sat"];
+          const HOURS = Array.from({ length: 24 }, (_, i) =>
+            i === 0
+              ? "12a"
+              : i < 12
+                ? i + "a"
+                : i === 12
+                  ? "12p"
+                  : i - 12 + "p",
+          );
+          const grid = Array.from({ length: 7 }, () => new Array(24).fill(0));
+          let maxH = 1;
+          reservations.forEach((r) => {
+            if (!r.startTime) return;
+            const d = new Date(r.startTime),
+              day = d.getDay(),
+              hr = d.getHours();
+            grid[day][hr]++;
+            if (grid[day][hr] > maxH) maxH = grid[day][hr];
+          });
+          const table = document.createElement("table");
+          table.style.cssText =
+            "border-collapse:separate;border-spacing:3px;font-size:11px;font-family:var(--font)";
+          const thead = table.createTHead(),
+            hr0 = thead.insertRow();
+          const th0 = document.createElement("th");
+          th0.style.cssText = "width:36px";
+          hr0.appendChild(th0);
+          HOURS.forEach((h) => {
+            const th = document.createElement("th");
+            th.textContent = h;
+            th.style.cssText =
+              "color:var(--text3);font-weight:400;text-align:center;padding:2px";
+            hr0.appendChild(th);
+          });
+          const tbody = table.createTBody();
+          DAYS.forEach((day, di) => {
+            const row = tbody.insertRow(),
+              lc = row.insertCell();
+            lc.textContent = day;
+            lc.style.cssText =
+              "color:var(--text2);font-size:11px;font-weight:500;padding-right:8px;text-align:right;white-space:nowrap";
+            HOURS.forEach((_, hi) => {
+              const cell = row.insertCell(),
+                val = grid[di][hi],
+                t = val / maxH;
+              cell.style.cssText =
+                "width:22px;height:18px;border-radius:3px;background:" +
+                hmColor(t) +
+                ";cursor:default;";
+              cell.title = day + " " + HOURS[hi] + ": " + val + " reservations";
+            });
+          });
+          const hm = document.getElementById("dm-heatmap");
+          hm.innerHTML = "";
+          hm.appendChild(table);
+        } catch (e) {
+          console.error("Demand load failed", e);
+        }
+      }
+
+      function hmColor(t) {
+        if (t === 0) return "#f1f5f9";
+        const stops = [
+          [0, [254, 232, 210]],
+          [0.3, [253, 186, 140]],
+          [0.6, [243, 109, 29]],
+          [1, [154, 52, 4]],
+        ];
+        for (let i = 1; i < stops.length; i++) {
+          if (t <= stops[i][0]) {
+            const r = (t - stops[i - 1][0]) / (stops[i][0] - stops[i - 1][0]),
+              a = stops[i - 1][1],
+              b = stops[i][1];
+            return (
+              "rgb(" +
+              Math.round(a[0] + (b[0] - a[0]) * r) +
+              "," +
+              Math.round(a[1] + (b[1] - a[1]) * r) +
+              "," +
+              Math.round(a[2] + (b[2] - a[2]) * r) +
+              ")"
+            );
           }
         }
-      } catch (e) { console.error(`Error loading ${type}`, e); }
-    }
-
-    // Notices
-    document.getElementById('notice-form').addEventListener('submit', async e => {
-      e.preventDefault();
-      const btn = document.getElementById('btn-submit'); btn.disabled = true; btn.textContent = 'Publishing...';
-      const payload = {
-        title: document.getElementById('notice-title').value,
-        message: document.getElementById('notice-message').value,
-        active: document.getElementById('notice-active').checked
-      };
-      try {
-        const res = await fetch('/api/admin/notices', { method: 'POST', headers: {'Content-Type': 'application/json'}, body: JSON.stringify(payload) });
-        if (res.ok) {
-          document.getElementById('notice-form').reset();
-          loadNotices(); loadStats();
-          showToast('Notice published successfully!');
-        }
-      } catch (e) { showToast('Error publishing notice', 'error'); }
-      finally { btn.disabled = false; btn.textContent = 'Publish Notice'; }
-    });
-
-    async function loadNotices() {
-      const list = document.getElementById('notices-list');
-      try {
-        const res = await fetch('/api/admin/notices');
-        const data = await res.json();
-        if(data.length===0){ list.innerHTML = '<div style="text-align:center;padding:30px;color:var(--text3);font-size:13px;">No notices yet.</div>'; return; }
-        list.innerHTML = data.reverse().map(n => `
-          <div class="notice-item">
-            <div class="notice-icon ${!n.active ? 'inactive' : ''}"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M22 17H2a3 3 0 0 0 3-3V9a7 7 0 0 1 14 0v5a3 3 0 0 0 3 3zm-8.27 4a2 2 0 0 1-3.46 0"></path></svg></div>
-            <div class="notice-info">
-              <div class="notice-title">${n.title} <span class="status-badge ${n.active ? 'active' : 'inactive'}">${n.active ? 'Active' : 'Inactive'}</span></div>
-              <div class="notice-desc">${n.message}</div>
-            </div>
-          </div>
-        `).join('');
-      } catch (e) { list.innerHTML = 'Error loading notices'; }
-    }
-
-    // Render Helpers
-    function paginate(array, page_size, page_number) {
-      return array.slice((page_number - 1) * page_size, page_number * page_size);
-    }
-
-    function renderPagination(total, type) {
-      const totalPages = Math.ceil(total / state.pagination[type].limit) || 1;
-      const curr = state.pagination[type].page;
-      const container = document.getElementById(`pagination-${type}`);
-      
-      let html = `<button class="page-btn" ${curr === 1 ? 'disabled' : ''} onclick="changePage('${type}', ${curr - 1})">Prev</button>`;
-      html += `<span>Page ${curr} of ${totalPages}</span>`;
-      html += `<button class="page-btn" ${curr === totalPages ? 'disabled' : ''} onclick="changePage('${type}', ${curr + 1})">Next</button>`;
-      
-      container.innerHTML = html;
-    }
-
-    function changePage(type, newPage) {
-      state.pagination[type].page = newPage;
-      if(type === 'equipment') renderEquipmentTable();
-      if(type === 'reservations') renderReservationsTable();
-      if(type === 'issues') renderIssuesTable();
-    }
-
-    // Equipment Logic
-    function renderEquipmentTable() {
-      const tbody = document.getElementById('table-equipment');
-      const search = document.getElementById('search-equipment').value.toLowerCase();
-      const statusFilter = document.getElementById('filter-equipment-status').value;
-
-      let filtered = state.equipment.filter(item => {
-        const matchesSearch = (item.name || '').toLowerCase().includes(search);
-        const matchesStatus = statusFilter === 'ALL' || item.status === statusFilter;
-        return matchesSearch && matchesStatus;
-      });
-
-      const paginated = paginate(filtered, state.pagination.equipment.limit, state.pagination.equipment.page);
-      
-      if(paginated.length === 0){ tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No equipment found.</td></tr>'; }
-      else {
-        tbody.innerHTML = paginated.map(item => {
-          const displayStatus = item.quantity === 0 ? 'OUT OF STOCK' : (item.status || 'N/A');
-          const badgeClass = (item.quantity > 0 && item.status === 'AVAILABLE') ? 'active' : 'inactive';
-          return `
-          <tr>
-            <td style="font-weight:600;">${item.name || 'Unnamed'}</td>
-            <td style="color:var(--text2); font-size:12px;">${(item.description || '').substring(0,50)}...</td>
-            <td><span class="status-badge ${badgeClass}">${displayStatus}</span></td>
-            <td>${item.quantity || 0}</td>
-            <td>
-              <button class="action-btn" onclick="openEquipmentModal(${item.id})">Edit</button>
-            </td>
-          </tr>
-        `}).join('');
+        return "rgb(154,52,4)";
       }
-      renderPagination(filtered.length, 'equipment');
-    }
 
-    function openEquipmentModal(id) {
-      document.getElementById('equipment-modal-title').textContent = id ? 'Edit Equipment' : 'Add Equipment';
-      document.getElementById('equipment-form').reset();
-      // If editing, populate data (Placeholder for actual fetch)
-      openModal('modal-equipment');
-    }
-
-    function handleEquipmentSubmit(e) {
-      e.preventDefault();
-      // Placeholder for POST/PUT request
-      showToast('Equipment saved successfully!', 'success');
-      closeModal('modal-equipment');
-      fetchData('equipment');
-    }
-
-    // Reservations Logic
-    function renderReservationsTable() {
-      const tbody = document.getElementById('table-reservations');
-      const search = document.getElementById('search-reservations').value.toLowerCase();
-      const statusFilter = document.getElementById('filter-reservations-status').value;
-
-      let filtered = state.reservations.filter(item => {
-        const matchesSearch = String(item.id).includes(search);
-        const matchesStatus = statusFilter === 'ALL' || item.status === statusFilter;
-        return matchesSearch && matchesStatus;
-      });
-
-      const paginated = paginate(filtered, state.pagination.reservations.limit, state.pagination.reservations.page);
-
-      if(paginated.length===0){ tbody.innerHTML = '<tr><td colspan="5" style="text-align:center;">No reservations found.</td></tr>'; }
-      else {
-        tbody.innerHTML = paginated.map(item => {
-           let statusClass = item.status === 'PENDING' ? 'pending' : (item.status === 'APPROVED' || item.status === 'CONFIRMED' ? 'active' : 'inactive');
-           let start = item.startTime ? new Date(item.startTime).toLocaleString() : 'N/A';
-           let end = item.endTime ? new Date(item.endTime).toLocaleString() : 'N/A';
-           return `
-          <tr>
-            <td style="font-weight:600;">#RES-${item.id}</td>
-            <td>${start}</td>
-            <td>${end}</td>
-            <td><span class="status-badge ${statusClass}">${item.status || 'PENDING'}</span></td>
-            <td>
-              ${item.status === 'PENDING' ? `
-                <button class="action-btn approve" onclick="confirmAction('approve reservation #${item.id}', () => resolveReservation(${item.id}, 'APPROVED'))">Approve</button>
-                <button class="action-btn reject" onclick="confirmAction('reject reservation #${item.id}', () => resolveReservation(${item.id}, 'REJECTED'))">Reject</button>
-              ` : '<span style="font-size:12px;color:var(--text3)">No actions</span>'}
-            </td>
-          </tr>
-        `}).join('');
-      }
-      renderPagination(filtered.length, 'reservations');
-    }
-
-    function resolveReservation(id, status) {
-       // Placeholder for PUT request
-       showToast(`Reservation ${id} marked as ${status}`);
-       fetchData('reservations');
-    }
-
-    // Issues Logic
-    function renderIssuesTable() {
-      const tbody = document.getElementById('table-issues');
-      const search = document.getElementById('search-issues').value.toLowerCase();
-      const statusFilter = document.getElementById('filter-issues-status').value;
-
-      let filtered = state.issues.filter(item => {
-        const matchesSearch = (item.title || '').toLowerCase().includes(search);
-        const matchesStatus = statusFilter === 'ALL' || item.status === statusFilter;
-        return matchesSearch && matchesStatus;
-      });
-
-      const paginated = paginate(filtered, state.pagination.issues.limit, state.pagination.issues.page);
-
-      if(paginated.length===0){ tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;">No issues reported.</td></tr>'; }
-      else {
-        tbody.innerHTML = paginated.map(item => `
-          <tr>
-            <td style="font-weight:600;">${item.title || 'Untitled Issue'}</td>
-            <td style="font-size:12px;color:var(--text2);">${(item.description || '').substring(0, 40)}...</td>
-            <td><span class="status-badge inactive">${item.issueType || 'GENERAL'}</span></td>
-            <td><span class="status-badge ${item.status==='RESOLVED'?'active':'pending'}">${item.status || 'OPEN'}</span></td>
-            <td style="font-weight:600;color:${item.priority==='HIGH'?'red':'inherit'};">${item.priority || 'MEDIUM'}</td>
-            <td>
-              ${item.status !== 'RESOLVED' ? `<button class="action-btn approve" onclick="confirmAction('resolve issue: ${item.title}', () => markIssueResolved(${item.id}))">Resolve</button>` : '<span style="font-size:12px;color:var(--text3)">Resolved</span>'}
-            </td>
-          </tr>
-        `).join('');
-      }
-      renderPagination(filtered.length, 'issues');
-    }
-
-    function markIssueResolved(id) {
-       showToast(`Issue ${id} resolved`);
-       fetchData('issues');
-    }
-
-    // Action Confirmation
-    let currentConfirmCallback = null;
-    function confirmAction(actionText, callback) {
-      document.getElementById('confirm-message').textContent = `Are you sure you want to ${actionText}?`;
-      currentConfirmCallback = callback;
-      openModal('modal-confirm');
-    }
-
-    document.getElementById('confirm-action-btn').addEventListener('click', () => {
-      if(currentConfirmCallback) currentConfirmCallback();
-      closeModal('modal-confirm');
-    });
-
-    // CSV Export
-    function exportCSV(type) {
-      const data = state[type];
-      if(!data || data.length === 0) {
-        showToast('No data to export', 'error');
-        return;
-      }
-      
-      const keys = Object.keys(data[0]);
-      const csvContent = "data:text/csv;charset=utf-8," 
-        + keys.join(",") + "\n"
-        + data.map(row => keys.map(k => `"${(row[k] || '').toString().replace(/"/g, '""')}"`).join(",")).join("\n");
-      
-      const encodedUri = encodeURI(csvContent);
-      const link = document.createElement("a");
-      link.setAttribute("href", encodedUri);
-      link.setAttribute("download", `lms_${type}_export_${new Date().toISOString().split('T')[0]}.csv`);
-      document.body.appendChild(link);
-      link.click();
-      document.body.removeChild(link);
-      
-      showToast(`Exported ${type} data successfully`);
-    }
-  </script>
-</body>
+      loadDashboard();
+      loadDemand();
+    </script>
+    <script src="/calendar.js"></script>
+    <script src="/notifications.js"></script>
+    <script src="/theme.js"></script>
+  </body>
 </html>

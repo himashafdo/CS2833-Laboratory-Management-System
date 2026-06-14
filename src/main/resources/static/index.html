@@ -3,9 +3,9 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Laboratory Management System</title>
+    <title>LabMS — Lab Management System</title>
     <link
-      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap"
+      href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
     <style>
@@ -16,470 +16,325 @@
         margin: 0;
         padding: 0;
       }
-
       body {
         font-family: "Plus Jakarta Sans", sans-serif;
-        background: #1a0f00;
+        background: #0f172a;
         min-height: 100vh;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        overflow: hidden;
-      }
-
-      .bg {
-        position: fixed;
-        inset: 0;
-        background:
-          radial-gradient(
-            ellipse 80% 60% at 50% 0%,
-            rgba(249, 115, 22, 0.18) 0%,
-            transparent 65%
-          ),
-          radial-gradient(
-            ellipse 60% 50% at 20% 100%,
-            rgba(194, 65, 12, 0.12) 0%,
-            transparent 60%
-          ),
-          radial-gradient(
-            ellipse 50% 40% at 80% 80%,
-            rgba(249, 115, 22, 0.08) 0%,
-            transparent 55%
-          ),
-          linear-gradient(160deg, #2c1400 0%, #1a0d00 40%, #120800 100%);
-        z-index: 0;
-      }
-
-      .particles {
-        position: fixed;
-        inset: 0;
-        z-index: 1;
-        pointer-events: none;
-      }
-      .particle {
-        position: absolute;
-        border-radius: 50%;
-        background: rgba(249, 115, 22, 0.15);
-        animation: float linear infinite;
-      }
-      @keyframes float {
-        0% {
-          transform: translateY(110vh) scale(0.8);
-          opacity: 0;
-        }
-        10% {
-          opacity: 1;
-        }
-        90% {
-          opacity: 0.5;
-        }
-        100% {
-          transform: translateY(-20px) scale(1.1);
-          opacity: 0;
-        }
-      }
-
-      .stage {
-        position: relative;
-        z-index: 10;
         display: flex;
         flex-direction: column;
         align-items: center;
-      }
-
-      /* LOGO WRAP — pops in at 0.15s */
-      .logo-wrap {
-        position: relative;
-        width: 120px;
-        height: 120px;
-        display: flex;
-        align-items: center;
         justify-content: center;
-        margin-bottom: 28px;
-        opacity: 0;
-        animation: logoIn 0.55s cubic-bezier(0.34, 1.56, 0.64, 1) 0.15s forwards;
-      }
-      @keyframes logoIn {
-        from {
-          opacity: 0;
-          transform: scale(0.55) translateY(10px);
-        }
-        to {
-          opacity: 1;
-          transform: scale(1) translateY(0);
-        }
-      }
-
-      .logo-glow {
-        position: absolute;
-        inset: -12px;
-        border-radius: 50%;
-        background: radial-gradient(
-          circle,
-          rgba(249, 115, 22, 0.22) 0%,
-          transparent 70%
-        );
-        animation: glowPulse 2s ease-in-out 0.7s infinite;
-      }
-      @keyframes glowPulse {
-        0%,
-        100% {
-          transform: scale(1);
-          opacity: 0.7;
-        }
-        50% {
-          transform: scale(1.18);
-          opacity: 0.3;
-        }
-      }
-
-      .logo-circle {
-        width: 100px;
-        height: 100px;
-        border-radius: 50%;
-        background: linear-gradient(135deg, #f97316, #c2410c);
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        box-shadow:
-          0 0 0 1px rgba(249, 115, 22, 0.3),
-          0 0 36px rgba(249, 115, 22, 0.22),
-          0 16px 40px rgba(0, 0, 0, 0.5);
-        position: relative;
         overflow: hidden;
-        animation: breathe 2s cubic-bezier(0.4, 0, 0.2, 1) 2s infinite alternate;
-      }
-      @keyframes breathe {
-        from {
-          box-shadow:
-            0 0 0 1px rgba(249, 115, 22, 0.3),
-            0 0 28px rgba(249, 115, 22, 0.18),
-            0 16px 40px rgba(0, 0, 0, 0.5);
-        }
-        to {
-          box-shadow:
-            0 0 0 1px rgba(249, 115, 22, 0.5),
-            0 0 52px rgba(249, 115, 22, 0.42),
-            0 16px 40px rgba(0, 0, 0, 0.5);
-        }
       }
 
-      /* shimmer fires once after strokes complete */
-      .logo-circle::after {
-        content: "";
+      .ring-wrap {
+        position: relative;
+        width: 180px;
+        height: 180px;
+      }
+      .arc {
         position: absolute;
         inset: 0;
-        background: linear-gradient(
-          135deg,
-          transparent 30%,
-          rgba(255, 255, 255, 0.18) 50%,
-          transparent 70%
-        );
-        transform: translateX(-150%);
-        animation: shimmer 0.65s cubic-bezier(0.4, 0, 0.2, 1) 1.75s forwards;
+        border-radius: 50%;
       }
-      @keyframes shimmer {
+      .arc1 {
+        border: 6px solid transparent;
+        border-top-color: #f97316;
+        animation: spin1 1.4s linear infinite;
+      }
+      .arc2 {
+        border: 6px solid transparent;
+        border-right-color: #fb923c;
+        animation: spin2 1.8s linear infinite;
+        inset: 10px;
+      }
+      .arc3 {
+        border: 6px solid transparent;
+        border-bottom-color: #334155;
+        border-left-color: #ea6c0a;
+        animation: spin3 2.2s linear infinite;
+        inset: 20px;
+      }
+      .arc4 {
+        border: 6px solid transparent;
+        border-top-color: #f97316;
+        border-bottom-color: #fb923c;
+        animation: spin1 1s linear infinite reverse;
+        inset: 30px;
+      }
+      .arc5 {
+        border: 4px solid transparent;
+        border-right-color: #ea6c0a;
+        border-left-color: #f97316;
+        animation: spin2 0.8s linear infinite reverse;
+        inset: 42px;
+      }
+
+      @keyframes spin1 {
         to {
-          transform: translateX(150%);
+          transform: rotate(360deg);
+        }
+      }
+      @keyframes spin2 {
+        to {
+          transform: rotate(-360deg);
+        }
+      }
+      @keyframes spin3 {
+        to {
+          transform: rotate(360deg);
         }
       }
 
+      .logo-center {
+        position: absolute;
+        inset: 54px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
       .logo-svg {
-        width: 52px;
-        height: 52px;
-        position: relative;
-        z-index: 1;
+        width: 58px;
+        height: 58px;
       }
 
-      /* ── SVG DRAW ──
-         Window: 0.70s → 1.72s
-         Strokes overlap slightly — feels like one continuous pen              */
-      .draw {
-        stroke-dasharray: 200;
-        stroke-dashoffset: 200;
+      .logo-line {
+        stroke-dasharray: 60;
+        stroke-dashoffset: 60;
+        animation: draw 1.2s ease forwards;
       }
-
-      .draw-1 {
-        animation: draw 0.38s cubic-bezier(0.4, 0, 0.2, 1) 0.7s forwards;
+      .logo-line2 {
+        stroke-dasharray: 40;
+        stroke-dashoffset: 40;
+        animation: draw 1.2s 0.3s ease forwards;
       }
-      .draw-2 {
-        animation: draw 0.42s cubic-bezier(0.4, 0, 0.2, 1) 0.95s forwards;
+      .logo-line3 {
+        stroke-dasharray: 40;
+        stroke-dashoffset: 40;
+        animation: draw 1.2s 0.6s ease forwards;
       }
-      .draw-3 {
-        animation: draw 0.34s cubic-bezier(0.4, 0, 0.15, 1) 1.2s forwards;
+      .logo-poly {
+        stroke-dasharray: 20;
+        stroke-dashoffset: 20;
+        animation: draw 0.6s 1s ease forwards;
       }
-      .draw-4 {
-        animation: draw 0.34s cubic-bezier(0.4, 0, 0.15, 1) 1.26s forwards;
+      .logo-dot1 {
+        r: 0;
+        animation: pop 0.4s 1.2s ease forwards;
       }
-      .draw-5 {
-        animation: draw 0.16s cubic-bezier(0.25, 0, 0.1, 1) 1.52s forwards;
+      .logo-dot2 {
+        r: 0;
+        animation: pop 0.4s 1.4s ease forwards;
       }
-      .draw-6 {
-        animation: draw 0.16s cubic-bezier(0.25, 0, 0.1, 1) 1.57s forwards;
-      }
-      .poly-1 {
+      .logo-end1 {
         opacity: 0;
-        animation: popIn 0.2s cubic-bezier(0.34, 1.56, 0.64, 1) 1.7s forwards;
+        animation: fadeUp 0.4s 1.5s ease forwards;
+      }
+      .logo-end2 {
+        opacity: 0;
+        animation: fadeUp 0.4s 1.5s ease forwards;
       }
 
       @keyframes draw {
-        from {
-          stroke-dashoffset: 200;
-        }
         to {
           stroke-dashoffset: 0;
         }
       }
-      @keyframes popIn {
+      @keyframes pop {
+        to {
+          r: 2.5;
+        }
+      }
+      @keyframes fadeUp {
         from {
           opacity: 0;
-          transform: scale(0.3);
+          transform: translateY(3px);
         }
-        to {
-          opacity: 1;
-          transform: scale(1);
-        }
-      }
-
-      /* ── TEXT — rises as strokes near completion ── */
-      .text-block {
-        text-align: center;
-        opacity: 0;
-        transform: translateY(18px);
-        animation: textIn 0.65s cubic-bezier(0.16, 1, 0.3, 1) 1.25s forwards;
-      }
-      @keyframes textIn {
         to {
           opacity: 1;
           transform: translateY(0);
         }
       }
 
-      .sys-name {
-        font-size: 22px;
-        font-weight: 800;
-        color: #fff;
-        letter-spacing: -0.3px;
-        line-height: 1.2;
-        margin-bottom: 8px;
+      .text-wrap {
+        margin-top: 28px;
+        text-align: center;
+        opacity: 0;
+        animation: fadeUp 0.8s 1.6s ease forwards;
       }
-      .sys-name span {
-        background: linear-gradient(90deg, #f97316, #fb923c);
+      .labms-text {
+        font-size: 38px;
+        font-weight: 700;
+        letter-spacing: 0.1em;
+        background: linear-gradient(135deg, #f97316, #fb923c, #ea6c0a);
         -webkit-background-clip: text;
         -webkit-text-fill-color: transparent;
         background-clip: text;
       }
-
-      .divider {
-        width: 40px;
-        height: 2px;
-        background: linear-gradient(90deg, transparent, #f97316, transparent);
-        margin: 12px auto;
-        opacity: 0;
-        animation: fu 0.45s ease 1.65s forwards;
-      }
-      .uni-name {
-        font-size: 12px;
-        font-weight: 500;
-        color: rgba(255, 255, 255, 0.45);
-        letter-spacing: 0.08em;
+      .company-text {
+        font-family: "Courier New", monospace;
+        font-size: 11px;
+        letter-spacing: 0.3em;
+        color: #475569;
         text-transform: uppercase;
-        opacity: 0;
-        animation: fu 0.45s ease 1.78s forwards;
-      }
-      @keyframes fu {
-        to {
-          opacity: 1;
-        }
+        margin-top: 7px;
       }
 
-      /* ── PROGRESS BAR ──
-         Appears 1.78s, fills over 1.05s → done at ~2.83s        */
       .progress-wrap {
-        margin-top: 52px;
-        width: 180px;
-        opacity: 0;
-        animation: fu 0.35s ease 1.78s forwards;
-      }
-      .progress-track {
-        height: 2px;
-        background: rgba(255, 255, 255, 0.08);
+        margin-top: 32px;
+        width: 160px;
+        height: 3px;
+        background: #1e293b;
         border-radius: 99px;
         overflow: hidden;
+        opacity: 0;
+        animation: fadeUp 0.5s 1.8s ease forwards;
       }
-      .progress-fill {
+      .progress-bar {
         height: 100%;
-        background: linear-gradient(90deg, #f97316, #fb923c);
-        border-radius: 99px;
         width: 0%;
-        box-shadow: 0 0 8px rgba(249, 115, 22, 0.5);
-        animation: fillBar 1.05s cubic-bezier(0.4, 0, 0.15, 1) 1.82s forwards;
+        border-radius: 99px;
+        background: linear-gradient(90deg, #f97316, #fb923c);
+        animation: load 2s 1.9s cubic-bezier(0.4, 0, 0.2, 1) forwards;
       }
-      @keyframes fillBar {
+      @keyframes load {
         0% {
           width: 0%;
         }
-        45% {
-          width: 55%;
+        30% {
+          width: 28%;
         }
-        78% {
-          width: 84%;
+        60% {
+          width: 65%;
+        }
+        85% {
+          width: 90%;
         }
         100% {
           width: 100%;
         }
       }
 
-      /* ── PAGE OUT — starts at 3.0s, done 3.6s ── */
+      /* fade out whole page before redirect */
       body.fade-out {
-        animation: pageOut 0.6s cubic-bezier(0.4, 0, 1, 1) forwards;
+        animation: fadeOut 0.6s ease forwards;
       }
-      @keyframes pageOut {
-        0% {
-          opacity: 1;
-        }
-        100% {
+      @keyframes fadeOut {
+        to {
           opacity: 0;
         }
-      }
-
-      .company-badge {
-        position: fixed;
-        bottom: 28px;
-        left: 50%;
-        transform: translateX(-50%);
-        font-size: 10px;
-        color: rgba(255, 255, 255, 0.2);
-        letter-spacing: 0.1em;
-        text-transform: uppercase;
-        opacity: 0;
-        animation: fu 0.5s ease 2s forwards;
-        z-index: 10;
-        white-space: nowrap;
       }
     </style>
   </head>
   <body>
-    <div class="bg"></div>
-    <div class="particles" id="particles"></div>
-
-    <div class="stage">
-      <div class="logo-wrap">
-        <div class="logo-glow"></div>
-        <div class="logo-circle">
-          <svg
-            class="logo-svg"
-            viewBox="0 0 52 52"
-            fill="none"
-            stroke="white"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-          >
-            <line
-              class="draw draw-1"
-              x1="6"
-              y1="26"
-              x2="18"
-              y2="26"
-              stroke-width="2.2"
-            />
-            <line
-              class="draw draw-2"
-              x1="18"
-              y1="13"
-              x2="18"
-              y2="39"
-              stroke-width="2.2"
-            />
-            <line
-              class="draw draw-3"
-              x1="18"
-              y1="16"
-              x2="38"
-              y2="7"
-              stroke-width="2"
-            />
-            <line
-              class="draw draw-4"
-              x1="18"
-              y1="36"
-              x2="38"
-              y2="45"
-              stroke-width="2"
-            />
-            <line
-              class="draw draw-5"
-              x1="38"
-              y1="7"
-              x2="38"
-              y2="3"
-              stroke-width="2"
-            />
-            <line
-              class="draw draw-6"
-              x1="38"
-              y1="45"
-              x2="38"
-              y2="49"
-              stroke-width="2"
-            />
-            <polygon
-              class="poly-1"
-              points="34,42 38,45 35.5,40"
-              fill="white"
-              stroke="none"
-            />
-          </svg>
-        </div>
-      </div>
-
-      <div class="text-block">
-        <div class="sys-name">
-          Laboratory<br /><span>Management System</span>
-        </div>
-        <div class="divider"></div>
-        <div class="uni-name">Company A</div>
-      </div>
-
-      <div class="progress-wrap">
-        <div class="progress-track">
-          <div class="progress-fill"></div>
-        </div>
+    <div class="ring-wrap">
+      <div class="arc arc1"></div>
+      <div class="arc arc2"></div>
+      <div class="arc arc3"></div>
+      <div class="arc arc4"></div>
+      <div class="arc arc5"></div>
+      <div class="logo-center">
+        <svg
+          class="logo-svg"
+          viewBox="0 0 32 32"
+          fill="none"
+          stroke-linecap="round"
+          stroke-linejoin="round"
+        >
+          <line
+            class="logo-line"
+            x1="4"
+            y1="16"
+            x2="12"
+            y2="16"
+            stroke="#f97316"
+            stroke-width="1.8"
+          />
+          <line
+            class="logo-line"
+            x1="12"
+            y1="9"
+            x2="12"
+            y2="23"
+            stroke="#f97316"
+            stroke-width="1.8"
+          />
+          <line
+            class="logo-line2"
+            x1="12"
+            y1="10.5"
+            x2="26"
+            y2="5"
+            stroke="#fb923c"
+            stroke-width="1.8"
+          />
+          <line
+            class="logo-line3"
+            x1="12"
+            y1="21.5"
+            x2="26"
+            y2="27"
+            stroke="#fb923c"
+            stroke-width="1.8"
+          />
+          <polygon
+            class="logo-poly"
+            points="22,24.5 26,27 23.5,22.5"
+            fill="#ea6c0a"
+            stroke="none"
+          />
+          <circle
+            class="logo-dot1"
+            cx="26"
+            cy="5"
+            fill="#f97316"
+            stroke="none"
+          />
+          <circle
+            class="logo-dot2"
+            cx="26"
+            cy="27"
+            fill="#fb923c"
+            stroke="none"
+          />
+          <line
+            class="logo-end1"
+            x1="26"
+            y1="3"
+            x2="26"
+            y2="0.5"
+            stroke="#f97316"
+            stroke-width="1.8"
+          />
+          <line
+            class="logo-end2"
+            x1="26"
+            y1="29"
+            x2="26"
+            y2="31.5"
+            stroke="#fb923c"
+            stroke-width="1.8"
+          />
+        </svg>
       </div>
     </div>
 
-    <script>
-      /* Particles — negative delay so some are mid-flight on load */
-      const container = document.getElementById("particles");
-      for (let i = 0; i < 18; i++) {
-        const p = document.createElement("div");
-        p.className = "particle";
-        const size = Math.random() * 6 + 2;
-        p.style.cssText = `
-          width:${size}px;height:${size}px;
-          left:${Math.random() * 100}%;
-          animation-duration:${Math.random() * 8 + 6}s;
-          animation-delay:-${Math.random() * 8}s;
-          opacity:${Math.random() * 0.35 + 0.08};
-        `;
-        container.appendChild(p);
-      }
+    <div class="text-wrap">
+      <div class="labms-text">LabMS</div>
+      <div class="company-text">by Company A</div>
+    </div>
 
-      /* Timeline recap:
-         0.15s  logo circle bounces in
-         0.70s  strokes begin drawing
-         1.72s  all strokes + arrowhead done
-         1.78s  text fully visible, progress bar appears
-         1.82s  progress bar starts filling
-         2.87s  progress bar hits 100%
-         3.00s  fade-out begins
-         3.60s  redirect to /login.html               */
+    <div class="progress-wrap">
+      <div class="progress-bar"></div>
+    </div>
+
+    <script>
+      // progress bar ends at ~3.9s (1.9s delay + 2s animation)
+      // fade out at 3.6s then redirect
       setTimeout(() => {
         document.body.classList.add("fade-out");
-        setTimeout(() => {
-          window.location.href = "/login.html";
-        }, 580);
-      }, 3000);
+        setTimeout(() => (window.location.href = "/login.html"), 600);
+      }, 3600);
     </script>
   </body>
 </html>

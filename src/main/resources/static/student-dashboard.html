@@ -340,7 +340,7 @@
       /* ── STAT CARDS ── */
       .stats-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 16px;
         margin-bottom: 28px;
       }
@@ -386,7 +386,7 @@
       /* ── SECTIONS ── */
       .sections-grid {
         display: grid;
-        grid-template-columns: 1fr 340px;
+        grid-template-columns: 1fr;
         gap: 20px;
       }
 
@@ -692,19 +692,7 @@
           </svg>
           My Reservations
         </a>
-        <a href="/requests.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2"
-            />
-          </svg>
-          Equipment Requests
-        </a>
+
         <a href="/report-issue.html" class="nav-item">
           <svg
             viewBox="0 0 24 24"
@@ -813,11 +801,6 @@
             <div class="stat-value" id="stat-issues">0</div>
             <div class="stat-sub">No pending issues</div>
           </div>
-          <div class="stat-card green">
-            <div class="stat-label">Pending Requests</div>
-            <div class="stat-value" id="stat-requests">0</div>
-            <div class="stat-sub">No pending requests</div>
-          </div>
         </div>
 
         <!-- Main sections -->
@@ -859,75 +842,6 @@
               </div>
             </div>
           </div>
-
-          <!-- Quick Actions -->
-          <div class="section-card">
-            <div class="section-header">
-              <div class="section-title">Quick Actions</div>
-            </div>
-            <div class="quick-actions">
-              <a href="/catalog.html" class="action-btn">
-                <div class="action-icon blue">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <rect x="2" y="3" width="20" height="14" rx="2" />
-                    <path d="M6 9l3 3 3-6 3 5 2-2" />
-                  </svg>
-                </div>
-                <div class="action-label">Book Equipment</div>
-              </a>
-              <a href="/catalog.html" class="action-btn">
-                <div class="action-icon orange">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2V9z" />
-                    <polyline points="9 22 9 12 15 12 15 22" />
-                  </svg>
-                </div>
-                <div class="action-label">Reserve Lab Room</div>
-              </a>
-              <a href="/report-issue.html" class="action-btn">
-                <div class="action-icon amber">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
-                    />
-                    <line x1="12" y1="9" x2="12" y2="13" />
-                    <line x1="12" y1="17" x2="12.01" y2="17" />
-                  </svg>
-                </div>
-                <div class="action-label">Report Issue</div>
-              </a>
-              <a href="/requests.html" class="action-btn">
-                <div class="action-icon green">
-                  <svg
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    stroke="currentColor"
-                    stroke-width="2"
-                  >
-                    <path
-                      d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2M9 5a2 2 0 002 2h2a2 2 0 002-2M9 5a2 2 0 012-2h2a2 2 0 012 2M12 12v4M10 14h4"
-                    />
-                  </svg>
-                </div>
-                <div class="action-label">Request Equipment</div>
-              </a>
-            </div>
-          </div>
         </div>
       </div>
     </div>
@@ -950,7 +864,7 @@
 
       // Redirect admin to admin dashboard
       if (role === "LAB_TECHNICIAN" || role === "ADMIN") {
-        window.location.href = "/requests.html";
+        window.location.href = "/admin-dashboard.html";
       }
 
       // Set user info

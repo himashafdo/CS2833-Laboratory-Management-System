@@ -131,13 +131,13 @@
   async function fetchData() {
     const token = sessionStorage.getItem("token");
     if (!token) return;
-    
+
     let role = sessionStorage.getItem("role");
     if (!role) {
       try {
-        role = JSON.parse(atob(token.split('.')[1])).role;
+        role = JSON.parse(atob(token.split(".")[1])).role;
         sessionStorage.setItem("role", role);
-      } catch(e) {}
+      } catch (e) {}
     }
 
     let resUrl = `${API}/reservations/my`;
@@ -150,16 +150,20 @@
 
     try {
       const [resRes, reqRes] = await Promise.all([
-        fetch(resUrl, { headers: { Authorization: "Bearer " + token } }).catch(() => null),
-        fetch(reqUrl, { headers: { Authorization: "Bearer " + token } }).catch(() => null)
+        fetch(resUrl, { headers: { Authorization: "Bearer " + token } }).catch(
+          () => null,
+        ),
+        fetch(reqUrl, { headers: { Authorization: "Bearer " + token } }).catch(
+          () => null,
+        ),
       ]);
-      
+
       if (resRes && resRes.ok) reservations = await resRes.json();
       else reservations = [];
-      
+
       if (reqRes && reqRes.ok) requests = await reqRes.json();
       else requests = [];
-      
+
       updateBadge();
     } catch (e) {
       reservations = [];
@@ -175,12 +179,23 @@
       const resNotifs = reservations
         .filter((r) => r.status !== "CANCELLED")
         .map((r) => {
-          const name = r.equipment ? r.equipment.name : r.lab ? r.lab.labName : "Unknown";
+          const name = r.equipment
+            ? r.equipment.name
+            : r.lab
+              ? r.lab.labName
+              : "Unknown";
           const type = r.equipment ? "equipment" : "lab";
           const start = new Date(r.startTime);
-          const dateStr = start.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
-          const timeStr = start.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
-          const isUnread = !seenIds.includes("res_" + r.id) && !seenIds.includes(r.id);
+          const dateStr = start.toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "short",
+          });
+          const timeStr = start.toLocaleTimeString("en-GB", {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
+          const isUnread =
+            !seenIds.includes("res_" + r.id) && !seenIds.includes(r.id);
 
           let msg = "";
           let iconClass = "";
@@ -218,8 +233,10 @@
       let role = sessionStorage.getItem("role");
       if (!role) {
         try {
-          role = JSON.parse(atob(sessionStorage.getItem("token").split('.')[1])).role;
-        } catch(e) {}
+          role = JSON.parse(
+            atob(sessionStorage.getItem("token").split(".")[1]),
+          ).role;
+        } catch (e) {}
       }
       const reqNotifs = requests
         .filter((r) => {
@@ -231,8 +248,14 @@
         .map((r) => {
           const name = r.itemName;
           const start = new Date(r.createdAt);
-          const dateStr = start.toLocaleDateString("en-GB", { day: "numeric", month: "short" });
-          const timeStr = start.toLocaleTimeString("en-GB", { hour: "2-digit", minute: "2-digit" });
+          const dateStr = start.toLocaleDateString("en-GB", {
+            day: "numeric",
+            month: "short",
+          });
+          const timeStr = start.toLocaleTimeString("en-GB", {
+            hour: "2-digit",
+            minute: "2-digit",
+          });
           const isUnread = !seenIds.includes("req_" + r.id);
 
           let msg = "";
@@ -324,9 +347,8 @@
         notifs.length > 0
           ? `
         <div class="notif-footer">
-          <a href="/my-reservations.html" style="margin-right:12px;">View reservations</a>
-          <a href="/requests.html">View requests</a>
-        </div>`
+  <a href="/my-reservations.html">View reservations</a>
+</div>`
           : ""
       }`;
   }

@@ -3,7 +3,7 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Equipment Requests — Lab Management System</title>
+    <title>Manage Users — Lab Management System</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
@@ -206,28 +206,6 @@
         align-items: center;
         gap: 12px;
       }
-      .search-box {
-        display: flex;
-        align-items: center;
-        gap: 8px;
-        padding: 9px 16px;
-        border: 1px solid var(--border);
-        border-radius: 10px;
-        background: var(--bg);
-        width: 220px;
-      }
-      .search-box input {
-        border: none;
-        outline: none;
-        font-family: var(--font);
-        font-size: 13px;
-        color: var(--text);
-        background: transparent;
-        width: 100%;
-      }
-      .search-box input::placeholder {
-        color: var(--text3);
-      }
       .topbar-date {
         padding: 8px 14px;
         border: 1px solid var(--border);
@@ -277,7 +255,7 @@
         width: 36px;
         height: 36px;
         border-radius: 50%;
-        background: linear-gradient(135deg, #1a1a2e, #1e3a5f);
+        background: linear-gradient(135deg, #1a1a2e, #1e293b);
         display: flex;
         align-items: center;
         justify-content: center;
@@ -296,7 +274,7 @@
       /* STATS */
       .stats-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 16px;
         margin-bottom: 28px;
       }
@@ -310,14 +288,11 @@
       .stat-card.blue {
         border-top-color: #3b82f6;
       }
-      .stat-card.amber {
-        border-top-color: #f59e0b;
-      }
       .stat-card.green {
         border-top-color: #22c55e;
       }
-      .stat-card.red {
-        border-top-color: #ef4444;
+      .stat-card.amber {
+        border-top-color: #f59e0b;
       }
       .stat-label {
         font-size: 12px;
@@ -339,44 +314,81 @@
         color: var(--text3);
       }
 
-      /* SECTION CARD */
+      /* SECTION */
       .section-card {
         background: var(--white);
         border: 1px solid var(--border);
         border-radius: 16px;
         padding: 24px;
-        margin-bottom: 20px;
       }
       .section-header {
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
         margin-bottom: 20px;
-        flex-wrap: wrap;
-        gap: 12px;
       }
       .section-title {
-        font-size: 16px;
+        font-size: 18px;
         font-weight: 700;
         color: var(--text);
+      }
+      .section-desc {
+        font-size: 13px;
+        color: var(--text2);
+        margin-top: 4px;
       }
 
       /* TOOLBAR */
       .toolbar {
         display: flex;
-        gap: 10px;
+        gap: 12px;
+        margin-bottom: 20px;
         align-items: center;
         flex-wrap: wrap;
       }
-      .filter-select {
-        padding: 8px 12px;
+      .search-wrap {
+        position: relative;
+        flex: 1;
+        min-width: 250px;
+      }
+      .search-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text3);
+      }
+      .search-input {
+        width: 100%;
+        padding: 10px 14px 10px 40px;
         border: 1px solid var(--border);
-        border-radius: 8px;
+        border-radius: 10px;
         font-family: var(--font);
         font-size: 13px;
         background: var(--bg);
         color: var(--text);
         outline: none;
+      }
+      .search-input:focus {
+        border-color: var(--orange);
+      }
+      .btn {
+        padding: 9px 16px;
+        border-radius: 8px;
+        font-weight: 600;
+        font-size: 13px;
+        cursor: pointer;
+        border: none;
+        font-family: var(--font);
+        transition: all 0.2s;
+        display: inline-flex;
+        align-items: center;
+        gap: 6px;
+      }
+      .btn-outline {
+        background: transparent;
+        border: 1px solid var(--border);
+        color: var(--text);
+      }
+      .btn-outline:hover {
+        background: var(--bg);
       }
 
       /* TABLE */
@@ -412,101 +424,67 @@
         background: var(--bg);
       }
 
-      /* BADGES */
-      .badge {
+      .role-badge {
+        font-size: 11px;
+        font-weight: 600;
         padding: 4px 10px;
-        border-radius: 20px;
-        font-size: 11px;
-        font-weight: 600;
-        display: inline-block;
-        text-transform: uppercase;
-      }
-      .badge-pending {
-        background: #fef9c3;
-        color: #854d0e;
-      }
-      .badge-approved {
-        background: #dcfce7;
-        color: #15803d;
-      }
-      .badge-rejected {
-        background: #fee2e2;
-        color: #991b1b;
-      }
-      .badge-high {
-        background: #fee2e2;
-        color: #991b1b;
-      }
-      .badge-medium {
-        background: #fef9c3;
-        color: #854d0e;
-      }
-      .badge-low {
-        background: #dcfce7;
-        color: #15803d;
-      }
-
-      /* BUTTONS */
-      .btn {
-        padding: 8px 16px;
-        border-radius: 8px;
-        font-weight: 600;
-        font-size: 13px;
-        cursor: pointer;
-        border: none;
-        font-family: var(--font);
-        transition: all 0.2s;
-        display: inline-flex;
-        align-items: center;
-        gap: 6px;
-      }
-      .btn-primary {
-        background: linear-gradient(135deg, #1a1a2e, #1e3a5f);
-        color: white;
-      }
-      .btn-primary:hover {
-        background: #1e3a5f;
-      }
-      .btn-outline {
-        background: transparent;
-        border: 1px solid var(--border);
-        color: var(--text);
-      }
-      .btn-outline:hover {
-        background: var(--bg);
-      }
-      .btn-sm {
-        padding: 5px 10px;
-        font-size: 11px;
         border-radius: 6px;
       }
-      .btn-edit {
-        background: #eff6ff;
-        color: #2563eb;
-        border: 1px solid #bfdbfe;
+      .role-student {
+        background: #fef9c3;
+        color: #854d0e;
       }
-      .btn-edit:hover {
-        background: #dbeafe;
+      .status-badge {
+        font-size: 11px;
+        font-weight: 600;
+        padding: 4px 10px;
+        border-radius: 20px;
       }
-      .btn-delete {
-        background: #fff1f2;
-        color: #e11d48;
-        border: 1px solid #fecdd3;
+      .status-active {
+        background: #dcfce7;
+        color: #15803d;
       }
-      .btn-delete:hover {
-        background: #ffe4e6;
+      .status-inactive {
+        background: #f1f5f9;
+        color: #64748b;
       }
 
-      /* ALERT */
+      .action-btn {
+        background: none;
+        border: 1px solid var(--border);
+        padding: 6px 12px;
+        border-radius: 6px;
+        font-size: 12px;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.2s;
+        color: var(--text);
+        margin-right: 4px;
+        font-family: var(--font);
+      }
+      .action-btn:hover {
+        background: var(--bg);
+      }
+      .action-danger {
+        color: #ef4444;
+        border-color: #fecaca;
+      }
+      .action-danger:hover {
+        background: #fef2f2;
+      }
+
       .alert {
-        padding: 10px 14px;
-        border-radius: 8px;
+        padding: 12px 16px;
+        border-radius: 10px;
         font-size: 13px;
-        margin-bottom: 16px;
+        font-weight: 500;
+        margin-bottom: 20px;
         display: none;
+        align-items: center;
+        gap: 10px;
       }
       .alert.show {
-        display: block;
+        display: flex;
       }
       .alert.success {
         background: #f0fdf4;
@@ -529,7 +507,6 @@
         align-items: center;
         justify-content: center;
         z-index: 200;
-        padding: 20px;
       }
       .modal-overlay.active {
         display: flex;
@@ -538,26 +515,15 @@
         background: var(--white);
         border-radius: 16px;
         width: 100%;
-        max-width: 500px;
+        max-width: 420px;
         padding: 28px;
         box-shadow: 0 20px 40px rgba(0, 0, 0, 0.15);
-        animation: slideUp 0.2s ease;
-      }
-      @keyframes slideUp {
-        from {
-          transform: translateY(16px);
-          opacity: 0;
-        }
-        to {
-          transform: translateY(0);
-          opacity: 1;
-        }
       }
       .modal-header {
         display: flex;
         justify-content: space-between;
         align-items: center;
-        margin-bottom: 20px;
+        margin-bottom: 16px;
       }
       .modal-title {
         font-size: 17px;
@@ -570,38 +536,6 @@
         font-size: 22px;
         color: var(--text3);
         cursor: pointer;
-      }
-      .form-group {
-        margin-bottom: 14px;
-      }
-      .form-label {
-        display: block;
-        font-size: 12px;
-        font-weight: 600;
-        color: var(--text);
-        margin-bottom: 6px;
-        text-transform: uppercase;
-        letter-spacing: 0.04em;
-      }
-      .form-control {
-        width: 100%;
-        padding: 10px 14px;
-        border: 1px solid var(--border);
-        border-radius: 8px;
-        font-size: 13px;
-        font-family: var(--font);
-        outline: none;
-        color: var(--text);
-        background: var(--white);
-        transition: border-color 0.15s;
-      }
-      .form-control:focus {
-        border-color: var(--orange);
-        box-shadow: 0 0 0 3px rgba(249, 115, 22, 0.1);
-      }
-      textarea.form-control {
-        resize: vertical;
-        min-height: 80px;
       }
       .modal-actions {
         display: flex;
@@ -617,10 +551,6 @@
         padding: 40px;
         color: var(--text3);
         font-size: 13px;
-      }
-      .empty-icon {
-        font-size: 32px;
-        margin-bottom: 8px;
       }
 
       @media (max-width: 768px) {
@@ -640,7 +570,6 @@
     </style>
   </head>
   <body>
-    <!-- SIDEBAR -->
     <aside class="sidebar">
       <div class="sidebar-brand">
         <div class="brand-row">
@@ -728,7 +657,7 @@
           </svg>
           Issue Tickets
         </a>
-        <a href="/requests.html" class="nav-item active">
+        <a href="/requests.html" class="nav-item">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -741,7 +670,7 @@
           </svg>
           Equipment Requests
         </a>
-        <a href="/admin-users.html" class="nav-item">
+        <a href="/admin-users.html" class="nav-item active">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -807,37 +736,12 @@
       </div>
     </aside>
 
-    <!-- MAIN -->
     <div class="main">
       <div class="topbar">
-        <div class="topbar-title">Equipment Requests</div>
+        <div class="topbar-title">Manage Students</div>
         <div class="topbar-right">
-          <div class="search-box">
-            <svg
-              width="14"
-              height="14"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="currentColor"
-              stroke-width="2"
-            >
-              <circle cx="11" cy="11" r="8" />
-              <line x1="21" y1="21" x2="16.65" y2="16.65" />
-            </svg>
-            <input
-              type="text"
-              id="search-input"
-              onkeyup="filterTable()"
-              placeholder="Search requests..."
-            />
-          </div>
           <div class="topbar-date" id="topbar-date"></div>
-          <button
-            id="theme-btn"
-            class="theme-toggle"
-            type="button"
-            title="Toggle theme"
-          >
+          <button id="theme-btn" class="theme-toggle" title="Toggle theme">
             🌙
           </button>
           <div class="topbar-icon">
@@ -867,73 +771,71 @@
         <!-- Stats -->
         <div class="stats-grid">
           <div class="stat-card blue">
-            <div class="stat-label">Total Submitted</div>
+            <div class="stat-label">Total Students</div>
             <div class="stat-value" id="stat-total">—</div>
-            <div class="stat-sub">All my requests</div>
-          </div>
-          <div class="stat-card amber">
-            <div class="stat-label">Pending</div>
-            <div class="stat-value" id="stat-pending">—</div>
-            <div class="stat-sub">Awaiting lead admin</div>
+            <div class="stat-sub">Registered students</div>
           </div>
           <div class="stat-card green">
-            <div class="stat-label">Approved</div>
-            <div class="stat-value" id="stat-approved">—</div>
-            <div class="stat-sub">Approved by lead admin</div>
+            <div class="stat-label">Active</div>
+            <div class="stat-value" id="stat-active">—</div>
+            <div class="stat-sub">Active accounts</div>
           </div>
-          <div class="stat-card red">
-            <div class="stat-label">Rejected</div>
-            <div class="stat-value" id="stat-rejected">—</div>
-            <div class="stat-sub">Rejected requests</div>
+          <div class="stat-card amber">
+            <div class="stat-label">Inactive</div>
+            <div class="stat-value" id="stat-inactive">—</div>
+            <div class="stat-sub">Disabled accounts</div>
           </div>
         </div>
 
-        <!-- Requests Table -->
+        <!-- Table -->
         <div class="section-card">
           <div class="section-header">
-            <div class="section-title">My Equipment Requests</div>
-            <div class="toolbar">
-              <select
-                class="filter-select"
-                id="filter-status"
-                onchange="filterTable()"
-              >
-                <option value="ALL">All Statuses</option>
-                <option value="PENDING">Pending</option>
-                <option value="APPROVED">Approved</option>
-                <option value="REJECTED">Rejected</option>
-              </select>
-              <select
-                class="filter-select"
-                id="filter-urgency"
-                onchange="filterTable()"
-              >
-                <option value="ALL">All Urgency</option>
-                <option value="HIGH">High</option>
-                <option value="MEDIUM">Medium</option>
-                <option value="LOW">Low</option>
-              </select>
-              <button class="btn btn-outline btn-sm" onclick="loadRequests()">
-                <svg
-                  width="13"
-                  height="13"
-                  viewBox="0 0 24 24"
-                  fill="none"
-                  stroke="currentColor"
-                  stroke-width="2"
-                >
-                  <path d="M23 4v6h-6" />
-                  <path d="M1 20v-6h6" />
-                  <path
-                    d="M3.51 9a9 9 0 0 1 14.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0 0 20.49 15"
-                  />
-                </svg>
-                Refresh
-              </button>
-              <button class="btn btn-primary" onclick="openNewModal()">
-                + New Request
-              </button>
+            <div class="section-title">Student Accounts</div>
+            <div class="section-desc">
+              View and manage registered student accounts. Lab Technicians can
+              only manage students.
             </div>
+          </div>
+
+          <div class="toolbar">
+            <div class="search-wrap">
+              <svg
+                class="search-icon"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="text"
+                class="search-input"
+                id="search-input"
+                placeholder="Search by username or email..."
+                onkeyup="renderTable()"
+              />
+            </div>
+            <button class="btn btn-outline" onclick="loadUsers()">
+              <svg
+                width="13"
+                height="13"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
+              >
+                <path d="M23 4v6h-6" />
+                <path d="M1 20v-6h6" />
+                <path
+                  d="M3.51 9a9 9 0 0114.85-3.36L23 10M1 14l4.64 4.36A9 9 0 0020.49 15"
+                />
+              </svg>
+              Refresh
+            </button>
           </div>
 
           <div class="table-wrap">
@@ -941,19 +843,18 @@
               <thead>
                 <tr>
                   <th>#</th>
-                  <th>Item Name</th>
-                  <th>Description</th>
-                  <th>Qty</th>
-                  <th>Urgency</th>
-                  <th>Date</th>
+                  <th>Username</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Role</th>
+                  <th>Registered</th>
                   <th>Status</th>
-                  <th>Lead Admin Note</th>
                   <th>Actions</th>
                 </tr>
               </thead>
-              <tbody id="requests-tbody">
+              <tbody id="users-tbody">
                 <tr>
-                  <td colspan="9" class="empty-state">Loading requests...</td>
+                  <td colspan="8" class="empty-state">Loading students...</td>
                 </tr>
               </tbody>
             </table>
@@ -962,149 +863,28 @@
       </div>
     </div>
 
-    <!-- NEW REQUEST MODAL -->
-    <div class="modal-overlay" id="modal-new">
-      <div class="modal">
-        <div class="modal-header">
-          <div class="modal-title">Submit Equipment Request</div>
-          <button class="close-btn" onclick="closeModal('modal-new')">
-            &times;
-          </button>
-        </div>
-        <form onsubmit="submitNew(event)">
-          <div class="form-group">
-            <label class="form-label">Item Name / Specification</label>
-            <input
-              type="text"
-              id="new-item"
-              class="form-control"
-              required
-              placeholder="e.g. Oscilloscope 200MHz"
-            />
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px">
-            <div class="form-group">
-              <label class="form-label">Quantity</label>
-              <input
-                type="number"
-                id="new-qty"
-                class="form-control"
-                min="1"
-                value="1"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Urgency Level</label>
-              <select id="new-urgency" class="form-control" required>
-                <option value="LOW">Low</option>
-                <option value="MEDIUM" selected>Medium</option>
-                <option value="HIGH">High</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Justification / Reason</label>
-            <textarea
-              id="new-desc"
-              class="form-control"
-              required
-              placeholder="Explain why this equipment is needed..."
-            ></textarea>
-          </div>
-          <div class="modal-actions">
-            <button
-              type="button"
-              class="btn btn-outline"
-              onclick="closeModal('modal-new')"
-            >
-              Cancel
-            </button>
-            <button type="submit" class="btn btn-primary">
-              Submit Request
-            </button>
-          </div>
-        </form>
-      </div>
-    </div>
-
-    <!-- EDIT REQUEST MODAL -->
-    <div class="modal-overlay" id="modal-edit">
-      <div class="modal">
-        <div class="modal-header">
-          <div class="modal-title">Edit Equipment Request</div>
-          <button class="close-btn" onclick="closeModal('modal-edit')">
-            &times;
-          </button>
-        </div>
-        <form onsubmit="submitEdit(event)">
-          <input type="hidden" id="edit-id" />
-          <div class="form-group">
-            <label class="form-label">Item Name / Specification</label>
-            <input type="text" id="edit-item" class="form-control" required />
-          </div>
-          <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 12px">
-            <div class="form-group">
-              <label class="form-label">Quantity</label>
-              <input
-                type="number"
-                id="edit-qty"
-                class="form-control"
-                min="1"
-                required
-              />
-            </div>
-            <div class="form-group">
-              <label class="form-label">Urgency Level</label>
-              <select id="edit-urgency" class="form-control" required>
-                <option value="LOW">Low</option>
-                <option value="MEDIUM">Medium</option>
-                <option value="HIGH">High</option>
-              </select>
-            </div>
-          </div>
-          <div class="form-group">
-            <label class="form-label">Justification / Reason</label>
-            <textarea id="edit-desc" class="form-control" required></textarea>
-          </div>
-          <div class="modal-actions">
-            <button
-              type="button"
-              class="btn btn-outline"
-              onclick="closeModal('modal-edit')"
-            >
-              Cancel
-            </button>
-            <button type="submit" class="btn btn-primary">Save Changes</button>
-          </div>
-        </form>
-      </div>
-    </div>
-
     <!-- DELETE CONFIRM MODAL -->
     <div class="modal-overlay" id="modal-delete">
-      <div class="modal" style="max-width: 420px">
+      <div class="modal">
         <div class="modal-header">
-          <div class="modal-title">Delete Request</div>
-          <button class="close-btn" onclick="closeModal('modal-delete')">
-            &times;
-          </button>
+          <div class="modal-title">Delete Student Account</div>
+          <button class="close-btn" onclick="closeModal()">&times;</button>
         </div>
-        <p style="font-size: 14px; color: var(--text2); margin-bottom: 8px">
-          Are you sure you want to delete this request? This action cannot be
-          undone.
+        <p style="font-size: 14px; color: var(--text2); line-height: 1.6">
+          Are you sure you want to delete
+          <strong id="delete-username"></strong>'s account? This will
+          permanently remove all their data including reservations and issue
+          reports.
         </p>
         <input type="hidden" id="delete-id" />
         <div class="modal-actions">
-          <button class="btn btn-outline" onclick="closeModal('modal-delete')">
-            Cancel
-          </button>
+          <button class="btn btn-outline" onclick="closeModal()">Cancel</button>
           <button
             class="btn"
             style="background: #ef4444; color: white"
             onclick="confirmDelete()"
           >
-            Delete
+            Delete Account
           </button>
         </div>
       </div>
@@ -1116,7 +896,7 @@
       const username = sessionStorage.getItem("username");
       const role = sessionStorage.getItem("role");
 
-      // Guard — only lab technician
+      // Guards
       if (!token) window.location.href = "/login.html";
       if (role === "STUDENT") window.location.href = "/student-dashboard.html";
       if (role === "ADMIN") window.location.href = "/lead-admin-dashboard.html";
@@ -1147,208 +927,103 @@
         el.textContent = msg;
         setTimeout(() => el.classList.remove("show"), 4000);
       }
-
-      function openModal(id) {
-        document.getElementById(id).classList.add("active");
-      }
-      function closeModal(id) {
-        document.getElementById(id).classList.remove("active");
+      function closeModal() {
+        document.getElementById("modal-delete").classList.remove("active");
       }
       function logout() {
         sessionStorage.clear();
         window.location.href = "/login.html";
       }
 
-      let allRequests = [];
+      let allUsers = [];
 
-      async function loadRequests() {
+      async function loadUsers() {
         try {
-          // Lab tech sees only their own requests
-          const res = await fetch(`${API}/requests/my`, { headers });
-          if (!res.ok) throw new Error("Failed to load");
-          allRequests = await res.json();
+          // Lab tech only sees students
+          const res = await fetch(`${API}/auth/users/students`, { headers });
+          if (!res.ok) throw new Error("Failed to load students");
+          allUsers = await res.json();
           updateStats();
-          renderTable(allRequests);
+          renderTable();
         } catch (e) {
-          document.getElementById("requests-tbody").innerHTML =
-            `<tr><td colspan="9" class="empty-state" style="color:#ef4444">Failed to load requests.</td></tr>`;
+          document.getElementById("users-tbody").innerHTML =
+            `<tr><td colspan="8" class="empty-state" style="color:#ef4444">${e.message}</td></tr>`;
         }
       }
 
       function updateStats() {
-        document.getElementById("stat-total").textContent = allRequests.length;
-        document.getElementById("stat-pending").textContent =
-          allRequests.filter((r) => r.status === "PENDING").length;
-        document.getElementById("stat-approved").textContent =
-          allRequests.filter((r) => r.status === "APPROVED").length;
-        document.getElementById("stat-rejected").textContent =
-          allRequests.filter((r) => r.status === "REJECTED").length;
+        document.getElementById("stat-total").textContent = allUsers.length;
+        document.getElementById("stat-active").textContent = allUsers.filter(
+          (u) => u.active !== false,
+        ).length;
+        document.getElementById("stat-inactive").textContent = allUsers.filter(
+          (u) => u.active === false,
+        ).length;
       }
 
-      function renderTable(requests) {
-        const tbody = document.getElementById("requests-tbody");
-        if (!requests.length) {
-          tbody.innerHTML = `<tr><td colspan="9"><div class="empty-state"><div class="empty-icon">📋</div>No requests yet. Submit your first equipment request.</div></td></tr>`;
-          return;
-        }
-        tbody.innerHTML = requests
-          .map((r, i) => {
-            const date = r.createdAt
-              ? new Date(r.createdAt).toLocaleDateString("en-GB")
-              : "—";
-            const status = (r.status || "PENDING").toLowerCase();
-            const urgency = (r.urgencyLevel || "MEDIUM").toLowerCase();
-            const note =
-              r.adminNote || '<span style="color:var(--text3)">—</span>';
-            const canEdit = r.status === "PENDING";
-            return `<tr>
-          <td style="color:var(--text2);font-size:12px;">${i + 1}</td>
-          <td style="font-weight:600;">${r.itemName || "—"}</td>
-          <td style="color:var(--text2);font-size:12px;max-width:180px;white-space:normal;">${(r.description || "").substring(0, 60)}${(r.description || "").length > 60 ? "..." : ""}</td>
-          <td style="font-weight:600;">${r.quantity || 1}</td>
-          <td><span class="badge badge-${urgency}">${r.urgencyLevel || "MEDIUM"}</span></td>
-          <td style="color:var(--text2);font-size:12px;">${date}</td>
-          <td><span class="badge badge-${status}">${r.status || "PENDING"}</span></td>
-          <td style="font-size:12px;color:var(--text2);max-width:140px;white-space:normal;">${note}</td>
-          <td>
-            ${
-              canEdit
-                ? `
-              <button class="btn btn-sm btn-edit" onclick="openEditModal(${JSON.stringify(r).replace(/"/g, "&quot;")})">✏️ Edit</button>
-              <button class="btn btn-sm btn-delete" style="margin-left:4px" onclick="openDeleteModal(${r.id})">🗑️</button>
-            `
-                : '<span style="font-size:12px;color:var(--text3)">—</span>'
-            }
-          </td>
-        </tr>`;
-          })
-          .join("");
-      }
-
-      function filterTable() {
+      function renderTable() {
+        const tbody = document.getElementById("users-tbody");
         const search = document
           .getElementById("search-input")
           .value.toLowerCase();
-        const statusF = document.getElementById("filter-status").value;
-        const urgencyF = document.getElementById("filter-urgency").value;
-        const filtered = allRequests.filter((r) => {
-          const matchSearch =
-            (r.itemName || "").toLowerCase().includes(search) ||
-            (r.description || "").toLowerCase().includes(search);
-          const matchStatus = statusF === "ALL" || r.status === statusF;
-          const matchUrgency =
-            urgencyF === "ALL" || r.urgencyLevel === urgencyF;
-          return matchSearch && matchStatus && matchUrgency;
-        });
-        renderTable(filtered);
-      }
+        const filtered = allUsers.filter(
+          (u) =>
+            (u.username || "").toLowerCase().includes(search) ||
+            (u.email || "").toLowerCase().includes(search),
+        );
 
-      function openNewModal() {
-        document.getElementById("new-item").value = "";
-        document.getElementById("new-qty").value = "1";
-        document.getElementById("new-urgency").value = "MEDIUM";
-        document.getElementById("new-desc").value = "";
-        openModal("modal-new");
-      }
-
-      async function submitNew(e) {
-        e.preventDefault();
-        try {
-          const res = await fetch(`${API}/requests`, {
-            method: "POST",
-            headers,
-            body: JSON.stringify({
-              itemName: document.getElementById("new-item").value,
-              quantity: parseInt(document.getElementById("new-qty").value),
-              urgencyLevel: document.getElementById("new-urgency").value,
-              description: document.getElementById("new-desc").value,
-            }),
-          });
-          if (!res.ok) {
-            const d = await res.json();
-            throw new Error(d.error || "Failed");
-          }
-          closeModal("modal-new");
-          showAlert(
-            "success",
-            "✓ Equipment request submitted successfully. Awaiting lead admin approval.",
-          );
-          loadRequests();
-        } catch (e) {
-          showAlert("error", e.message);
+        if (!filtered.length) {
+          tbody.innerHTML = `<tr><td colspan="8" class="empty-state">No students found.</td></tr>`;
+          return;
         }
+
+        tbody.innerHTML = filtered
+          .map(
+            (u, i) => `
+        <tr>
+          <td style="color:var(--text2);font-size:12px;">${i + 1}</td>
+          <td style="font-weight:600;">${u.username || "—"}</td>
+          <td style="color:var(--text2);">${u.email || "—"}</td>
+          <td style="color:var(--text2);font-size:12px;">${u.phoneNumber || "—"}</td>
+          <td><span class="role-badge role-student">STUDENT</span></td>
+          <td style="color:var(--text2);font-size:12px;">${u.createdAt ? new Date(u.createdAt).toLocaleDateString("en-GB") : "—"}</td>
+          <td><span class="status-badge ${u.active !== false ? "status-active" : "status-inactive"}">${u.active !== false ? "Active" : "Inactive"}</span></td>
+          <td>
+            <button class="action-btn action-danger" onclick="openDeleteModal(${u.id},'${u.username}')">Delete</button>
+          </td>
+        </tr>`,
+          )
+          .join("");
       }
 
-      function openEditModal(r) {
-        document.getElementById("edit-id").value = r.id;
-        document.getElementById("edit-item").value = r.itemName;
-        document.getElementById("edit-qty").value = r.quantity;
-        document.getElementById("edit-urgency").value = r.urgencyLevel;
-        document.getElementById("edit-desc").value = r.description || "";
-        openModal("modal-edit");
-      }
-
-      async function submitEdit(e) {
-        e.preventDefault();
-        const id = document.getElementById("edit-id").value;
-        try {
-          const res = await fetch(`${API}/requests/${id}`, {
-            method: "PUT",
-            headers,
-            body: JSON.stringify({
-              itemName: document.getElementById("edit-item").value,
-              quantity: parseInt(document.getElementById("edit-qty").value),
-              urgencyLevel: document.getElementById("edit-urgency").value,
-              description: document.getElementById("edit-desc").value,
-            }),
-          });
-          if (!res.ok) {
-            const d = await res.json();
-            throw new Error(d.error || "Failed");
-          }
-          closeModal("modal-edit");
-          showAlert("success", "✓ Request updated successfully.");
-          loadRequests();
-        } catch (e) {
-          showAlert("error", e.message);
-        }
-      }
-
-      function openDeleteModal(id) {
+      function openDeleteModal(id, uname) {
         document.getElementById("delete-id").value = id;
-        openModal("modal-delete");
+        document.getElementById("delete-username").textContent = uname;
+        document.getElementById("modal-delete").classList.add("active");
       }
 
       async function confirmDelete() {
         const id = document.getElementById("delete-id").value;
         try {
-          const res = await fetch(`${API}/requests/${id}`, {
+          const res = await fetch(`${API}/auth/users/${id}`, {
             method: "DELETE",
             headers,
           });
-          if (!res.ok) {
-            const d = await res.json();
-            throw new Error(d.error || "Failed");
-          }
-          closeModal("modal-delete");
-          showAlert("success", "✓ Request deleted.");
-          loadRequests();
+          if (!res.ok) throw new Error("Delete failed");
+          closeModal();
+          showAlert("success", "✓ Student account deleted successfully.");
+          loadUsers();
         } catch (e) {
           showAlert("error", e.message);
         }
       }
 
-      document.addEventListener("keydown", (e) => {
-        if (e.key === "Escape")
-          ["modal-new", "modal-edit", "modal-delete"].forEach(closeModal);
-      });
-      ["modal-new", "modal-edit", "modal-delete"].forEach((id) => {
-        document.getElementById(id).addEventListener("click", (e) => {
-          if (e.target.id === id) closeModal(id);
-        });
+      // Close modal on backdrop click
+      document.getElementById("modal-delete").addEventListener("click", (e) => {
+        if (e.target.id === "modal-delete") closeModal();
       });
 
-      loadRequests();
+      loadUsers();
     </script>
     <script src="/calendar.js"></script>
     <script src="/notifications.js"></script>

@@ -4,7 +4,7 @@
  */
 
 // ── CONFIGURATION & SESSION STATE ──
-const API = "http://localhost:8800/api";
+const API = "http://localhost:8800/api"; // Ensure this port matches your Spring Boot application properties
 const token = sessionStorage.getItem("token");
 const username = sessionStorage.getItem("username");
 
@@ -62,8 +62,22 @@ function setupEventListeners() {
   }
 }
 
+// ── MODAL CONTROL LOGIC ──
+
+function openModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) modal.style.display = 'flex';
+}
+
+function closeModal(modalId) {
+  const modal = document.getElementById(modalId);
+  if (modal) modal.style.display = 'none';
+}
+
+// ── CORE DATA OPERATIONS (API INTEGRATION) ──
+
 /**
- * Asynchronously fetches all admin tickets from the core backend API
+ * Asynchronously fetches all admin tickets from the core backend API (GET)
  */
 async function loadTickets() {
   const container = document.getElementById("tickets-container");
@@ -92,6 +106,105 @@ async function loadTickets() {
     resetCountersToZero();
   }
 }
+
+/**
+ * Assigns an issue to a staff member, creating a new ticket (POST)
+ */
+async function submitAssignment(e) {
+  e.preventDefault();
+  
+  const payload = {
+    issueId: document.getElementById('assignIssueId').value,
+    staffId: document.getElementById('assignStaffId').value,
+    priority: document.getElementById('assignPriority').value
+  };
+
+  try {
+    const res = await fetch(`${API}/admin/tickets/assign`, {
+      method: 'POST',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+      const errData = await res.json();
+      throw new Error(errData.error || "Failed to assign ticket");
+    }
+    
+    alert("Ticket assigned successfully!");
+    closeModal('assignModal');
+    document.getElementById('assignForm').reset();
+    
+    // Refresh List to show newly assigned ticket
+    loadTickets(); 
+  } catch (err) {
+    alert("Error assigning ticket: " + err.message);
+  }
+}
+
+/**
+ * Resolves an active ticket with details and internal notes (PATCH)
+ */
+async function submitResolution(e) {
+  e.preventDefault();
+  
+  const ticketId = document.getElementById('resolveTicketId').value;
+  const payload = {
+    resolution: document.getElementById('resolveDetails').value,
+    notes: document.getElementById('resolveNotes').value
+  };
+
+  try {
+    const res = await fetch(`${API}/admin/tickets/${ticketId}/resolve`, {
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        'Authorization': 'Bearer ' + token
+      },
+      body: JSON.stringify(payload)
+    });
+
+    if (!res.ok) {
+      const errData = await res.json();
+      throw new Error(errData.error || "Failed to resolve ticket");
+    }
+    
+    alert("Ticket marked as resolved!");
+    closeModal('resolveModal');
+    document.getElementById('resolveForm').reset();
+    
+    // Refresh List to update UI badges and stats
+    loadTickets(); 
+  } catch (err) {
+    alert("Error resolving ticket: " + err.message);
+  }
+}
+
+/**
+ * Trigger review pipeline actions (Populates resolution modal based on Ticket ID)
+ */
+function viewTicket(id) {
+  const resolveTicketIdInput = document.getElementById('resolveTicketId');
+  const resolveTicketIdDisplay = document.getElementById('resolveTicketIdDisplay');
+  const resolveDetailsInput = document.getElementById('resolveDetails');
+  const resolveNotesInput = document.getElementById('resolveNotes');
+
+  if (resolveTicketIdInput && resolveTicketIdDisplay) {
+    resolveTicketIdInput.value = id;
+    resolveTicketIdDisplay.textContent = 'TCK-' + String(id).padStart(3, '0');
+    resolveDetailsInput.value = '';
+    resolveNotesInput.value = '';
+    
+    openModal('resolveModal');
+  } else {
+    console.error("Resolution modal elements are missing from the DOM.");
+  }
+}
+
+// ── UI RENDERING & DATA MANIPULATION ──
 
 /**
  * Processes, filters, and dynamically updates the upper statistics metrics counters
@@ -142,6 +255,11 @@ function renderTickets(tickets) {
     const priorityClass = "priority-" + priority.toLowerCase();
     const statusLabel = status.replace("_", " ");
 
+    // Ensure users cannot re-resolve an already resolved ticket
+    const actionButton = status === 'RESOLVED' || status === 'CLOSED'
+      ? `<button class="btn-view" style="background:#cbd5e1; cursor:not-allowed;" disabled>Resolved</button>`
+      : `<button class="btn-view" onclick="viewTicket(${ticket.id})">Review</button>`;
+
     return `
       <div class="ticket-card">
         <div class="ticket-id">TCK-${String(ticket.id).padStart(3, '0')}</div>
@@ -160,7 +278,7 @@ function renderTickets(tickets) {
           <span class="badge ${priorityClass}">${priority}</span>
         </div>
         <div class="ticket-action">
-          <button class="btn-view" onclick="viewTicket(${ticket.id})">Review</button>
+          ${actionButton}
         </div>
       </div>
     `;
@@ -182,15 +300,8 @@ function handleSearchFilter(e) {
   renderTickets(filtered);
 }
 
-/**
- * Trigger review pipeline actions (Modal configurations, status changes, assignments)
- */
-function viewTicket(id) {
-  // Can be seamlessly updated to route overlay wrappers or multi-state panels
-  alert('Opening resolution modal for Ticket: TCK-' + String(id).padStart(3, '0'));
-}
-
 // ── UTILITY REFACTOR PATTERNS ──
+
 function updateDOMText(elementId, value) {
   const element = document.getElementById(elementId);
   if (element) element.textContent = value;

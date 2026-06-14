@@ -15,7 +15,6 @@
         padding: 0;
       }
       :root {
-        /* Updated Theme Colors to match the image */
         --primary: #f97316;        
         --primary2: #ea6c0a;       
         --accent: #f97316;         
@@ -76,7 +75,7 @@
       }
       .nav-item:hover { background: rgba(255, 255, 255, 0.1); color: white; }
       .nav-item.active {
-        background: rgba(59, 130, 246, 0.25); /* Accent blue highlight */
+        background: rgba(59, 130, 246, 0.25);
         color: white; font-weight: 600;
       }
       .nav-item svg { width: 16px; height: 16px; flex-shrink: 0; }
@@ -180,6 +179,13 @@
         font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s;
       }
       .btn-view:hover { background: #2563eb; }
+      
+      .btn-create {
+        padding: 8px 16px; border-radius: 8px; border: none;
+        background: var(--text); color: white; font-family: var(--font);
+        font-size: 13px; font-weight: 600; cursor: pointer; transition: 0.2s;
+      }
+      .btn-create:hover { background: #334155; }
 
       /* BADGES */
       .badge { font-size: 11px; font-weight: 600; padding: 3px 10px; border-radius: 20px; }
@@ -195,6 +201,25 @@
 
       .empty-state { text-align: center; padding: 60px; color: var(--text3); font-size: 14px; background: var(--white); border: 1px dashed var(--border); border-radius: 14px; }
       .spinner-center { display: flex; justify-content: center; padding: 40px; }
+      
+      /* MODALS */
+      .modal-overlay {
+        position: fixed; top: 0; left: 0; width: 100%; height: 100%;
+        background: rgba(0, 0, 0, 0.5); display: none; align-items: center; justify-content: center; z-index: 200;
+      }
+      .modal {
+        background: var(--white); border-radius: 16px; width: 450px; max-width: 90%;
+        padding: 24px; box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+      }
+      .modal-header { font-size: 18px; font-weight: 700; margin-bottom: 16px; color: var(--text); }
+      .form-group { margin-bottom: 16px; }
+      .form-group label { display: block; font-size: 13px; font-weight: 600; color: var(--text2); margin-bottom: 6px; }
+      .form-control { width: 100%; padding: 10px 12px; border: 1px solid var(--border); border-radius: 8px; font-family: var(--font); font-size: 14px; }
+      .form-control:focus { outline: none; border-color: var(--accent); }
+      textarea.form-control { resize: vertical; min-height: 80px; }
+      .modal-actions { display: flex; justify-content: flex-end; gap: 12px; margin-top: 24px; }
+      .btn-cancel { padding: 8px 16px; border-radius: 8px; border: 1px solid var(--border); background: var(--bg); color: var(--text); font-weight: 600; cursor: pointer; }
+
       @keyframes spin { to { transform: rotate(360deg); } }
     </style>
   </head>
@@ -269,10 +294,64 @@
 
         <div class="tickets-header">
           <div class="tickets-title">All Tickets</div>
+          <button class="btn-create" onclick="openModal('assignModal')">+ Assign New Ticket</button>
         </div>
         <div id="tickets-container">
           <div class="spinner-center"><div class="stat-spinner" style="width:30px; height:30px; border-width:3px; border-top-color:var(--accent);"></div></div>
         </div>
+      </div>
+    </div>
+
+    <!-- MODALS FOR BACKEND INTEGRATION -->
+    <!-- Assign Modal -->
+    <div class="modal-overlay" id="assignModal">
+      <div class="modal">
+        <div class="modal-header">Assign Issue to Staff</div>
+        <form id="assignForm" onsubmit="submitAssignment(event)">
+          <div class="form-group">
+            <label>Issue ID</label>
+            <input type="number" class="form-control" id="assignIssueId" placeholder="e.g., 10" required>
+          </div>
+          <div class="form-group">
+            <label>Staff ID (Assigned To)</label>
+            <input type="number" class="form-control" id="assignStaffId" placeholder="e.g., 3" required>
+          </div>
+          <div class="form-group">
+            <label>Priority</label>
+            <select class="form-control" id="assignPriority">
+              <option value="LOW">Low</option>
+              <option value="MEDIUM" selected>Medium</option>
+              <option value="HIGH">High</option>
+              <option value="URGENT">Urgent</option>
+            </select>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-cancel" onclick="closeModal('assignModal')">Cancel</button>
+            <button type="submit" class="btn-view">Assign Ticket</button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <!-- Resolve Modal -->
+    <div class="modal-overlay" id="resolveModal">
+      <div class="modal">
+        <div class="modal-header">Resolve <span id="resolveTicketIdDisplay"></span></div>
+        <form id="resolveForm" onsubmit="submitResolution(event)">
+          <input type="hidden" id="resolveTicketId">
+          <div class="form-group">
+            <label>Resolution Details</label>
+            <textarea class="form-control" id="resolveDetails" required placeholder="Describe how the issue was fixed..."></textarea>
+          </div>
+          <div class="form-group">
+            <label>Internal Notes</label>
+            <textarea class="form-control" id="resolveNotes" placeholder="Any internal admin notes..."></textarea>
+          </div>
+          <div class="modal-actions">
+            <button type="button" class="btn-cancel" onclick="closeModal('resolveModal')">Cancel</button>
+            <button type="submit" class="btn-view">Mark as Resolved</button>
+          </div>
+        </form>
       </div>
     </div>
 
@@ -297,6 +376,15 @@
 
       let allTickets = [];
 
+      // Modal Control Logic
+      function openModal(modalId) {
+        document.getElementById(modalId).style.display = 'flex';
+      }
+      function closeModal(modalId) {
+        document.getElementById(modalId).style.display = 'none';
+      }
+
+      // Read Function (GET)
       async function loadTickets() {
         try {
           const res = await fetch(`${API}/admin/tickets`, {
@@ -321,7 +409,6 @@
 
       function updateStats(tickets) {
         const total = tickets.length;
-        // The original issue status drives the open/progress/resolved state
         const open = tickets.filter(t => t.originalIssue && t.originalIssue.status === 'OPEN').length;
         const progress = tickets.filter(t => t.originalIssue && t.originalIssue.status === 'IN_PROGRESS').length;
         const resolved = tickets.filter(t => t.originalIssue && (t.originalIssue.status === 'RESOLVED' || t.originalIssue.status === 'CLOSED')).length;
@@ -340,7 +427,6 @@
           return;
         }
 
-        // Sort by assignment date, newest first
         tickets.sort((a, b) => new Date(b.assignmentDate || 0) - new Date(a.assignmentDate || 0));
 
         container.innerHTML = tickets.map(ticket => {
@@ -355,6 +441,11 @@
           const statusClass = "status-" + status.toLowerCase();
           const priorityClass = "priority-" + priority.toLowerCase();
           const statusLabel = status.replace("_", " ");
+
+          // Disable review button if already resolved
+          const actionButton = status === 'RESOLVED' 
+            ? `<button class="btn-view" style="background:#cbd5e1; cursor:not-allowed;" disabled>Resolved</button>`
+            : `<button class="btn-view" onclick="viewTicket(${ticket.id})">Review</button>`;
 
           return `
             <div class="ticket-card">
@@ -374,14 +465,13 @@
                 <span class="badge ${priorityClass}">${priority}</span>
               </div>
               <div class="ticket-action">
-                <button class="btn-view" onclick="viewTicket(${ticket.id})">Review</button>
+                ${actionButton}
               </div>
             </div>
           `;
         }).join("");
       }
 
-      // Simple Search Filtering
       document.getElementById('searchInput').addEventListener('input', (e) => {
         const term = e.target.value.toLowerCase();
         const filtered = allTickets.filter(t => {
@@ -392,9 +482,78 @@
         renderTickets(filtered);
       });
 
+      // Prepare UI for Patch request
       function viewTicket(id) {
-        // In a real app, this would open a modal or navigate to a detail page
-        alert('Opening resolution modal for Ticket: TCK-' + String(id).padStart(3, '0'));
+        document.getElementById('resolveTicketId').value = id;
+        document.getElementById('resolveTicketIdDisplay').textContent = `Ticket TCK-${String(id).padStart(3, '0')}`;
+        document.getElementById('resolveDetails').value = '';
+        document.getElementById('resolveNotes').value = '';
+        openModal('resolveModal');
+      }
+
+      // Assign Function (POST)
+      async function submitAssignment(e) {
+        e.preventDefault();
+        const payload = {
+          issueId: document.getElementById('assignIssueId').value,
+          staffId: document.getElementById('assignStaffId').value,
+          priority: document.getElementById('assignPriority').value
+        };
+
+        try {
+          const res = await fetch(`${API}/admin/tickets/assign`, {
+            method: 'POST',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(payload)
+          });
+
+          if (!res.ok) {
+            const errData = await res.json();
+            throw new Error(errData.error || "Failed to assign ticket");
+          }
+          
+          alert("Ticket assigned successfully!");
+          closeModal('assignModal');
+          document.getElementById('assignForm').reset();
+          loadTickets(); // Refresh List
+        } catch (err) {
+          alert("Error: " + err.message);
+        }
+      }
+
+      // Resolve Function (PATCH)
+      async function submitResolution(e) {
+        e.preventDefault();
+        const ticketId = document.getElementById('resolveTicketId').value;
+        const payload = {
+          resolution: document.getElementById('resolveDetails').value,
+          notes: document.getElementById('resolveNotes').value
+        };
+
+        try {
+          const res = await fetch(`${API}/admin/tickets/${ticketId}/resolve`, {
+            method: 'PATCH',
+            headers: {
+              'Content-Type': 'application/json',
+              'Authorization': 'Bearer ' + token
+            },
+            body: JSON.stringify(payload)
+          });
+
+          if (!res.ok) {
+            const errData = await res.json();
+            throw new Error(errData.error || "Failed to resolve ticket");
+          }
+          
+          alert("Ticket resolved successfully!");
+          closeModal('resolveModal');
+          loadTickets(); // Refresh List
+        } catch (err) {
+          alert("Error: " + err.message);
+        }
       }
 
       // Init

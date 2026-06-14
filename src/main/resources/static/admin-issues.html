@@ -814,9 +814,7 @@
         <!-- TICKETS -->
         <div class="tickets-header">
           <div class="tickets-title">All Tickets</div>
-          <button class="btn-create" onclick="openCreateModal()">
-            + Create Internal Ticket
-          </button>
+          
         </div>
         <div id="tickets-container">
           <div class="spinner-center"><div class="spinner"></div></div>
@@ -922,6 +920,8 @@
       </div>
     </div>
 
+    </div>
+
     <script>
       const API = "/api";
       const token = sessionStorage.getItem("token");
@@ -933,219 +933,142 @@
       if (role === "ADMIN") window.location.href = "/lead-admin-dashboard.html";
 
       if (username) {
-        const i = username.substring(0, 2).toUpperCase();
+        const i = username.substring(0,2).toUpperCase();
         document.getElementById("sidebar-avatar").textContent = i;
         document.getElementById("topbar-avatar").textContent = i;
         document.getElementById("sidebar-name").textContent = username;
       }
 
-      document.getElementById("topbar-date").textContent =
-        new Date().toLocaleDateString("en-GB", {
-          weekday: "short",
-          day: "numeric",
-          month: "long",
-          year: "numeric",
-        });
+      document.getElementById("topbar-date").textContent = new Date().toLocaleDateString("en-GB",{weekday:"short",day:"numeric",month:"long",year:"numeric"});
 
-      let allTickets = [];
+      let allIssues = [];
 
-      function openModal(id) {
-        document.getElementById(id).classList.add("show");
-      }
-      function closeModal(id) {
-        document.getElementById(id).classList.remove("show");
-      }
-      document.querySelectorAll(".modal-overlay").forEach((o) => {
-        o.addEventListener("click", (e) => {
-          if (e.target === o) o.classList.remove("show");
-        });
-      });
-
-      async function loadTickets() {
+      async function loadIssues() {
         try {
-          const res = await fetch(`${API}/admin/tickets`, {
-            headers: { Authorization: "Bearer " + token },
+          const res = await fetch(`${API}/issues`, {
+            headers: { Authorization: "Bearer " + token }
           });
-          if (!res.ok) throw new Error("Failed to fetch tickets");
-          allTickets = await res.json();
-          updateStats(allTickets);
-          renderTickets(allTickets);
-        } catch (e) {
-          document.getElementById("tickets-container").innerHTML =
-            `<div class="empty-state">Failed to load tickets. Please ensure backend is running.</div>`;
-          ["stat-total", "stat-open", "stat-progress", "stat-resolved"].forEach(
-            (id) => (document.getElementById(id).textContent = "0"),
-          );
-        }
-      }
-      async function openAssignModal() {
-        try {
-          const [issuesRes, usersRes] = await Promise.all([
-            fetch(`${API}/issues`, {
-              headers: { Authorization: "Bearer " + token },
-            }),
-            fetch(`${API}/auth/users`, {
-              headers: { Authorization: "Bearer " + token },
-            }),
-          ]);
-          const issues = await issuesRes.json();
-          const users = await usersRes.json();
-
-          const issueSel = document.getElementById("assignIssueId");
-          const staffSel = document.getElementById("assignStaffId");
-
-          issueSel.innerHTML =
-            '<option value="">-- Select Issue --</option>' +
-            issues
-              .filter((i) => i.status === "OPEN")
-              .map(
-                (i) => `<option value="${i.id}">#${i.id} — ${i.title}</option>`,
-              )
-              .join("");
-
-          staffSel.innerHTML =
-            '<option value="">-- Select Staff --</option>' +
-            users
-              .filter((u) => u.role === "LAB_TECHNICIAN")
-              .map((u) => `<option value="${u.id}">${u.username}</option>`)
-              .join("");
-
-          openModal("assignModal");
-        } catch (e) {
-          alert("Failed to load data");
+          if (!res.ok) throw new Error("Failed");
+          allIssues = await res.json();
+          updateStats(allIssues);
+          renderIssues(allIssues);
+        } catch(e) {
+          document.getElementById("tickets-container").innerHTML = `<div class="empty-state">Failed to load issues.</div>`;
+          ["stat-total","stat-open","stat-progress","stat-resolved"].forEach(id => document.getElementById(id).textContent = "0");
         }
       }
 
-      function updateStats(tickets) {
-        document.getElementById("stat-total").textContent = tickets.length;
-        document.getElementById("stat-open").textContent = tickets.filter(
-          (t) => t.originalIssue?.status === "OPEN",
-        ).length;
-        document.getElementById("stat-progress").textContent = tickets.filter(
-          (t) => t.originalIssue?.status === "IN_PROGRESS",
-        ).length;
-        document.getElementById("stat-resolved").textContent = tickets.filter(
-          (t) => ["RESOLVED", "CLOSED"].includes(t.originalIssue?.status),
-        ).length;
+      function updateStats(issues) {
+        document.getElementById("stat-total").textContent = issues.length;
+        document.getElementById("stat-open").textContent = issues.filter(i => i.status === "OPEN").length;
+        document.getElementById("stat-progress").textContent = issues.filter(i => i.status === "IN_PROGRESS").length;
+        document.getElementById("stat-resolved").textContent = issues.filter(i => i.status === "RESOLVED" || i.status === "CLOSED").length;
       }
 
-      function renderTickets(tickets) {
+      function renderIssues(issues) {
         const container = document.getElementById("tickets-container");
-        if (!tickets.length) {
-          container.innerHTML = `<div class="empty-state">No tickets found.</div>`;
+        if (!issues.length) {
+          container.innerHTML = `<div class="empty-state">No issues reported yet.</div>`;
           return;
         }
-        tickets.sort(
-          (a, b) =>
-            new Date(b.assignmentDate || 0) - new Date(a.assignmentDate || 0),
-        );
-        container.innerHTML = tickets
-          .map((ticket) => {
-            const issue = ticket.originalIssue || {};
-            const status = issue.status || "OPEN";
-            const priority = ticket.adminPriority || "MEDIUM";
-            const date = new Date(
-              ticket.assignmentDate || Date.now(),
-            ).toLocaleDateString("en-GB", {
-              day: "numeric",
-              month: "short",
-              year: "numeric",
-            });
-            const reporter = issue.user?.username || "Student";
-            const location =
-              ticket.equipment?.name ||
-              issue.lab?.labName ||
-              (issue.equipment ? "Equipment Issue" : "General");
-            const statusClass =
-              "status-" + status.toLowerCase().replace("_", "-");
-            const priorityClass = "priority-" + priority.toLowerCase();
-            const statusLabel = status.replace("_", " ");
-            const actionBtn =
-              status === "RESOLVED" || status === "CLOSED"
-                ? `<span class="badge status-resolved">Resolved</span>`
-                : `<span class="badge status-open">Pending</span>`;
-            return `
-          <div class="ticket-card">
-            <div class="ticket-id">TCK-${String(ticket.id).padStart(3, "0")}</div>
-            <div class="ticket-info">
-              <div class="ticket-title">${ticket.title || issue.title || "Untitled Issue"}</div>
-              <div class="ticket-meta">
-                
-                <span>${location}</span>
-                <div class="meta-divider"></div>
-                <span>Assigned ${date}</span>
+        issues.sort((a,b) => new Date(b.createdAt||0) - new Date(a.createdAt||0));
+        container.innerHTML = issues.map(issue => {
+          const status = issue.status || "OPEN";
+          const priority = issue.priority || "MEDIUM";
+          const statusClass = "status-" + status.toLowerCase().replace("_","-");
+          const priorityClass = "priority-" + priority.toLowerCase();
+          const statusLabel = status.replace("_"," ");
+          const date = new Date(issue.createdAt||Date.now()).toLocaleDateString("en-GB",{day:"numeric",month:"short",year:"numeric"});
+          const reporter = issue.user?.username || "Student";
+          const type = issue.issueType === "EQUIPMENT"
+            ? issue.equipment?.name || "Equipment"
+            : issue.issueType === "LAB"
+              ? issue.lab?.labName || "Lab"
+              : issue.customType || "Other";
+          return `
+            <div class="ticket-card">
+              <div class="ticket-id">#${issue.id}</div>
+              <div class="ticket-info">
+                <div class="ticket-title">${issue.title || "Untitled"}</div>
+                <div class="ticket-meta">
+                  <span>By <strong>${reporter}</strong></span>
+                  <div class="meta-divider"></div>
+                  <span>${type}</span>
+                  <div class="meta-divider"></div>
+                  <span>${date}</span>
+                  ${issue.description ? `<div class="meta-divider"></div><span style="max-width:300px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap;">${issue.description}</span>` : ""}
+                </div>
               </div>
-            </div>
-            <div class="ticket-badges">
-              <span class="badge ${statusClass}">${statusLabel}</span>
-              <span class="badge ${priorityClass}">${priority}</span>
-            </div>
-            <div class="ticket-action">${actionBtn}</div>
-          </div>`;
-          })
-          .join("");
+              <div class="ticket-badges">
+                <span class="badge ${statusClass}">${statusLabel}</span>
+                <span class="badge ${priorityClass}">${priority}</span>
+              </div>
+              <div class="ticket-action">
+                ${status === "RESOLVED" || status === "CLOSED"
+                  ? `<button class="btn-resolved" disabled>Resolved</button>`
+                  : `<button class="btn-review" onclick="openResolve(${issue.id})">Resolve</button>`
+                }
+              </div>
+            </div>`;
+        }).join("");
       }
 
-      document.getElementById("searchInput").addEventListener("input", (e) => {
+      document.getElementById("searchInput").addEventListener("input", e => {
         const q = e.target.value.toLowerCase();
-        renderTickets(
-          allTickets.filter(
-            (t) =>
-              (t.originalIssue?.title || "").toLowerCase().includes(q) ||
-              String(t.id).includes(q),
-          ),
-        );
+        renderIssues(allIssues.filter(i =>
+          (i.title||"").toLowerCase().includes(q) ||
+          (i.user?.username||"").toLowerCase().includes(q) ||
+          (i.description||"").toLowerCase().includes(q) ||
+          String(i.id).includes(q)
+        ));
       });
+      function openResolve(id) {
+  document.getElementById("resolveIssueId").value = id;
+  document.getElementById("resolveIssueIdDisplay").textContent = `#${id}`;
+  document.getElementById("resolveNotes").value = "";
+  document.getElementById("resolveModal").classList.add("show");
+}
 
-      async function openCreateModal() {
-        try {
-          const res = await fetch(`${API}/catalog/equipment`, {
-            headers: { Authorization: "Bearer " + token },
-          });
-          const equipment = await res.json();
-          const sel = document.getElementById("ticketEquipment");
-          sel.innerHTML =
-            '<option value="">-- Select Equipment --</option>' +
-            equipment
-              .map(
-                (e) =>
-                  `<option value="${e.id}">${e.equipmentCode ? e.equipmentCode + " — " : ""}${e.name}</option>`,
-              )
-              .join("");
-        } catch (e) {}
-        openModal("assignModal");
-      }
+function closeModal(id) {
+  document.getElementById(id).classList.remove("show");
+}
 
-      async function submitInternalTicket(e) {
-        e.preventDefault();
-        const equipmentId = document.getElementById("ticketEquipment").value;
-        try {
-          const res = await fetch(`${API}/admin/tickets/internal`, {
-            method: "POST",
-            headers: {
-              "Content-Type": "application/json",
-              Authorization: "Bearer " + token,
-            },
-            body: JSON.stringify({
-              title: document.getElementById("ticketTitle").value,
-              description: document.getElementById("ticketDescription").value,
-              priority: document.getElementById("ticketPriority").value,
-              equipmentId: equipmentId ? parseInt(equipmentId) : null,
-            }),
-          });
-          if (!res.ok) {
-            const d = await res.json();
-            throw new Error(d.error || "Failed");
-          }
-          alert("Ticket submitted successfully!");
-          closeModal("assignModal");
-          loadTickets();
-        } catch (err) {
-          alert("Error: " + err.message);
-        }
-      }
+async function submitResolve() {
+  const id = document.getElementById("resolveIssueId").value;
+  try {
+    const res = await fetch(`${API}/issues/${id}/status`, {
+      method: "PATCH",
+      headers: { "Content-Type": "application/json", Authorization: "Bearer " + token },
+      body: JSON.stringify({ status: "RESOLVED" })
+    });
+    if (!res.ok) throw new Error("Failed to resolve");
+    closeModal("resolveModal");
+    await loadIssues();
+  } catch(e) {
+    alert("Error: " + e.message);
+  }
+}
 
-      loadTickets();
+document.querySelectorAll(".modal-overlay").forEach(o => {
+  o.addEventListener("click", e => { if (e.target === o) o.classList.remove("show"); });
+});
+
+      loadIssues();
     </script>
+    <div class="modal-overlay" id="resolveModal">
+  <div class="modal">
+    <div class="modal-close" onclick="closeModal('resolveModal')">✕</div>
+    <div class="modal-title">Resolve Issue <span id="resolveIssueIdDisplay"></span></div>
+    <input type="hidden" id="resolveIssueId"/>
+    <div class="form-group">
+      <label>Resolution Notes</label>
+      <textarea class="form-control" id="resolveNotes" placeholder="Describe how the issue was resolved..."></textarea>
+    </div>
+    <div class="modal-actions">
+      <button type="button" class="btn-cancel-modal" onclick="closeModal('resolveModal')">Cancel</button>
+      <button type="button" class="btn-submit-modal" onclick="submitResolve()">Mark as Resolved</button>
+    </div>
+  </div>
+</div>
   </body>
 </html>

@@ -8,6 +8,7 @@
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <script src="/theme.js"></script>
     <style>
       *,
       *::before,
@@ -27,6 +28,14 @@
         --white: #ffffff;
         --bg: #f8fafc;
         --font: "Plus Jakarta Sans", sans-serif;
+      }
+      [data-theme="dark"] {
+        --text: #f1f5f9;
+        --text2: #cbd5e1;
+        --text3: #94a3b8;
+        --border: #334155;
+        --white: #1e293b;
+        --bg: #0f172a;
       }
       body {
         font-family: var(--font);
@@ -656,6 +665,19 @@
         color: var(--text3);
         font-size: 13px;
       }
+      .theme-toggle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: var(--white);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        transition: all 0.2s;
+      }
 
       @media (max-width: 1100px) {
         .stats-grid {
@@ -791,33 +813,7 @@
           </svg>
           Manage Users
         </a>
-        <div class="nav-label">Student View</div>
-        <a href="/catalog.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-          </svg>
-          Equipment Catalog
-        </a>
-        <a href="/report-issue.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path
-              d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
-            />
-            <line x1="12" y1="9" x2="12" y2="13" />
-            <line x1="12" y1="17" x2="12.01" y2="17" />
-          </svg>
-          Report Issue
-        </a>
+
         <div class="nav-label">Analytics</div>
         <a href="/admin-dashboard.html#demand-section" class="nav-item">
           <svg
@@ -839,27 +835,6 @@
           <div class="user-name" id="sidebar-name">Lab Technician</div>
           <div class="user-role">Lab Technician</div>
         </div>
-        <button
-          class="logout-btn"
-          onclick="
-            sessionStorage.clear();
-            window.location.href = '/login.html';
-          "
-          title="Logout"
-        >
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
-            <polyline points="16 17 21 12 16 7" />
-            <line x1="21" y1="12" x2="9" y2="12" />
-          </svg>
-        </button>
       </div>
     </aside>
 
@@ -874,6 +849,12 @@
         </div>
         <div class="topbar-right">
           <div class="topbar-date" id="topbarDate"></div>
+          <button
+            id="theme-btn"
+            class="theme-toggle"
+            type="button"
+            title="Toggle theme"
+          ></button>
           <div class="topbar-avatar" id="topbar-avatar">LT</div>
         </div>
       </div>

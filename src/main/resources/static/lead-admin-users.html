@@ -3,12 +3,11 @@
   <head>
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>Lead Admin Dashboard — Lab Management System</title>
+    <title>Manage Staff — Lab Management System</title>
     <link
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
-    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
     <script src="/theme.js"></script>
     <style>
       *,
@@ -277,7 +276,7 @@
 
       .stats-grid {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        grid-template-columns: repeat(3, 1fr);
         gap: 16px;
         margin-bottom: 28px;
       }
@@ -287,14 +286,6 @@
         border-radius: 14px;
         padding: 20px;
         border-top: 3px solid transparent;
-        display: flex;
-        justify-content: space-between;
-        align-items: center;
-        transition: transform 0.2s;
-      }
-      .stat-card:hover {
-        transform: translateY(-2px);
-        box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
       }
       .stat-card.orange {
         border-top-color: var(--orange);
@@ -304,9 +295,6 @@
       }
       .stat-card.green {
         border-top-color: #22c55e;
-      }
-      .stat-card.red {
-        border-top-color: #ef4444;
       }
       .stat-label {
         font-size: 12px;
@@ -321,24 +309,13 @@
         font-weight: 700;
         color: var(--text);
         line-height: 1;
-        margin-bottom: 4px;
-      }
-      .stat-sub {
-        font-size: 12px;
-        color: var(--text3);
       }
 
-      .two-col {
-        display: grid;
-        grid-template-columns: 1fr 1fr;
-        gap: 20px;
-      }
       .section-card {
         background: var(--white);
         border: 1px solid var(--border);
         border-radius: 16px;
         padding: 24px;
-        margin-bottom: 20px;
       }
       .section-header {
         display: flex;
@@ -351,84 +328,132 @@
         font-weight: 700;
         color: var(--text);
       }
-      .chart-container {
-        width: 100%;
-        height: 280px;
-      }
 
-      .activity-item {
+      .toolbar {
         display: flex;
         gap: 12px;
-        padding: 12px 0;
-        border-bottom: 1px solid var(--border);
+        margin-bottom: 16px;
       }
-      .activity-item:last-child {
-        border-bottom: none;
+      .search-box {
+        position: relative;
+        flex: 1;
       }
-      .activity-dot {
-        width: 8px;
-        height: 8px;
-        border-radius: 50%;
-        background: var(--orange);
-        margin-top: 5px;
-        flex-shrink: 0;
+      .search-icon {
+        position: absolute;
+        left: 14px;
+        top: 50%;
+        transform: translateY(-50%);
+        color: var(--text3);
       }
-      .activity-text {
+      .search-input {
+        width: 100%;
+        padding: 10px 14px 10px 40px;
+        border: 1px solid var(--border);
+        border-radius: 10px;
+        font-family: var(--font);
+        font-size: 13px;
+        outline: none;
+        background: var(--white);
+        color: var(--text);
+      }
+      .search-input:focus {
+        border-color: var(--orange);
+      }
+
+      .table-container {
+        overflow-x: auto;
+      }
+      .data-table {
+        width: 100%;
+        border-collapse: collapse;
+      }
+      .data-table th {
+        text-align: left;
+        padding: 14px;
+        font-size: 12px;
+        font-weight: 600;
+        color: var(--text2);
+        border-bottom: 2px solid var(--border);
+        text-transform: uppercase;
+        letter-spacing: 0.05em;
+      }
+      .data-table td {
+        padding: 14px;
         font-size: 13px;
         color: var(--text);
-        line-height: 1.5;
+        border-bottom: 1px solid var(--border);
+        vertical-align: middle;
       }
-      .activity-time {
-        font-size: 11px;
-        color: var(--text3);
-        margin-top: 2px;
+      .data-table tr:hover td {
+        background: var(--bg);
       }
+      .data-table tr:last-child td {
+        border-bottom: none;
+      }
+
       .status-badge {
         font-size: 10px;
         font-weight: 700;
-        padding: 3px 7px;
+        padding: 4px 8px;
         border-radius: 20px;
         text-transform: uppercase;
       }
-      .badge-pending {
-        background: #fef9c3;
-        color: #854d0e;
-      }
-      .badge-approved {
+      .badge-active {
         background: #dcfce7;
         color: #15803d;
       }
-      .badge-rejected {
-        background: #fee2e2;
-        color: #b91c1c;
+      .badge-inactive {
+        background: #f1f5f9;
+        color: #64748b;
+      }
+      .badge-tech {
+        background: rgba(249, 115, 22, 0.1);
+        color: var(--orange);
       }
 
-      @keyframes fadeIn {
-        from {
-          opacity: 0;
-          transform: translateY(5px);
-        }
-        to {
-          opacity: 1;
-          transform: translateY(0);
-        }
+      .user-cell {
+        display: flex;
+        align-items: center;
+        gap: 10px;
       }
-      @media (max-width: 768px) {
-        .sidebar {
-          display: none;
-        }
-        .main {
-          margin-left: 0;
-        }
-        .content {
-          padding: 20px 16px;
-        }
-        .stats-grid {
-          grid-template-columns: 1fr 1fr;
-        }
-        .two-col {
-          grid-template-columns: 1fr;
-        }
+      .user-cell-avatar {
+        width: 32px;
+        height: 32px;
+        border-radius: 50%;
+        background: linear-gradient(135deg, var(--orange), var(--orange2));
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 11px;
+        font-weight: 700;
+        color: white;
+        flex-shrink: 0;
+      }
+
+      .pagination {
+        display: flex;
+        justify-content: flex-end;
+        align-items: center;
+        gap: 8px;
+        margin-top: 20px;
+        font-size: 13px;
+        color: var(--text2);
+      }
+      .page-btn {
+        padding: 6px 12px;
+        border: 1px solid var(--border);
+        background: var(--white);
+        border-radius: 6px;
+        cursor: pointer;
+        font-family: var(--font);
+        color: var(--text);
+      }
+      .page-btn:hover:not(:disabled) {
+        background: var(--bg);
+      }
+      .page-btn:disabled {
+        opacity: 0.5;
+        cursor: not-allowed;
       }
     </style>
   </head>
@@ -466,7 +491,7 @@
       </div>
       <nav class="nav-section">
         <div class="nav-label">Overview</div>
-        <a href="/lead-admin-dashboard.html" class="nav-item active">
+        <a href="/lead-admin-dashboard.html" class="nav-item">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -495,7 +520,7 @@
           </svg>
           Issue Tickets
         </a>
-        <a href="/lead-admin-users.html" class="nav-item">
+        <a href="/lead-admin-users.html" class="nav-item active">
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -522,7 +547,7 @@
     <div class="main">
       <div class="topbar">
         <div class="topbar-left">
-          <div class="topbar-title">Dashboard</div>
+          <div class="topbar-title">Manage Staff</div>
           <span class="topbar-badge">ADMIN</span>
         </div>
         <div class="topbar-right">
@@ -533,7 +558,7 @@
             type="button"
             title="Toggle theme"
           ></button>
-          <div class="topbar-icon" onclick="refreshAllData()" title="Refresh">
+          <div class="topbar-icon">
             <svg
               width="16"
               height="16"
@@ -543,9 +568,10 @@
               stroke-width="2"
             >
               <path
-                d="M21 2v6h-6M3 12a9 9 0 0115-6.7L21 8M3 22v-6h6M21 12a9 9 0 01-15 6.7L3 16"
+                d="M18 8A6 6 0 006 8c0 7-3 9-3 9h18s-3-2-3-9M13.73 21a2 2 0 01-3.46 0"
               />
             </svg>
+            <div class="notif-dot"></div>
           </div>
           <a href="/profile-admin.html" style="text-decoration: none">
             <div class="topbar-avatar" id="topbar-avatar">LA</div>
@@ -556,110 +582,75 @@
       <div class="content">
         <div class="stats-grid">
           <div class="stat-card orange">
-            <div>
-              <div class="stat-label">Total Requests</div>
-              <div class="stat-value" id="stat-total">—</div>
-              <div class="stat-sub">All procurement requests</div>
-            </div>
-            <svg
-              width="40"
-              height="40"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#f97316"
-              stroke-width="2"
-              opacity="0.3"
-            >
-              <path d="M6 2L3 6v14a2 2 0 002 2h14a2 2 0 002-2V6l-3-4z" />
-              <line x1="3" y1="6" x2="21" y2="6" />
-            </svg>
-          </div>
-          <div class="stat-card blue">
-            <div>
-              <div class="stat-label">Pending Review</div>
-              <div class="stat-value" id="stat-pending">—</div>
-              <div class="stat-sub">Awaiting approval</div>
-            </div>
-            <svg
-              width="40"
-              height="40"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#3b82f6"
-              stroke-width="2"
-              opacity="0.3"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <polyline points="12 6 12 12 16 14" />
-            </svg>
+            <div class="stat-label">Total Staff</div>
+            <div class="stat-value" id="stat-total">—</div>
           </div>
           <div class="stat-card green">
-            <div>
-              <div class="stat-label">Approved</div>
-              <div class="stat-value" id="stat-approved">—</div>
-              <div class="stat-sub">Approved requests</div>
-            </div>
-            <svg
-              width="40"
-              height="40"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#22c55e"
-              stroke-width="2"
-              opacity="0.3"
-            >
-              <path d="M22 11.08V12a10 10 0 11-5.93-9.14" />
-              <polyline points="22 4 12 14.01 9 11.01" />
-            </svg>
+            <div class="stat-label">Active</div>
+            <div class="stat-value" id="stat-active">—</div>
           </div>
-          <div class="stat-card red">
-            <div>
-              <div class="stat-label">Rejected</div>
-              <div class="stat-value" id="stat-rejected">—</div>
-              <div class="stat-sub">Rejected requests</div>
-            </div>
-            <svg
-              width="40"
-              height="40"
-              viewBox="0 0 24 24"
-              fill="none"
-              stroke="#ef4444"
-              stroke-width="2"
-              opacity="0.3"
-            >
-              <circle cx="12" cy="12" r="10" />
-              <line x1="15" y1="9" x2="9" y2="15" />
-              <line x1="9" y1="9" x2="15" y2="15" />
-            </svg>
+          <div class="stat-card blue">
+            <div class="stat-label">Lab Technicians</div>
+            <div class="stat-value" id="stat-tech">—</div>
           </div>
         </div>
 
-        <div class="two-col">
-          <div class="section-card" style="margin-bottom: 0">
-            <div class="section-header">
-              <div class="section-title">Request Status Overview</div>
-            </div>
-            <div class="chart-container">
-              <canvas id="overviewChart"></canvas>
-            </div>
+        <div class="section-card">
+          <div class="section-header">
+            <div class="section-title">Lab Technician Staff</div>
           </div>
-          <div class="section-card" style="margin-bottom: 0">
-            <div class="section-header">
-              <div class="section-title">Recent Activity</div>
-            </div>
-            <div id="activity-list">
-              <div
-                style="
-                  text-align: center;
-                  padding: 30px;
-                  color: var(--text3);
-                  font-size: 13px;
-                "
+          <div class="toolbar">
+            <div class="search-box">
+              <svg
+                class="search-icon"
+                width="16"
+                height="16"
+                viewBox="0 0 24 24"
+                fill="none"
+                stroke="currentColor"
+                stroke-width="2"
               >
-                Loading...
-              </div>
+                <circle cx="11" cy="11" r="8" />
+                <line x1="21" y1="21" x2="16.65" y2="16.65" />
+              </svg>
+              <input
+                type="text"
+                class="search-input"
+                id="search-users"
+                placeholder="Search by username or email..."
+                oninput="renderTable()"
+              />
             </div>
           </div>
+          <div class="table-container">
+            <table class="data-table">
+              <thead>
+                <tr>
+                  <th>#</th>
+                  <th>Staff Member</th>
+                  <th>Email</th>
+                  <th>Phone</th>
+                  <th>Role</th>
+                  <th>Status</th>
+                </tr>
+              </thead>
+              <tbody id="table-body">
+                <tr>
+                  <td
+                    colspan="6"
+                    style="
+                      text-align: center;
+                      color: var(--text3);
+                      padding: 30px;
+                    "
+                  >
+                    Loading...
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="pagination" id="pagination"></div>
         </div>
       </div>
     </div>
@@ -686,94 +677,81 @@
           year: "numeric",
         });
 
-      let requests = [];
-      let chartInstance = null;
+      let users = [];
+      const PAGE_LIMIT = 8;
+      let page = 1;
 
-      async function refreshAllData() {
+      async function loadData() {
         try {
-          const res = await fetch(`${API}/requests`, {
+          const res = await fetch(`${API}/auth/users`, {
             headers: { Authorization: "Bearer " + token },
           });
-          if (res.ok) requests = await res.json();
-          updateStats();
-          renderChart();
-          renderActivity();
+          if (res.ok) {
+            const all = await res.json();
+            users = all.filter((u) => u.role === "LAB_TECHNICIAN");
+            document.getElementById("stat-total").textContent = users.length;
+            document.getElementById("stat-active").textContent = users.filter(
+              (u) => u.active !== false,
+            ).length;
+            document.getElementById("stat-tech").textContent = users.length;
+            renderTable();
+          }
         } catch (e) {}
       }
 
-      function updateStats() {
-        document.getElementById("stat-total").textContent = requests.length;
-        document.getElementById("stat-pending").textContent = requests.filter(
-          (x) => x.status === "PENDING",
-        ).length;
-        document.getElementById("stat-approved").textContent = requests.filter(
-          (x) => x.status === "APPROVED",
-        ).length;
-        document.getElementById("stat-rejected").textContent = requests.filter(
-          (x) => x.status === "REJECTED",
-        ).length;
-      }
-
-      function renderChart() {
-        const ctx = document.getElementById("overviewChart").getContext("2d");
-        if (chartInstance) chartInstance.destroy();
-        chartInstance = new Chart(ctx, {
-          type: "doughnut",
-          data: {
-            labels: ["Pending", "Approved", "Rejected"],
-            datasets: [
-              {
-                data: [
-                  requests.filter((x) => x.status === "PENDING").length,
-                  requests.filter((x) => x.status === "APPROVED").length,
-                  requests.filter((x) => x.status === "REJECTED").length,
-                ],
-                backgroundColor: ["#f59e0b", "#22c55e", "#ef4444"],
-                borderWidth: 0,
-              },
-            ],
-          },
-          options: {
-            responsive: true,
-            maintainAspectRatio: false,
-            plugins: {
-              legend: {
-                position: "bottom",
-                labels: { padding: 16, font: { size: 12 } },
-              },
-            },
-            cutout: "65%",
-          },
-        });
-      }
-
-      function renderActivity() {
-        const list = document.getElementById("activity-list");
-        const recent = [...requests]
-          .sort(
-            (a, b) => new Date(b.createdAt || 0) - new Date(a.createdAt || 0),
-          )
-          .slice(0, 6);
-        if (!recent.length) {
-          list.innerHTML =
-            '<div style="text-align:center;padding:20px;color:var(--text3);font-size:13px;">No recent activity.</div>';
+      function renderTable() {
+        const search = document
+          .getElementById("search-users")
+          .value.toLowerCase();
+        let filtered = users.filter(
+          (u) =>
+            (u.username || "").toLowerCase().includes(search) ||
+            (u.email || "").toLowerCase().includes(search),
+        );
+        const paginated = filtered.slice(
+          (page - 1) * PAGE_LIMIT,
+          page * PAGE_LIMIT,
+        );
+        const tbody = document.getElementById("table-body");
+        if (!paginated.length) {
+          tbody.innerHTML =
+            '<tr><td colspan="6" style="text-align:center;color:var(--text3);padding:30px;">No staff found.</td></tr>';
+          renderPagination(filtered.length);
           return;
         }
-        list.innerHTML = recent
+        tbody.innerHTML = paginated
           .map(
-            (r) => `
-        <div class="activity-item">
-          <div class="activity-dot" style="background:${r.status === "APPROVED" ? "#22c55e" : r.status === "REJECTED" ? "#ef4444" : "#f59e0b"}"></div>
-          <div>
-            <div class="activity-text"><strong>${r.submittedBy || r.user?.username || "Lab Tech"}</strong> requested <strong>${r.itemName}</strong> × ${r.quantity}</div>
-            <div class="activity-time"><span class="status-badge badge-${(r.status || "pending").toLowerCase()}">${r.status || "PENDING"}</span>${r.createdAt ? " · " + new Date(r.createdAt).toLocaleDateString() : ""}</div>
+            (u, i) => `<tr>
+        <td style="color:var(--text2);font-size:12px;">${(page - 1) * PAGE_LIMIT + i + 1}</td>
+        <td>
+          <div class="user-cell">
+            <div class="user-cell-avatar">${(u.username || "?").substring(0, 2).toUpperCase()}</div>
+            <span style="font-weight:600;">${u.username || "—"}</span>
           </div>
-        </div>`,
+        </td>
+        <td style="color:var(--text2);">${u.email || "—"}</td>
+        <td style="color:var(--text2);">${u.phoneNumber || "—"}</td>
+        <td><span class="status-badge badge-tech">Lab Technician</span></td>
+        <td><span class="status-badge ${u.active !== false ? "badge-active" : "badge-inactive"}">${u.active !== false ? "Active" : "Inactive"}</span></td>
+      </tr>`,
           )
           .join("");
+        renderPagination(filtered.length);
       }
 
-      refreshAllData();
+      function renderPagination(total) {
+        const totalPages = Math.ceil(total / PAGE_LIMIT) || 1;
+        document.getElementById("pagination").innerHTML = `
+        <button class="page-btn" ${page === 1 ? "disabled" : ""} onclick="changePage(${page - 1})">Prev</button>
+        <span>Page ${page} of ${totalPages} · ${total} records</span>
+        <button class="page-btn" ${page === totalPages ? "disabled" : ""} onclick="changePage(${page + 1})">Next</button>`;
+      }
+      function changePage(p) {
+        page = p;
+        renderTable();
+      }
+
+      loadData();
     </script>
     <script src="/notifications.js"></script>
   </body>

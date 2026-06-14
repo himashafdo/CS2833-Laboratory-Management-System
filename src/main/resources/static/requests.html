@@ -755,19 +755,14 @@
           </svg>
           Manage Users
         </a>
-        <div class="nav-label">Student View</div>
-        <a href="/catalog.html" class="nav-item">
-          <svg
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M4 6h16M4 10h16M4 14h16M4 18h16" />
-          </svg>
-          Equipment Catalog
-        </a>
-        <a href="/report-issue.html" class="nav-item">
+        <div class="nav-label">Analytics</div>
+        <a
+          href="/admin-dashboard.html#demand-section"
+          class="nav-item"
+          onclick="
+            window.location.href = '/admin-dashboard.html#demand-section'
+          "
+        >
           <svg
             viewBox="0 0 24 24"
             fill="none"
@@ -775,12 +770,10 @@
             stroke-width="2"
           >
             <path
-              d="M10.29 3.86L1.82 18a2 2 0 001.71 3h16.94a2 2 0 001.71-3L13.71 3.86a2 2 0 00-3.42 0z"
+              d="M9 19v-6a2 2 0 00-2-2H5a2 2 0 00-2 2v6a2 2 0 002 2h2a2 2 0 002-2zm0 0V9a2 2 0 012-2h2a2 2 0 012 2v10m-6 0a2 2 0 002 2h2a2 2 0 002-2m0 0V5a2 2 0 012-2h2a2 2 0 012 2v14a2 2 0 01-2 2h-2a2 2 0 01-2-2z"
             />
-            <line x1="12" y1="9" x2="12" y2="13" />
-            <line x1="12" y1="17" x2="12.01" y2="17" />
           </svg>
-          Report Issue
+          Demand Monitoring
         </a>
       </nav>
 
@@ -790,20 +783,6 @@
           <div class="user-name" id="sidebar-name">Lab Technician</div>
           <div class="user-role">Lab Technician</div>
         </div>
-        <button class="logout-btn" onclick="logout()" title="Logout">
-          <svg
-            width="16"
-            height="16"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-          >
-            <path d="M9 21H5a2 2 0 01-2-2V5a2 2 0 012-2h4" />
-            <polyline points="16 17 21 12 16 7" />
-            <line x1="21" y1="12" x2="9" y2="12" />
-          </svg>
-        </button>
       </div>
     </aside>
 

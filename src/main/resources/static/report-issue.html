@@ -8,6 +8,8 @@
       href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700&display=swap"
       rel="stylesheet"
     />
+    <script src="/theme.js"></script>
+
     <style>
       *,
       *::before,
@@ -27,6 +29,65 @@
         --white: #ffffff;
         --bg: #f8fafc;
         --font: "Plus Jakarta Sans", sans-serif;
+      }
+      [data-theme="dark"] {
+        --text: #f1f5f9;
+        --text2: #cbd5e1;
+        --text3: #94a3b8;
+        --border: #334155;
+        --white: #1e293b;
+        --bg: #0f172a;
+      }
+
+      [data-theme="dark"] .field input,
+      [data-theme="dark"] .field select,
+      [data-theme="dark"] .field textarea {
+        background: #1e293b;
+        color: #e2e8f0;
+        border-color: #334155;
+      }
+
+      [data-theme="dark"] .field input::placeholder,
+      [data-theme="dark"] .field textarea::placeholder {
+        color: #475569;
+      }
+
+      [data-theme="dark"] .field input:focus,
+      [data-theme="dark"] .field select:focus,
+      [data-theme="dark"] .field textarea:focus {
+        background: #243044;
+        border-color: #f97316;
+      }
+
+      [data-theme="dark"] .type-btn {
+        background: #1e293b;
+        border-color: #334155;
+      }
+
+      [data-theme="dark"] .type-btn.active {
+        background: #2d1f0e;
+        border-color: #f97316;
+      }
+
+      [data-theme="dark"] .priority-btn {
+        background: #1e293b;
+        border-color: #334155;
+        color: #cbd5e1;
+      }
+
+      [data-theme="dark"] .form-card {
+        background: #1e293b;
+        border-color: #334155;
+      }
+
+      [data-theme="dark"] .ticket-card {
+        background: #1e293b;
+        border-color: #334155;
+      }
+
+      [data-theme="dark"] .page-header {
+        background: linear-gradient(135deg, #2d1f0e 0%, #3d2710 100%);
+        border-color: #4a3020;
       }
       body {
         font-family: var(--font);
@@ -212,7 +273,6 @@
       .content {
         padding: 28px 32px;
         flex: 1;
-        max-width: 860px;
       }
 
       /* ── PAGE HEADER ── */
@@ -619,6 +679,20 @@
         border-radius: 50%;
         animation: spin 0.8s linear infinite;
       }
+
+      .theme-toggle {
+        width: 36px;
+        height: 36px;
+        border-radius: 50%;
+        border: 1px solid var(--border);
+        background: var(--white);
+        cursor: pointer;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 16px;
+        transition: all 0.2s;
+      }
       @keyframes spin {
         to {
           transform: rotate(360deg);
@@ -744,6 +818,12 @@
         <div class="topbar-title">Report Issue</div>
         <div class="topbar-right">
           <div class="topbar-date" id="topbar-date"></div>
+          <button
+            id="theme-btn"
+            class="theme-toggle"
+            type="button"
+            title="Toggle theme"
+          ></button>
           <div class="topbar-icon">
             <svg
               width="16"

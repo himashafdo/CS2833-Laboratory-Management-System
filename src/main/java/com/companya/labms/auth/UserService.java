@@ -48,17 +48,23 @@ public class UserService {
         return jwtUtil.generateToken(username, user.getRole().name());
     }
 
-    public void forgotPassword(String email) {
-        User user = userRepository.findByEmail(email)
-                .orElseThrow(() -> new RuntimeException("No account found with that email"));
+    public String forgotPassword(String email) {
+    User user = userRepository.findByEmail(email)
+            .orElseThrow(() -> new RuntimeException("No account found with that email"));
 
-        String token = UUID.randomUUID().toString();
-        user.setResetToken(token);
-        user.setResetTokenExpiry(LocalDateTime.now().plusMinutes(30));
-        userRepository.save(user);
+    String token = UUID.randomUUID().toString();
+    user.setResetToken(token);
+    user.setResetTokenExpiry(LocalDateTime.now().plusMinutes(30));
+    userRepository.save(user);
 
+    try {
         emailService.sendPasswordResetEmail(email, token);
+    } catch (Exception e) {
+        System.out.println("Email send failed: " + e.getMessage());
     }
+
+    return token;
+}
 
     public void resetPassword(String token, String newPassword) {
         User user = userRepository.findByResetToken(token)
